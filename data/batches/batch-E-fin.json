@@ -1,0 +1,974 @@
+{
+  "batch": "E-fin",
+  "events": [
+    {
+      "id": "F-11",
+      "dept": "fin",
+      "tier": [1],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "稅務機關查帳到訪",
+      "text": "錢守成接到國稅局來函：「年度例行稽查，需要提交去年帳簿。總經理，這次查帳會不會影響營運進度？」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "主動配合、全盤揭露",
+          "hint": "立即提交完整文件，稽查時間短",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": 15
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "選擇性協助、延遲提供",
+          "hint": "拖延時間、尋求空隙，但面臨風險",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -10
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -400
+                }
+              ],
+              "resultText": "查帳官員起疑深入調查，開出逃漏稅罰單"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.compliance",
+                  "delta": -5
+                }
+              ],
+              "resultText": "暫時蒙混過去，但在案卷留下紀錄"
+            }
+          ],
+          "followUp": "F-C1",
+          "setFlag": null
+        },
+        {
+          "label": "聘請專業會計師應對",
+          "hint": "花費顧問費，但降低稽查風險",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 20
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-12",
+      "dept": "fin",
+      "tier": [2],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "world.economyIndex",
+            "op": "<=",
+            "value": 0.8
+          }
+        ]
+      },
+      "title": "外匯波動避險機會",
+      "text": "錢守成看著外匯行情變化：「我們出口美金占比不小，最近匯率波動明顯。要不要進場避險，鎖住匯率？」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "立即避險、使用衍生商品",
+          "hint": "確保成本穩定，但會付出保險費",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 1.02
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "觀望市場、暫不避險",
+          "hint": "保留現金靈活度，承受匯率風險",
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 300
+                }
+              ],
+              "resultText": "匯率朝有利方向發展，節省避險成本"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -250
+                }
+              ],
+              "resultText": "匯率急貶，出口美金價值下滑"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "部分避險、降低敞口",
+          "hint": "平衡風險與機會，折中方案",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-13",
+      "dept": "fin",
+      "tier": [1],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "原物料成本上揚壓力",
+      "text": "錢守成翻著採購報告嘆氣：「國際原油與銅價都在漲，供應商紛紛調升報價。我們的毛利率會被擠壓。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "吸收成本、維持價格",
+          "hint": "保住客戶，但毛利下滑",
+          "effects": [
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.1
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "轉嫁成本、調升售價",
+          "hint": "保護利潤，但可能失去訂單",
+          "effects": [
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 1.08
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -3
+                }
+              ],
+              "resultText": "客戶對漲價反應冷淡，訂單流向競爭對手"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.credit",
+                  "delta": -2
+                }
+              ],
+              "resultText": "客戶咕噥不滿但勉強接受"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "長期採購合約、鎖定價格",
+          "hint": "需要預付金，但規避未來漲幅",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 0.95
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-14",
+      "dept": "fin",
+      "tier": [2],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.cash",
+            "op": ">=",
+            "value": 2000
+          }
+        ]
+      },
+      "title": "大額設備投資決策",
+      "text": "錢守成與生產部經理帶來提案：「現有產線效率遇到瓶頸，購置自動化設備需要大筆支出，預計三年回本。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "積極投資、購置最新設備",
+          "hint": "提升競爭力，但耗費現金且有技術風險",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1800
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 1.4
+                }
+              ],
+              "resultText": "設備運行順暢，產能與效率明顯提升"
+            },
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 1.1
+                },
+                {
+                  "var": "kpi.morale",
+                  "delta": -5
+                }
+              ],
+              "resultText": "設備磨合期較長，生產人員需重新訓練"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "租賃設備、降低支出",
+          "hint": "保留現金彈性，但租賃成本逐年攤提",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300,
+              "months": 36
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.15
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫緩投資、維持現狀",
+          "hint": "保護現金流，但面臨產能天花板",
+          "effects": [
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 0.95
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-15",
+      "dept": "fin",
+      "tier": [3],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.profit",
+            "op": "<=",
+            "value": 500
+          }
+        ]
+      },
+      "title": "會計師要求財報調整",
+      "text": "會計師事務所來審計時提出意見：「某項應收帳款與存貨評估，與會計準則有差距。需要進行大幅調整與計提提列。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "依會計準則調整、按時揭露",
+          "hint": "誠實面對，但本期盈利下滑明顯",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": 20
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -800
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "要求會計師寬鬆解釋空間",
+          "hint": "延後確認虧損，但增加未來風險",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -15
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "更換會計師事務所",
+          "hint": "重新審視，時間與成本皆高",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "kpi.credit",
+              "delta": -8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-16",
+      "dept": "fin",
+      "tier": [1],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 3,
+        "conditions": []
+      },
+      "title": "內部稽核發現缺失",
+      "text": "內部稽核部門提交季度報告：「發現幾項內部控制設計不當的地方，包括支付授權流程與資產清點程序。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "立即整改、強化控制",
+          "hint": "投入人力時間，但降低風險",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "列為後續改善、暫不處理",
+          "hint": "節省時間，但問題懸而未決",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -5
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -300
+                }
+              ],
+              "resultText": "缺失被外部審計發現，要求額外更正與披露"
+            },
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "kpi.compliance",
+                  "delta": -2
+                }
+              ],
+              "resultText": "暫時未爆發問題，但持續監控中"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "聘請外部顧問、系統化改善",
+          "hint": "花費顧問費用，但建立穩健流程",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -250
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 18
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-17",
+      "dept": "fin",
+      "tier": [2],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.profit",
+            "op": ">=",
+            "value": 800
+          }
+        ]
+      },
+      "title": "股利配發政策決議",
+      "text": "董事會召開前，錢守成準備政策報告：「本年獲利不錯，股東要求提高配息率。但保留盈餘也可投入新專案。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "提高配息比例、回饋股東",
+          "hint": "增加股東收益，但減少公司資金",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": 15
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "維持現有配息、保留盈餘投資",
+          "hint": "強化內生成長，但股東期望落差",
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": -8
+            },
+            {
+              "var": "aux.rnd",
+              "op": "mul",
+              "delta": 1.1
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "發放特別股利、平衡供給",
+          "hint": "折中方案，既回饋也保留投資空間",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": 8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-18",
+      "dept": "fin",
+      "tier": [3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": true,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "被購併意向洽談",
+      "text": "錢守成傳來消息：「一家大型集團集中度不錯，表示對我們的資產與客戶基礎有興趣。他們開出了購併價格。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "接受報價、加速洽談",
+          "hint": "確定收益，但公司未來自主性受限",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 5000
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": "acquired"
+        },
+        {
+          "label": "婉拒並尋求更好條件",
+          "hint": "爭取溢價空間，但併購可能流產",
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": 8
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 6000
+                },
+                {
+                  "var": "kpi.shareholder",
+                  "delta": 12
+                }
+              ],
+              "resultText": "對方加價，並改善員工權益條款"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.shareholder",
+                  "delta": -8
+                }
+              ],
+              "resultText": "對方失去興趣，洽談中止"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫時觀望、繼續獨立運作",
+          "hint": "保留選項，但失去併購機會",
+          "effects": [],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-19",
+      "dept": "fin",
+      "tier": [1],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "營運支出超預算警告",
+      "text": "錢守成審視月度支出統計：「行銷與差旅費用又超預算了。如果不卡緊，第四季現金壓力會很大。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "嚴格凍結、逐項審批",
+          "hint": "節省現金，但可能影響運營效率",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 500
+            },
+            {
+              "var": "aux.marketing",
+              "op": "mul",
+              "delta": 0.8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "警告部門主管、允許部分超支",
+          "hint": "維持運營靈活性，但風險仍存",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "重新預算調配、挪用其他科目",
+          "hint": "平衡總額，但某些專案被犧牲",
+          "effects": [],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-20",
+      "dept": "fin",
+      "tier": [2],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.cash",
+            "op": "<",
+            "value": 1000
+          }
+        ]
+      },
+      "title": "現金流緊張危機",
+      "text": "錢守成神情凝重地報告：「應付帳款即將到期，而應收款回款延遲。帳上現金即將不足支應薪資與貸款。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "立即向銀行申請短期借款",
+          "hint": "解決眼前流動性，但增加利息負擔",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 1500
+            },
+            {
+              "var": "aux.debt",
+              "op": "mul",
+              "delta": 1.2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "延期支付應付款、與供應商談判",
+          "hint": "爭取寬限期，但損傷供應商關係",
+          "effects": [
+            {
+              "var": "aux.supplierRel",
+              "op": "mul",
+              "delta": 0.85
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "aux.supplierRel",
+                  "delta": -0.1
+                },
+                {
+                  "var": "kpi.cash",
+                  "delta": 800
+                }
+              ],
+              "resultText": "供應商勉強同意延期，但要求未來優先支付"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "aux.supplierRel",
+                  "delta": -0.2
+                },
+                {
+                  "var": "aux.price",
+                  "op": "mul",
+                  "delta": 1.05
+                }
+              ],
+              "resultText": "供應商提高未來報價以補償風險"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "加緊催收應收款、制定回款計畫",
+          "hint": "積極但需時間見效，可能影響客戶關係",
+          "effects": [
+            {
+              "var": "aux.channelRel",
+              "op": "mul",
+              "delta": 0.9
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-21",
+      "dept": "fin",
+      "tier": [3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.credit",
+            "op": ">=",
+            "value": 75
+          }
+        ]
+      },
+      "title": "公司債發行融資機會",
+      "text": "錢守成帶來融資建議：「評等機構給了我們不錯的信評，市場對公司債需求強勁。可以考慮發行中期公司債募資擴張。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "立即發行、籌資擴張",
+          "hint": "資金充裕支持成長，但背負債務與利息",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 2000
+            },
+            {
+              "var": "aux.debt",
+              "op": "mul",
+              "delta": 1.3
+            },
+            {
+              "var": "aux.interest",
+              "op": "mul",
+              "delta": 1.2,
+              "months": 60
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "保守策略、暫緩發行",
+          "hint": "維持低槓桿，但失去成長融資機會",
+          "effects": [],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "小額發行、適度槓桿",
+          "hint": "均衡融資與風險，折中方案",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 1000
+            },
+            {
+              "var": "aux.debt",
+              "op": "mul",
+              "delta": 1.15
+            },
+            {
+              "var": "aux.interest",
+              "op": "mul",
+              "delta": 1.08,
+              "months": 60
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "F-C1",
+      "dept": "fin",
+      "tier": [1, 2, 3],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 1,
+        "conditions": []
+      },
+      "title": "稅務罰款確定",
+      "text": "稅務機關下達最終裁定：查獲逃漏稅捐，加倍罰款並要求補繳利息。錢守成沮喪地報告：「因為去年的延遲應對，損失會更慘重。」",
+      "speaker": "qian",
+      "options": [
+        {
+          "label": "立即繳納罰款、認賠結清",
+          "hint": "承擔懲罰，但快速終結爭議",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1200
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "提起行政訴訟、力爭減免",
+          "hint": "耗費時間與律師費，但有翻盤機會",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -15
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 1000
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": 12
+                }
+              ],
+              "resultText": "訴訟勝訴，罰款大幅減免，信譽挽回"
+            },
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -1000
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -20
+                }
+              ],
+              "resultText": "訴訟敗訴，罰款更重，信用受損"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    }
+  ]
+}
