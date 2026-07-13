@@ -1,0 +1,891 @@
+{
+  "batch": "J-gov",
+  "events": [
+    {
+      "id": "G-11",
+      "dept": "gov",
+      "tier": [1],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "勞動檢查定期通知",
+      "speaker": "guan",
+      "text": "官正義平靜地說：「貴公司被列入本期勞動檢查名單，預計下月進廠，請做好準備。」",
+      "options": [
+        {
+          "label": "全面自查並整改",
+          "hint": "投入人力成本，但檢查時無虞",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50,
+              "months": 1
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "應付式整理",
+          "hint": "速戰速決，但埋伏隱患",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": 2
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -200
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -10
+                }
+              ],
+              "resultText": "檢查發現多項缺失，當場開罰。"
+            }
+          ]
+        },
+        {
+          "label": "積極配合且提前溝通",
+          "hint": "費時費力，但可能獲得好評",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80,
+              "months": 1
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            },
+            {
+              "var": "kpi.credit",
+              "delta": 3
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-12",
+      "dept": "gov",
+      "tier": [1, 2],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 8,
+        "conditions": []
+      },
+      "title": "稅務優惠專案申請",
+      "speaker": "guan",
+      "text": "官正義遞上一份文件：「今年有新的節能稅務優惠專案，符合貴公司條件，截止期限是下月底。」",
+      "options": [
+        {
+          "label": "認真準備完整申請案",
+          "hint": "找專家把關，成功率高",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -40
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.75,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 500
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": 5
+                }
+              ],
+              "resultText": "申請核准，稅務優惠順利入帳。"
+            },
+            {
+              "chance": 0.25,
+              "effects": [
+                {
+                  "var": "kpi.compliance",
+                  "delta": 2
+                }
+              ],
+              "resultText": "資格審不過，但留下合規紀錄。"
+            }
+          ]
+        },
+        {
+          "label": "自行簡單填報",
+          "hint": "省顧問費，但過件機率低",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.35,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 500
+                }
+              ],
+              "resultText": "幸運過件，稅務減免入帳。"
+            },
+            {
+              "chance": 0.65,
+              "effects": [],
+              "resultText": "申請遭駁回，機會錯失。"
+            }
+          ]
+        },
+        {
+          "label": "放棄申請",
+          "hint": "不費力氣",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-13",
+      "dept": "gov",
+      "tier": [2, 3],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 4,
+        "conditions": []
+      },
+      "title": "產業政策說明會邀請",
+      "speaker": "guan",
+      "text": "官正義主持著會議：「下週有場次十二五產業政策說明會，邀請貴公司派代表參加，新政策對您們可能有機會。」",
+      "options": [
+        {
+          "label": "董事長或總經理親自參加",
+          "hint": "展現重視，有機會建立關係",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.credit",
+              "delta": 5
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 300
+                }
+              ],
+              "resultText": "會上被政府主管推薦到相關補助專案。"
+            }
+          ]
+        },
+        {
+          "label": "派資深業務或主管代表",
+          "hint": "平衡，蒐集情報",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": 2
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "不派人，事後查文件即可",
+          "hint": "省時，但無互動與關係",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-14",
+      "dept": "gov",
+      "tier": [1, 2],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "進出口關稅政策轉向",
+      "speaker": "guan",
+      "text": "官正義表情沉重：「國際貿易局勢變化，進口關稅將有調整，貴公司進出口成本會增加。我們在評估因應措施。」",
+      "options": [
+        {
+          "label": "立即調整進口策略",
+          "hint": "提前備貨、改變採購源，投入成本但保護毛利",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 0.98
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 5
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "被動接受，逐步轉嫁成本",
+          "hint": "短期省錢，但可能失去客戶",
+          "followUp": "G-C1",
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.05
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -2
+                }
+              ],
+              "resultText": "客戶對漲價反感，轉單給競爭對手。"
+            }
+          ]
+        },
+        {
+          "label": "尋求政府協助與過渡期優惠",
+          "hint": "提交申請案，爭取減稅或緩衝期",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 200
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": 8
+                }
+              ],
+              "resultText": "政府核准部分減稅優惠，緩解衝擊。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-15",
+      "dept": "gov",
+      "tier": [3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 9,
+        "conditions": []
+      },
+      "title": "產業園區設廠優惠方案",
+      "speaker": "guan",
+      "text": "官正義遞上產業園區規劃書：「我們開發了新的高科技園區，提供大型企業設廠優惠。租金、稅務、基礎建設全都有支持政策。」",
+      "options": [
+        {
+          "label": "認真評估搬遷或擴廠",
+          "hint": "長期投資，享受優惠，但前期改造成本高",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -2000
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.3
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 10
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 1500,
+                  "delayMonths": 12,
+                  "months": 3
+                }
+              ],
+              "resultText": "一年後享受租金與稅務優惠，回本可期。"
+            }
+          ]
+        },
+        {
+          "label": "局部試點，先在園區設小型廠房",
+          "hint": "分散風險，保持靈活",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 6
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "維持現狀，觀察園區發展",
+          "hint": "保守，但錯過早期優惠",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-16",
+      "dept": "gov",
+      "tier": [1, 2],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 3,
+        "conditions": []
+      },
+      "title": "食安與產品標示稽查",
+      "speaker": "guan",
+      "text": "官正義查看清單：「例行稽查期間，發現貴公司產品標示有幾項需要調整。這不是違法，但最好在下次檢驗前改善。」",
+      "options": [
+        {
+          "label": "立即停產修改，徹底重新標示",
+          "hint": "成本高，但百分百合規",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -120
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 15
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 3
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "邊銷邊改，新批次採用新標示",
+          "hint": "現金壓力小，但有被查出庫存的風險",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -40
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 6
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.25,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -300
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -8
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": -5
+                }
+              ],
+              "resultText": "臨檢時查獲未改善的舊批次，被罰款且上新聞。"
+            }
+          ]
+        },
+        {
+          "label": "只改外包裝標示，成分標示延後再改",
+          "hint": "最便宜但最冒險",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -20
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-17",
+      "dept": "gov",
+      "tier": [2],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "消防安檢突檢與缺失通知",
+      "speaker": "guan",
+      "text": "官正義帶著消防隊員到達：「定期消防檢查，發現逃生通道堆放物品、滅火器過期等項目，需要在期限內改善。」",
+      "options": [
+        {
+          "label": "立即全面改善所有缺失",
+          "hint": "快速過關，成本明確",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "只改嚴重項目，其他申請延期改善",
+          "hint": "先過關但埋隱患",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 4
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -200
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -8
+                }
+              ],
+              "resultText": "下次突檢發現舊缺失未改，再次被罰。"
+            }
+          ]
+        },
+        {
+          "label": "聘請消防顧問全程配合與協商",
+          "hint": "費用中等，但建立關係與技術支援",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 14
+            },
+            {
+              "var": "kpi.credit",
+              "delta": 3
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-18",
+      "dept": "gov",
+      "tier": [1],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 7,
+        "conditions": []
+      },
+      "title": "專利補助與研發抵稅方案",
+      "speaker": "guan",
+      "text": "官正義遞上申請表格：「新推的專利補助和研發成本抵稅方案，貴公司如果有專利申請或研發支出紀錄，可以申請。」",
+      "options": [
+        {
+          "label": "委託專利事務所全力整理與申請",
+          "hint": "投入成本，但成功率高且額度大",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -60
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 600
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": 8
+                }
+              ],
+              "resultText": "補助核准，現金入帳，建立研發實績。"
+            }
+          ]
+        },
+        {
+          "label": "自己整理現有紀錄送申請",
+          "hint": "省顧問費，但可能漏項",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 600
+                }
+              ],
+              "resultText": "文件齊全，補助順利核准。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 200
+                }
+              ],
+              "resultText": "補助額度縮水，但仍有入帳。"
+            }
+          ]
+        },
+        {
+          "label": "放棄，不想麻煩",
+          "hint": "省事",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-19",
+      "dept": "gov",
+      "tier": [2, 3],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "公平交易委員會調查通知",
+      "speaker": "guan",
+      "text": "官正義直言：「有廠商投訴貴公司存在不公平競爭行為，公平會已受理案件。建議您儘早回應。」",
+      "options": [
+        {
+          "label": "聘請專業律師與顧問全力應訴",
+          "hint": "成本高，但法務防守最強",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 8
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 2
+                }
+              ],
+              "resultText": "調查結論：無違法行為，案件結案。"
+            },
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -500
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": -8
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -10
+                }
+              ],
+              "resultText": "查獲違反公平交易法，被罰款且聲譽受損。"
+            }
+          ]
+        },
+        {
+          "label": "自行應訴但盡量低調",
+          "hint": "省律師費，但法務風險高",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [],
+              "resultText": "幸運無事，調查結案。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -800
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -15
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": -10
+                }
+              ],
+              "resultText": "應訴無力，被罰款與強制措施，輿論反應熱烈。"
+            }
+          ]
+        },
+        {
+          "label": "主動與對方調解，尋求和解",
+          "hint": "保護品牌，但可能要付代價",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 5
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 3
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "G-C1",
+      "dept": "gov",
+      "tier": [1, 2, 3],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "進口關稅進一步攀升",
+      "speaker": "guan",
+      "text": "官正義表情遺憾：「談判破裂，進口關稅比預期更高。這下全行業都得承受衝擊了。」",
+      "options": [
+        {
+          "label": "緊急轉向其他國家採購源",
+          "hint": "搶時間但供應鏈混亂風險高",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.03
+            },
+            {
+              "var": "aux.supplierRel",
+              "delta": -5
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "aux.yieldRate",
+                  "op": "mul",
+                  "delta": 0.95
+                }
+              ],
+              "resultText": "新供應商品質不穩，不良率上升。"
+            }
+          ]
+        },
+        {
+          "label": "向政府申請進出口救濟措施",
+          "hint": "需要遊說和文件準備，但成功能緩解",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.45,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 400
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": 7
+                }
+              ],
+              "resultText": "成功爭取臨時稅率優惠，緩解壓力。"
+            }
+          ]
+        },
+        {
+          "label": "被迫漲價，承受市占下滑",
+          "hint": "最被動的選擇",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "kpi.share",
+              "delta": -4
+            }
+          ],
+          "random": []
+        }
+      ]
+    }
+  ]
+}
