@@ -24,3 +24,18 @@
 - events schema 落地決定：禁對 kpi.revenue/profit 直接下效果（結算導出值），設計中「營收+X%」改映射到 kpi.share / aux.price 等因果變數；後續事件暫以 random 延遲效果表達（事件鏈 M7 才建）。
 驗收：validate-data.mjs 0 錯 0 警告（22 事件）；rng 確定性/狀態恢復/分布測試通過；python http.server 全 11 資源 HTTP 200、五 JSON 可 fetch 解析。
 下一步：待使用者確認 → M2 引擎核心（state/economy/rules/engine + engine.test.js）。
+
+---
+
+[2026-07-13] [M2] 完成引擎核心，18 項單元測試全過。
+工作內容：
+- js/engine/state.js：initState 工廠 + getVar/setVar(含全變數 clamp 表，引擎唯一數值出口)。
+- js/engine/economy.js：月結算(營收=min(需求×市占,產能鏈)×單價；成本=原料+人事+行銷+研發+管理+利息；稅後損益入現金/淨值)+漂移(研發累積競爭力、對手成長、市占拉鋸、員工數向營收/人均產值靠攏、景氣隨機漫步、均值回歸)。
+- js/engine/rules.js：倒閉(先嘗試銀行紓困:信用>=30且額度內自動借款)、撤換(股東信心<=0)、升降級(門檻×難度倍率+holdMonths)、期滿、computeScore(規模+財務+品質+成就四塊，倒閉0分敗家子)。
+- js/engine/engine.js：reduce 純函式(END_MONTH/ACK；DECIDE 留 M3)+效果佇列(queueEffect/applyDueEffects，支援 delay/months 持續/mul/pctOf/區間 delta)。
+決策與理由：
+- 股東信心自 regressTargets 移除：否則歸零撤換條件永不成立；信心只由事件與業績驅動。
+- capacityUnitValue 12000→1200(尺度修正)；tiers 加 revenuePerEmployee(員工數隨營收自然靠攏，升級門檻的員工數項因此與營收成長耦合，不需獨立招募微管理)。
+- upgradeTo3 的 requireIpoChain 種子版直接視為通過(TODO M7 改由上市審查事件鏈把關)。
+驗收：18/18 單元測試通過；60月放置模擬三難度走勢合理(easy平盤/normal衰退/hard近倒閉)；validate 仍 0 錯 0 警告。
+下一步：M3 事件系統(抽取輪替保底+權重+條件+冷卻、DECIDE、機率結果、followUp)。

@@ -11,7 +11,8 @@
 - [O] 2026-07-13 技術架構（docs/ARCHITECTURE.md）、開發計畫 M0~M10（docs/DEV_PLAN.md）
 - [O] 2026-07-13 **M0 骨架**：rng.js（種子亂數，確定性測試通過）、data-loader.js、tools/validate-data.mjs、index.html、css/style.css、main.js（骨架版）
 - [O] 2026-07-13 **M1 資料初版**：balance.json、difficulty.json、npcs.json、news.json、events.json（22 件種子事件）；validate-data.mjs 0 錯 0 警告通過；http server 全資源 200、JSON 可載入
+- [O] 2026-07-13 **M2 引擎核心**：state/economy/rules/engine 完成，18 項單元測試全過，60月基準模擬走勢合理
 
 ## 下一步
-- [ ] 使用者確認後開始 **M2 引擎核心**：state.js、economy.js、rules.js、engine.js（NEW_GAME / END_MONTH），並寫 engine.test.js
+- [ ] **M3 事件系統**（抽取輪替保底+權重+條件+冷卻、DECIDE、機率結果）
 - 註：M1 事件為 22 件種子版，完整 140~170 件於 M7 量產
