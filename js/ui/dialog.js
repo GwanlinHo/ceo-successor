@@ -2,6 +2,7 @@
 
 import { esc } from "./hud.js";
 import { getEvent } from "../engine/events.js";
+import { npcAvatar } from "./office.js";
 
 const DEPT_TAG = {
   rnd: "研發部", prod: "生產部", mkt: "行銷業務部", hr: "人事部", fin: "財務部",
@@ -27,8 +28,13 @@ export function renderDialog(s, data) {
         <span class="dialog-progress">本月第 ${idxInMonth} / ${totalMonth} 件</span>
       </div>
       <h2 class="dialog-title">${esc(ev.title)}</h2>
-      ${npc ? `<div class="dialog-npc">${esc(npc.name)}・${esc(npc.role)}</div>` : ""}
-      <p class="dialog-text">${esc(ev.text)}</p>
+      <div class="dialog-speaker">
+        ${npc ? npcAvatar(npc.id, 88) : ""}
+        <div class="dialog-speech">
+          ${npc ? `<div class="dialog-npc">${esc(npc.name)}・${esc(npc.role)}</div>` : ""}
+          <p class="dialog-text">${esc(ev.text)}</p>
+        </div>
+      </div>
       <div class="dialog-options">
         ${ev.options.map((o, i) => `
           <button class="btn option" data-opt="${i}">

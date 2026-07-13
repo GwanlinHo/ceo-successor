@@ -8,6 +8,7 @@ import { renderDialog, renderDecisionResult } from "./ui/dialog.js";
 import { renderStart, renderHowTo, renderSetup, renderEnding, HOW_PAGE_COUNT } from "./ui/screens.js";
 import { renderReports } from "./ui/reports.js";
 import { renderNews } from "./ui/news.js";
+import { renderOffice } from "./ui/office.js";
 
 let DATA = null;
 let state = null;                 // 遊戲 state
@@ -43,7 +44,7 @@ function renderGame() {
   } else if (state.events.current) {
     body = renderDecisionResult(state) + renderDialog(state, DATA);
   } else {
-    body = `<div class="card month-clear"><p>本月事件都處理完了。準備好就結算本月。</p></div>`;
+    body = renderOffice(state) + `<div class="card month-clear"><p>本月事件都處理完了。準備好就結算本月。</p></div>`;
   }
   const actions = inSettle
     ? `<button class="btn btn-primary" data-act="ack">進入下一個月</button>`

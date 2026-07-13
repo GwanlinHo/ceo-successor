@@ -40,6 +40,10 @@ try {
   ok((await page.$eval('.hud-company', (e) => e.textContent)) === "端測精工", "HUD 顯示自訂公司名");
   ok((await page.$eval('.hud-tier', (e) => e.textContent)).includes("小型"), "初始為小型企業");
 
+  // M6 美術：事件對話框含 NPC 頭像 SVG
+  await page.waitForSelector('.dialog');
+  ok(await page.$('.npc-avatar svg') !== null, "事件對話框顯示 NPC 頭像 SVG");
+
   // 新聞面板(M5)
   await page.click('[data-act="open-news"]');
   await page.waitForSelector('[data-overlay="news"]');
@@ -80,6 +84,17 @@ try {
   }
   ok(decisions > 0, `有做出決策(${decisions} 次)`);
   ok(months > 0, `有完成月結算(${months} 個月)`);
+
+  // M6：某個月處理完事件後主畫面應出現辦公室場景(含至少一個部門 NPC)
+  {
+    // 推進到本月事件清空
+    let g3 = 0;
+    while (g3++ < 30 && await page.$('.option')) { await page.click('.option'); await page.waitForNetworkIdle({ idleTime: 40 }).catch(() => {}); }
+    if (await page.$('.office-scene')) {
+      ok((await page.$$('.office-fig')).length === 5, "辦公室場景五個部門站位");
+      ok(await page.$('.office-scene svg') !== null, "辦公室場景含 SVG 素材");
+    }
+  }
 
   // 存讀檔：在結算畫面存檔離開→重載→繼續
   if (await page.$('[data-act="ack"]')) {

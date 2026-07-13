@@ -32,6 +32,13 @@ export function renderSettlement(s) {
   const r = s.lastReport;
   if (!r) return "";
   const c = r.cost;
+  // 本月是否有規模變動/上市等重大事件(從 log 抓)
+  const bigNews = s.log.filter((l) => l.month === s.meta.month &&
+    /升級|降級|上市|紓困|倒閉|撤換/.test(l.text));
+  const banner = bigNews.map((l) => {
+    const kind = /升級|上市/.test(l.text) ? "up" : (/降級|倒閉|撤換/.test(l.text) ? "down" : "warn");
+    return `<div class="scale-banner scale-${kind}">${esc(l.text)}</div>`;
+  }).join("");
   const rows = [
     ["月營收", money(r.revenue), ""],
     ["　原料成本", "-" + money(c.material), ""],
@@ -44,6 +51,7 @@ export function renderSettlement(s) {
     ["月淨利", money(r.profit), trendClass(r.profit)],
   ];
   return `
+    ${banner}
     <div class="settlement card">
       <h2>第 ${r.month} 月結算</h2>
       <table class="ledger">

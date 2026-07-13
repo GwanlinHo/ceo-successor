@@ -210,3 +210,41 @@ html, body {
 .news-industry .news-tag { background: #dbe4dc; border-color: var(--good); color: var(--good); }
 .news-rumor .news-tag { background: #e6dcc4; border-color: var(--warn); color: var(--warn); }
 .news-text { font-size: 0.92rem; line-height: 1.5; }
+
+/* ===== M6 美術與場景 ===== */
+/* 辦公室俯視場景 */
+.office { margin-bottom: 1rem; }
+.office-scene { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 340px;
+  background: var(--floor, #eae5da); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden; box-shadow: inset 0 1px 6px rgba(43,43,41,0.08); }
+.office-fig { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column;
+  align-items: center; }
+.office-sprite { position: relative; z-index: 2; }
+.office-sprite svg { display: block; }
+.office-desk { margin-top: -14px; opacity: 0.9; }
+.office-tag { font-size: 0.68rem; color: var(--ink-soft); background: rgba(253,252,249,0.7);
+  padding: 0 0.35em; border-radius: 3px; margin-top: 2px; white-space: nowrap; }
+.office-prop { position: absolute; opacity: 0.85; }
+.office-caption { text-align: center; font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.4rem; }
+
+/* 事件對話框頭像 */
+.dialog-speaker { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 1.25rem; }
+.npc-avatar { flex-shrink: 0; background: var(--paper-2); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 4px; }
+.npc-avatar svg { display: block; }
+.dialog-speech { flex: 1; }
+.dialog-speaker .dialog-npc { margin-bottom: 0.4rem; }
+.dialog-speaker .dialog-text { margin-bottom: 0; }
+
+/* 規模變動 / 重大事件橫幅 */
+.scale-banner { padding: 0.7rem 1rem; border-radius: var(--radius); margin-bottom: 1rem;
+  font-weight: 700; text-align: center; border: 1px solid var(--line); animation: banner-in 0.4s ease; }
+.scale-up { background: #dbe4dc; border-color: var(--good); color: var(--good); }
+.scale-down { background: #e8d9d6; border-color: var(--bad); color: var(--bad); }
+.scale-warn { background: #e6dcc4; border-color: var(--warn); color: var(--warn); }
+@keyframes banner-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 640px) {
+  .office-scene { max-height: 240px; }
+  .dialog-speaker { flex-direction: column; align-items: center; text-align: center; }
+}

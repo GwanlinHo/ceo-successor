@@ -94,3 +94,18 @@
 - 三項舊隔離測試因新聞排程效果佔據 s.effects[0] 而失敗，改為測試前清空 s.effects(隔離效果機制本身)。
 驗收：單元34/34、E2E puppeteer 14/14、5張截圖(報表趨勢圖/六分頁/新聞分色)確認。
 下一步：M6 美術與畫面(sprites.js NPC/物件SVG、office.js三tier場景、開始/說明/月結算/升級/結局的視覺強化)。
+
+---
+
+[2026-07-13] [M6] 完成美術與場景，15 E2E 全過，截圖確認風格。
+工作內容：
+- sprites.js(Sonnet sub-agent 產出，48.8k tokens)：11 NPC 2頭身Q版SVG(共用骨架,靠配件/髮型/服裝深淺區分:研發眼鏡/生產安全帽/業務領帶/人事包頭/財務背心/董事長拐杖/銀行公事包/供應商搬箱/客戶平板/政府識別證/記者相機)+6物件(desk/monitor/plant/cabinet/printer/cup);viewBox統一0 0 100 200。
+- office.js(主線)：三tier辦公室俯視場景(floor色與角落家具依規模變化)、五內部部門NPC站位、npcAvatar 給對話框。
+- 整合(主線)：dialog.js 對話框加NPC頭像版位；main.js 主畫面(事件清空時)顯示辦公室場景；hud.js 月結算加升級/降級/上市/紓困重大變動橫幅(從log抓,分up/down/warn配色+淡入動畫);M6 CSS。
+決策與理由：
+- API契約在派工prompt先定死(npcSprite/objectSprite/NPC_IDS + viewBox),主線同時獨立寫office.js與整合,agent回來即接上,零返工。
+- sub-agent 這次順利完成(前兩次因session額度中斷);素材經風格稽核(無emoji/低彩度/API)才整合。
+- 修一個整合bug:sprites.js 檔尾有 `if(import.meta.url===file://${process.argv[1]})` 自我檢查,瀏覽器無 process 致整個模組載入崩潰(開始畫面空白)。移除該區塊(node驗證改由外部測試腳本做)。
+驗收：單元34/34不受影響、E2E 15/15(新增頭像檢查)、風格稽核通過、3張截圖(對話框頭像/辦公室五部門場景)。
+[!] 小瑕疵:office 部分站位標籤偏移/重疊,列入M9收尾微調。
+下一步：M7 事件庫量產(擴至140~170件,tier2/3加重,金額tier1尺度,含桿F內容配套:tier3危機≥40%、擱置接惡化鏈)。
