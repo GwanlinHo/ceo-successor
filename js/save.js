@@ -35,6 +35,14 @@ export function hasSave() {
   return !!localStorage.getItem(KEY);
 }
 
+// 請求持久化儲存：降低 localStorage 在空間吃緊時被瀏覽器自動清除的機率。
+// 不影響「清除瀏覽器資料」或換裝置的情況(那仍需匯出檔備份)。失敗不影響遊戲。
+export function requestPersistentStorage() {
+  try {
+    if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
+  } catch { /* 忽略 */ }
+}
+
 export function clearSave() {
   localStorage.removeItem(KEY);
 }

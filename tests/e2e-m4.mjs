@@ -101,10 +101,11 @@ try {
     const monthBefore = await page.$eval('.hud-month', (e) => e.textContent).catch(() => null);
     const cashBefore = await page.evaluate(() => JSON.parse(localStorage.getItem("ceo_successor_save_v1")).kpi.cash);
     await page.click('[data-act="save-quit"]');
-    await page.waitForSelector('[data-act="continue"]');
+    await page.waitForSelector('[data-act="new"]');
     await page.reload({ waitUntil: "networkidle0" });
-    await page.click('[data-act="continue"]');
-    await page.waitForSelector('.hud');
+    // 自動載入：有存檔應直接進遊戲(不需點繼續遊戲)
+    const autoResumed = await page.waitForSelector('.hud', { timeout: 5000 }).then(() => true).catch(() => false);
+    ok(autoResumed, "重新開啟自動載入存檔直接進遊戲");
     const cashAfter = await page.evaluate(() => JSON.parse(localStorage.getItem("ceo_successor_save_v1")).kpi.cash);
     ok(cashBefore === cashAfter, "讀檔後現金一致(存讀檔無損)");
   }

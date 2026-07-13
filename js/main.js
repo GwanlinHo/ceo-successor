@@ -2,7 +2,7 @@
 
 import { loadData } from "./data-loader.js";
 import { newGame, reduce } from "./engine/engine.js";
-import { saveGame, loadGame, hasSave, clearSave, exportSave, importSave } from "./save.js";
+import { saveGame, loadGame, hasSave, clearSave, exportSave, importSave, requestPersistentStorage } from "./save.js";
 import { renderHud, renderSettlement } from "./ui/hud.js";
 import { renderDialog, renderDecisionResult } from "./ui/dialog.js";
 import { renderStart, renderHowTo, renderSetup, renderConfirmNew, renderEnding, HOW_PAGE_COUNT } from "./ui/screens.js";
@@ -17,7 +17,14 @@ const app = () => document.getElementById("app");
 
 async function boot() {
   try {
+    requestPersistentStorage(); // 請瀏覽器把存檔標為持久，降低被自動清除的機率
     DATA = await loadData();
+    // 自動載入：有未結束的存檔就直接進遊戲(想重來:遊戲中「存檔並離開」→「新遊戲」)
+    const saved = loadGame();
+    if (saved && saved.meta.phase !== "ended") {
+      state = saved;
+      view.screen = "game";
+    }
     render();
   } catch (e) {
     app().innerHTML = `<div class="screen center"><div class="card"><p class="val-bad">[X] 載入失敗：${e.message}</p>
