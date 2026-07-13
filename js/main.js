@@ -80,8 +80,9 @@ function renderGame() {
 
 // ---- 事件委派 ----
 document.addEventListener("click", (ev) => {
-  const btn = ev.target.closest("[data-act], [data-opt], [data-diff], [data-rtab]");
+  const btn = ev.target.closest("[data-act], [data-opt], [data-diff], [data-rtab], [data-open-rtab]");
   if (!btn) return;
+  if (btn.dataset.openRtab !== undefined) { view.overlay = "reports"; view.reportTab = btn.dataset.openRtab; return render(); }
   if (btn.dataset.opt !== undefined) return onDecide(parseInt(btn.dataset.opt, 10));
   if (btn.dataset.diff !== undefined) return onPickDiff(btn.dataset.diff);
   if (btn.dataset.rtab !== undefined) { view.reportTab = btn.dataset.rtab; return render(); }

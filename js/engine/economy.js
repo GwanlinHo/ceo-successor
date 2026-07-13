@@ -104,13 +104,15 @@ export function settleMonth(s, data, rng) {
   if (k.cash < revenue * 0.5) report.notes.push("[!] 現金水位偏低");
   s.lastReport = report;
 
-  // 記錄本月數據快照(報表趨勢圖用；只留最近 24 個月)
+  // 記錄本月數據快照(報表趨勢圖與漲跌指示用；只留最近 24 個月)
   s.metrics.push({
     month: s.meta.month,
     revenue: Math.round(revenue), profit: Math.round(profit),
     cash: Math.round(k.cash), equity: Math.round(k.equity),
     share: round1(k.share), product: round1(k.product), morale: round1(k.morale),
     brand: round1(k.brand), satisfaction: round1(k.satisfaction), headcount: Math.round(k.headcount),
+    shareholder: round1(k.shareholder), credit: round1(k.credit), compliance: round1(k.compliance),
+    debt: Math.round(a.debt),
     materialCost: Math.round(material), personnelCost: Math.round(personnel),
   });
   if (s.metrics.length > 24) s.metrics.shift();

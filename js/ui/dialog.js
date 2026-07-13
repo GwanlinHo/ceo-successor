@@ -10,6 +10,31 @@ const DEPT_TAG = {
 };
 const TYPE_TAG = { routine: "例行", opportunity: "機會", crisis: "危機", chain: "劇情" };
 
+// 變數 → 相關報表分頁(決策參考導引用)
+const VAR_TAB = {
+  "kpi.cash": "cashflow", "kpi.equity": "balance", "aux.debt": "balance", "aux.interest": "balance",
+  "kpi.share": "market", "kpi.brand": "market", "kpi.satisfaction": "market", "aux.price": "market",
+  "world.rivalProduct": "market", "world.economyIndex": "market",
+  "kpi.product": "dept", "kpi.morale": "dept", "aux.yieldRate": "dept", "aux.capacity": "dept",
+  "aux.salaryAvg": "dept", "aux.turnover": "dept", "kpi.headcount": "dept",
+  "aux.marketing": "dept", "aux.rnd": "dept", "aux.materialRate": "dept",
+  "kpi.credit": "relations", "kpi.shareholder": "relations", "kpi.compliance": "relations",
+  "aux.supplierRel": "relations", "aux.channelRel": "relations",
+};
+const TAB_LABEL = { pnl: "損益表", balance: "資產負債", cashflow: "現金流", dept: "部門儀表板", market: "市場報告", relations: "外部關係" };
+
+// 從事件全部選項的效果，統計最相關的 1~2 個報表分頁
+function relevantTabs(ev) {
+  const freq = {};
+  const bump = (v) => { const t = VAR_TAB[v]; if (t) freq[t] = (freq[t] || 0) + 1; };
+  for (const o of ev.options || []) {
+    for (const e of o.effects || []) bump(e.var);
+    for (const b of o.random || []) for (const e of b.effects || []) bump(e.var);
+    for (const e of o.effects || []) if (e.pctOf) freq.pnl = (freq.pnl || 0) + 1;
+  }
+  return Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([t]) => t);
+}
+
 // 顯示目前事件；回傳 HTML。無事件回傳空字串。
 export function renderDialog(s, data) {
   const evId = s.events.current;
@@ -35,6 +60,7 @@ export function renderDialog(s, data) {
           <p class="dialog-text">${esc(ev.text)}</p>
         </div>
       </div>
+      ${renderRefs(ev, s)}
       <div class="dialog-options">
         ${ev.options.map((o, i) => `
           <button class="btn option" data-opt="${i}">
@@ -43,6 +69,19 @@ export function renderDialog(s, data) {
             ${showNum ? `<span class="option-num">${effectPreview(o)}</span>` : ""}
           </button>`).join("")}
       </div>
+    </div>`;
+}
+
+// 決策參考列：相關報表捷徑 + 本月新聞捷徑(拿不準時先查證再決策)
+function renderRefs(ev, s) {
+  const tabs = relevantTabs(ev);
+  const newsCount = (s.news || []).length;
+  if (!tabs.length && !newsCount) return "";
+  return `
+    <div class="dialog-refs">
+      <span class="refs-label">決策參考</span>
+      ${tabs.map((t) => `<button class="btn btn-ref" data-open-rtab="${t}">${TAB_LABEL[t]}</button>`).join("")}
+      ${newsCount ? `<button class="btn btn-ref" data-act="open-news">本月新聞(${newsCount})</button>` : ""}
     </div>`;
 }
 

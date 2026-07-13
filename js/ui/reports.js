@@ -30,7 +30,8 @@ export function renderReports(s, data, activeTab = "pnl") {
 }
 
 function series(s, field) {
-  return s.metrics.map((m) => ({ month: m.month, value: m[field] }));
+  // 過濾 undefined：舊版存檔的快照可能沒有新欄位
+  return s.metrics.filter((m) => m[field] !== undefined).map((m) => ({ month: m.month, value: m[field] }));
 }
 
 function renderTab(s, data, tab) {
@@ -55,6 +56,7 @@ function renderTab(s, data, tab) {
   if (tab === "balance") {
     return `
       ${chartBlock("淨值趨勢", series(s, "equity"), "var(--accent)")}
+      ${chartBlock("負債趨勢", series(s, "debt"), "var(--bad)")}
       <table class="ledger">
         <tr><td>現金</td><td class="num">${money(k.cash)}</td></tr>
         <tr><td>淨值</td><td class="num">${money(k.equity)}</td></tr>
@@ -76,6 +78,9 @@ function renderTab(s, data, tab) {
   }
   if (tab === "dept") {
     return `
+      ${chartBlock("產品競爭力趨勢", series(s, "product"), "var(--accent)")}
+      ${chartBlock("員工士氣趨勢", series(s, "morale"), "var(--good)")}
+      ${chartBlock("員工數趨勢", series(s, "headcount"), "var(--warn)")}
       <div class="meters">
         ${meter(k.product, { label: "產品競爭力" })}
         ${meter(k.morale, { label: "員工士氣" })}
@@ -95,6 +100,7 @@ function renderTab(s, data, tab) {
     return `
       ${chartBlock("市占率趨勢", series(s, "share"), "var(--accent)")}
       ${chartBlock("品牌知名度趨勢", series(s, "brand"), "var(--warn)")}
+      ${chartBlock("客戶滿意度趨勢", series(s, "satisfaction"), "var(--good)")}
       <table class="ledger">
         <tr><td>市占率</td><td class="num">${pct(k.share)}</td></tr>
         <tr><td>品牌知名度</td><td class="num">${score100(k.brand)}</td></tr>
@@ -106,6 +112,8 @@ function renderTab(s, data, tab) {
   }
   if (tab === "relations") {
     return `
+      ${chartBlock("股東信心趨勢", series(s, "shareholder"), "var(--accent)")}
+      ${chartBlock("銀行信用趨勢", series(s, "credit"), "var(--warn)")}
       <div class="meters">
         ${meter(k.shareholder, { label: "股東信心", warn: 30 })}
         ${meter(k.credit, { label: "銀行信用", warn: 30 })}

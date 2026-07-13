@@ -368,6 +368,14 @@ t("每月結算累積 metrics 快照", () => {
   eq(s.metrics.length, 2);
   eq(s.metrics[1].month, 2);
 });
+t("metrics 快照含趨勢化新欄位(shareholder/credit/compliance/debt)", () => {
+  let s = newGame(data, OPTS);
+  s = playMonth(s);
+  const m = s.metrics[0];
+  for (const f of ["shareholder", "credit", "compliance", "debt"]) {
+    ok(Number.isFinite(m[f]), `快照缺 ${f}`);
+  }
+});
 t("metrics 只保留最近 24 個月", () => {
   let s = newGame(data, OPTS);
   for (let i = 0; i < 30 && s.meta.phase !== "ended"; i++) s = playMonth(s);

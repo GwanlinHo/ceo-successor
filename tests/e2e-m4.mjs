@@ -44,6 +44,21 @@ try {
   await page.waitForSelector('.dialog');
   ok(await page.$('.npc-avatar svg') !== null, "事件對話框顯示 NPC 頭像 SVG");
 
+  // 決策參考導引：點相關報表捷徑應直接開到該分頁
+  {
+    const refBtn = await page.$('.dialog-refs [data-open-rtab]');
+    ok(refBtn !== null, "事件對話框有決策參考捷徑");
+    if (refBtn) {
+      const wantTab = await refBtn.evaluate((e) => e.dataset.openRtab);
+      await refBtn.click();
+      await page.waitForSelector('[data-overlay="reports"]');
+      const onTab = await page.$eval('.rtab.on', (e) => e.dataset.rtab);
+      ok(onTab === wantTab, `捷徑開到正確分頁(${onTab})`);
+      await page.click('[data-act="close-overlay"]');
+      await page.waitForFunction(() => !document.querySelector('[data-overlay="reports"]'));
+    }
+  }
+
   // 新聞面板(M5)
   await page.click('[data-act="open-news"]');
   await page.waitForSelector('[data-overlay="news"]');
@@ -84,6 +99,10 @@ try {
   }
   ok(decisions > 0, `有做出決策(${decisions} 次)`);
   ok(months > 0, `有完成月結算(${months} 個月)`);
+  // 趨勢化：玩過至少兩個月後 HUD 應出現漲跌指示
+  if (months >= 2 && !(await page.$('.ending'))) {
+    ok(await page.$('.kpi-d') !== null, "HUD 顯示與上月比較的漲跌指示");
+  }
 
   // M6：某個月處理完事件後主畫面應出現辦公室場景(含至少一個部門 NPC)
   {
