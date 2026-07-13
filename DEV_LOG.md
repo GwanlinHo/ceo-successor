@@ -80,3 +80,17 @@
 - 開局預設玩家「李承翰」公司「大山精工」可改；難度預設普通。
 驗收：單元 29/29(含桿D)；E2E puppeteer 11/11(完整一局+存讀檔+結局+零JS錯誤)；三張截圖確認色盤與版面。
 下一步：M5 報表中心六分頁(SVG趨勢圖)+新聞/小道消息系統(接 rumorTruthRate)。
+
+---
+
+[2026-07-13] [M5] 完成報表中心與新聞系統，34單元+14 E2E 全過。
+工作內容：
+- 引擎：economy 每月結算推 metrics 快照(最近24月，供趨勢圖)；新增 engine/news.js(每月2~4條，industry恆真並排真實延遲效果、rumor依rumorTruthRate決定真偽真才發效果、company純敘述)；engine newGame/ACK 呼叫 generateNews；state 加 metrics/news/newsSeen。
+- UI：ui/charts.js(純SVG折線圖+0~100量表,含零軸虛線)、ui/reports.js(六分頁:損益/資產負債/現金流/部門儀表板/市場/外部關係,唯讀overlay)、ui/news.js(新聞面板三類分色)；main.js 加 overlay 狀態與工具列(報表中心/新聞情報,新聞數badge)。
+- css：overlay抽屜、報表分頁、SVG圖表、量表、新聞樣式。
+決策與理由：
+- 新聞有實質效果才有玩法價值：industry/真rumor 透過 queueEffect 排延遲效果(景氣/原料/對手/通路/稽查)，玩家可據以提前避險；假rumor無效果(跟了就白花錢)。真偽在當下不揭示。
+- metrics 與 news 進 state → 存檔涵蓋、讀檔後趨勢圖與新聞一致；含新聞的完整流程仍通過同種子重播測試。
+- 三項舊隔離測試因新聞排程效果佔據 s.effects[0] 而失敗，改為測試前清空 s.effects(隔離效果機制本身)。
+驗收：單元34/34、E2E puppeteer 14/14、5張截圖(報表趨勢圖/六分頁/新聞分色)確認。
+下一步：M6 美術與畫面(sprites.js NPC/物件SVG、office.js三tier場景、開始/說明/月結算/升級/結局的視覺強化)。

@@ -40,6 +40,25 @@ try {
   ok((await page.$eval('.hud-company', (e) => e.textContent)) === "端測精工", "HUD 顯示自訂公司名");
   ok((await page.$eval('.hud-tier', (e) => e.textContent)).includes("小型"), "初始為小型企業");
 
+  // 新聞面板(M5)
+  await page.click('[data-act="open-news"]');
+  await page.waitForSelector('[data-overlay="news"]');
+  ok((await page.$$('.news-item')).length >= 1, "新聞面板顯示本月新聞");
+  await page.click('[data-act="close-overlay"]');
+  await page.waitForFunction(() => !document.querySelector('[data-overlay="news"]'));
+
+  // 報表中心(M5)：切換分頁
+  await page.click('[data-act="open-reports"]');
+  await page.waitForSelector('[data-overlay="reports"]');
+  ok((await page.$$('.rtab')).length === 6, "報表六分頁");
+  await page.click('[data-rtab="market"]');
+  await page.waitForSelector('.rtab.on');
+  ok((await page.$eval('.rtab.on', (e) => e.textContent)) === "市場報告", "可切換到市場報告分頁");
+  await page.click('[data-rtab="relations"]');
+  ok((await page.$$('.meter-row')).length >= 4, "外部關係分頁顯示量表");
+  await page.click('[data-act="close-overlay"]');
+  await page.waitForFunction(() => !document.querySelector('[data-overlay="reports"]'));
+
   // 自動玩：處理事件→結算→下一月，直到結局或到達 20 個月
   let months = 0, decisions = 0, guard = 0;
   while (guard++ < 400) {

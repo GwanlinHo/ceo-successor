@@ -6,10 +6,12 @@ import { saveGame, loadGame, hasSave, clearSave, exportSave, importSave } from "
 import { renderHud, renderSettlement } from "./ui/hud.js";
 import { renderDialog, renderDecisionResult } from "./ui/dialog.js";
 import { renderStart, renderHowTo, renderSetup, renderEnding, HOW_PAGE_COUNT } from "./ui/screens.js";
+import { renderReports } from "./ui/reports.js";
+import { renderNews } from "./ui/news.js";
 
 let DATA = null;
 let state = null;                 // 遊戲 state
-const view = { screen: "start", howPage: 0, diff: "normal" }; // UI 視圖
+const view = { screen: "start", howPage: 0, diff: "normal", overlay: null, reportTab: "pnl" }; // UI 視圖
 const app = () => document.getElementById("app");
 
 async function boot() {
@@ -48,22 +50,32 @@ function renderGame() {
     : (state.events.current
         ? ""
         : `<button class="btn btn-primary" data-act="end-month">結束本月・進行結算</button>`);
+  const newsCount = (state.news || []).length;
+  let overlay = "";
+  if (view.overlay === "reports") overlay = renderReports(state, DATA, view.reportTab);
+  else if (view.overlay === "news") overlay = renderNews(state);
   return `
     ${renderHud(state, DATA)}
+    <div class="tool-bar">
+      <button class="btn btn-tool" data-act="open-reports">報表中心</button>
+      <button class="btn btn-tool" data-act="open-news">新聞情報${newsCount ? `<span class="badge">${newsCount}</span>` : ""}</button>
+    </div>
     <div class="game-body">${body}</div>
     <div class="action-bar">
       ${actions}
       <button class="btn btn-ghost" data-act="export">匯出存檔</button>
       <button class="btn btn-ghost" data-act="save-quit">存檔並離開</button>
-    </div>`;
+    </div>
+    ${overlay}`;
 }
 
 // ---- 事件委派 ----
 document.addEventListener("click", (ev) => {
-  const btn = ev.target.closest("[data-act], [data-opt], [data-diff]");
+  const btn = ev.target.closest("[data-act], [data-opt], [data-diff], [data-rtab]");
   if (!btn) return;
   if (btn.dataset.opt !== undefined) return onDecide(parseInt(btn.dataset.opt, 10));
   if (btn.dataset.diff !== undefined) return onPickDiff(btn.dataset.diff);
+  if (btn.dataset.rtab !== undefined) { view.reportTab = btn.dataset.rtab; return render(); }
   onAction(btn.dataset.act);
 });
 
@@ -86,6 +98,9 @@ function onAction(act) {
     case "end-month": return step({ type: "END_MONTH" });
     case "save-quit": saveGame(state); view.screen = "start"; return render();
     case "export": return exportSave(state);
+    case "open-reports": view.overlay = "reports"; return render();
+    case "open-news": view.overlay = "news"; return render();
+    case "close-overlay": view.overlay = null; return render();
   }
 }
 
@@ -116,6 +131,7 @@ function step(action) {
     console.error(e);
     return alert(e.message);
   }
+  view.overlay = null;
   if (state.meta.phase === "ended") {
     clearSave();
     view.screen = "ending";

@@ -9,6 +9,7 @@ import { settleMonth } from "./economy.js";
 import { checkRules } from "./rules.js";
 import { applyDueEffects } from "./effects.js";
 import { drawMonthlyEvents, applyDecision } from "./events.js";
+import { generateNews } from "./news.js";
 
 // 舊介面相容(測試與 UI 由此取用效果函式)
 export { queueEffect, applyEffectNow } from "./effects.js";
@@ -17,6 +18,7 @@ export function newGame(data, opts) {
   const s = initState(data, opts);
   const rng = makeRng(s.meta.rngState);
   drawMonthlyEvents(s, data, rng);
+  generateNews(s, data, rng);
   s.meta.rngState = rng.getState();
   return s;
 }
@@ -46,7 +48,7 @@ export function reduce(state, action, data) {
       s.meta.month += 1;
       s.meta.phase = "events";
       drawMonthlyEvents(s, data, rng);
-      // TODO(M5): 產生本月新聞與小道消息
+      generateNews(s, data, rng);
       break;
     }
     default:

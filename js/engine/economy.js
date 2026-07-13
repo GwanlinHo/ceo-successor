@@ -90,5 +90,18 @@ export function settleMonth(s, data, rng) {
   if (capped) report.notes.push("[!] 產能不足，部分市場需求未能消化");
   if (k.cash < revenue * 0.5) report.notes.push("[!] 現金水位偏低");
   s.lastReport = report;
+
+  // 記錄本月數據快照(報表趨勢圖用；只留最近 24 個月)
+  s.metrics.push({
+    month: s.meta.month,
+    revenue: Math.round(revenue), profit: Math.round(profit),
+    cash: Math.round(k.cash), equity: Math.round(k.equity),
+    share: round1(k.share), product: round1(k.product), morale: round1(k.morale),
+    brand: round1(k.brand), satisfaction: round1(k.satisfaction), headcount: Math.round(k.headcount),
+    materialCost: Math.round(material), personnelCost: Math.round(personnel),
+  });
+  if (s.metrics.length > 24) s.metrics.shift();
   return report;
 }
+
+function round1(v) { return Math.round(v * 10) / 10; }

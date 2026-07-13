@@ -38,7 +38,9 @@ export function initState(data, opts) {
     },
     lastDecision: null,        // {eventId, optionIndex, label, resultText} UI 顯示隨機結果用
     effects: [],               // 延遲/持續效果佇列 {var, op, delta, pctOf, pct, dueMonth, monthsLeft, note}
-    news: [],                  // {month, type, text, truth}
+    metrics: [],               // 每月數據快照(報表趨勢圖用，最近 24 個月)
+    news: [],                  // 本月新聞 {id, type, text, truth} truth: true 真/false 假/null 中性
+    newsSeen: [],              // 歷史新聞(最近數月，供新聞面板回顧)
     flags: {},
     log: [{ month: 0, text: `${companyName} 新任總經理 ${playerName} 上任。` }],
     lastReport: null,          // 上月結算報告(UI 顯示用)

@@ -93,11 +93,12 @@ t("延遲效果於到期月才生效", () => {
 });
 t("持續效果連續套用 N 個月後停止", () => {
   let s = newGame(data, OPTS);
+  s.effects = []; // 隔離：清掉新聞排程的效果
   queueEffect(s, { var: "aux.marketing", delta: 100, months: 3 }, makeRng(1));
   const m0 = s.aux.marketing;
   s = quietMonth(s); s = quietMonth(s); s = quietMonth(s);
   eq(s.aux.marketing, m0 + 300, "三個月共 +300");
-  eq(s.effects.length, 0, "效果佇列應清空");
+  ok(!s.effects.some((e) => e.var === "aux.marketing"), "行銷效果應已消耗完畢");
   s = quietMonth(s);
   eq(s.aux.marketing, m0 + 300, "第四個月不再套用");
 });
@@ -118,6 +119,7 @@ t("mul 效果與 pctOf 效果", () => {
 });
 t("區間 delta 以種子亂數取值且落在區間內", () => {
   const s = newGame(data, OPTS);
+  s.effects = []; // 隔離：清掉新聞排程的效果
   queueEffect(s, { var: "kpi.brand", delta: [3, 6] }, makeRng(7), data);
   const d = s.effects[0].delta;
   ok(d >= 3 && d <= 6, `delta=${d}`);
@@ -125,12 +127,11 @@ t("區間 delta 以種子亂數取值且落在區間內", () => {
 t("桿D：金額效果隨 tier 縮放，刻度值不縮放", () => {
   const scale2 = data.balance.moneyScaleByTier["2"];
   // tier1：-100 現金原值
-  let s1 = noEvents(newGame(data, OPTS));
-  const c1 = s1.kpi.cash;
+  let s1 = noEvents(newGame(data, OPTS)); s1.effects = [];
   queueEffect(s1, { var: "kpi.cash", delta: -100 }, makeRng(1), data);
   eq(s1.effects[0].delta, -100, "tier1 金額");
   // tier2：-100 現金應 ×scale
-  let s2 = noEvents(newGame(data, OPTS)); s2.tier = 2;
+  let s2 = noEvents(newGame(data, OPTS)); s2.effects = []; s2.tier = 2;
   queueEffect(s2, { var: "kpi.cash", delta: -100 }, makeRng(1), data);
   eq(s2.effects[0].delta, -100 * scale2, `tier2 金額應×${scale2}`);
   // 刻度值(品牌)不因 tier 縮放
@@ -343,6 +344,52 @@ t("條件不符的事件不會被抽中", () => {
   s.kpi.product = 90; // 使條件 product<70 不成立
   s = reduce(s, { type: "ACK" }, FX);
   ok(!s.events.queue.includes("E-COND"), "product=90 不應抽中");
+});
+
+console.log("== 報表數據與新聞(M5) ==");
+t("每月結算累積 metrics 快照", () => {
+  let s = newGame(data, OPTS);
+  eq(s.metrics.length, 0, "開局尚無結算快照");
+  s = playMonth(s);
+  eq(s.metrics.length, 1);
+  ok(s.metrics[0].revenue > 0 && Number.isFinite(s.metrics[0].cash), "快照含營收與現金");
+  s = playMonth(s);
+  eq(s.metrics.length, 2);
+  eq(s.metrics[1].month, 2);
+});
+t("metrics 只保留最近 24 個月", () => {
+  let s = newGame(data, OPTS);
+  for (let i = 0; i < 30 && s.meta.phase !== "ended"; i++) s = playMonth(s);
+  ok(s.metrics.length <= 24, `實際 ${s.metrics.length}`);
+});
+t("開局即產生本月新聞(2~4 條)", () => {
+  const s = newGame(data, OPTS);
+  ok(s.news.length >= 2 && s.news.length <= 4, `新聞 ${s.news.length} 條`);
+  for (const n of s.news) ok(["industry", "company", "rumor"].includes(n.type), "新聞型別合法");
+});
+t("產業新聞恆真、小道消息有真有假(難度真偽率)", () => {
+  // 跑多局統計小道消息真值分佈
+  let trueCnt = 0, total = 0, industryAllTrue = true;
+  for (let g = 0; g < 40; g++) {
+    let s = newGame(data, { ...OPTS, difficulty: "hard", seed: "news" + g });
+    for (let i = 0; i < 3 && s.meta.phase !== "ended"; i++) {
+      for (const n of s.news) {
+        if (n.type === "industry" && n.truth !== true) industryAllTrue = false;
+        if (n.type === "rumor") { total++; if (n.truth) trueCnt++; }
+      }
+      s = playMonth(s);
+    }
+  }
+  ok(industryAllTrue, "產業新聞恆為真");
+  ok(total > 0, "有出現小道消息");
+  const rate = trueCnt / total;
+  ok(rate > 0.2 && rate < 0.7, `困難小道消息真值率 ${rate.toFixed(2)} 應接近 0.45`);
+});
+t("新聞排程的真實效果會在往後月份生效(確定性重播含新聞)", () => {
+  let a = newGame(data, OPTS);
+  let b = newGame(data, OPTS);
+  for (let i = 0; i < 6 && a.meta.phase !== "ended"; i++) { a = playMonth(a); b = playMonth(b); }
+  eq(JSON.stringify(a), JSON.stringify(b), "含新聞的完整流程仍可重播一致");
 });
 
 console.log(`\n結果: ${pass} 通過, ${fail} 失敗`);

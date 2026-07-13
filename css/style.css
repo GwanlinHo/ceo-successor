@@ -158,3 +158,55 @@ html, body {
 @media (max-width: 640px) {
   .hud-kpis { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ===== M5 報表與新聞 ===== */
+.tool-bar { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.btn-tool { font-size: 0.9rem; padding: 0.4em 0.9em; position: relative; }
+.badge { display: inline-block; min-width: 1.3em; margin-left: 0.35em; padding: 0 0.35em; font-size: 0.75rem;
+  background: var(--bad); color: #fff; border-radius: 999px; text-align: center; }
+
+/* Overlay 抽屜 */
+.overlay { position: fixed; inset: 0; background: rgba(43,43,41,0.4); display: flex; justify-content: center;
+  align-items: flex-start; z-index: 20; padding: 3vh 1rem; overflow-y: auto; }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(43,43,41,0.25); width: 100%; max-width: 540px; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--paper); }
+.panel-head h2 { font-size: 1.2rem; }
+.panel-body { padding: 1.2rem; }
+
+/* 報表分頁 */
+.rtabs { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.6rem 1.2rem; border-bottom: 1px solid var(--line); }
+.rtab { font-family: inherit; font-size: 0.85rem; padding: 0.35em 0.7em; border: 1px solid var(--line);
+  background: var(--white); border-radius: var(--radius); cursor: pointer; color: var(--ink); }
+.rtab.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* 圖表 */
+.chart-block { margin-bottom: 1.2rem; }
+.chart-title { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.3rem; }
+.chart { width: 100%; height: auto; display: block; }
+.chart-line { fill: none; stroke-width: 1.6; }
+.chart-area { opacity: 0.12; }
+.chart-zero { stroke: var(--gray-3); stroke-width: 0.5; stroke-dasharray: 3 3; }
+.chart-tick { font-size: 8px; fill: var(--ink-soft); }
+.chart-empty { color: var(--ink-soft); font-size: 0.85rem; padding: 0.5rem 0; }
+.report-note { color: var(--ink-soft); font-size: 0.82rem; margin-top: 0.75rem; }
+
+/* 量表 */
+.meters { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.meter-row { display: flex; align-items: center; gap: 0.6rem; }
+.meter-label { width: 6em; font-size: 0.85rem; }
+.meter-bar { flex: 1; height: 10px; background: var(--paper-2); border-radius: 999px; overflow: hidden; }
+.meter-fill { display: block; height: 100%; background: var(--accent); }
+.meter-fill.meter-bad { background: var(--bad); }
+.meter-val { width: 2.5em; text-align: right; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+
+/* 新聞 */
+.news-section { font-size: 0.9rem; color: var(--ink-soft); margin-bottom: 0.6rem; }
+.news-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.news-item { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.6rem 0.8rem;
+  background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
+.news-tag { flex-shrink: 0; font-size: 0.72rem; padding: 0.1em 0.5em; border-radius: 4px; background: var(--paper-2); border: 1px solid var(--line); }
+.news-industry .news-tag { background: #dbe4dc; border-color: var(--good); color: var(--good); }
+.news-rumor .news-tag { background: #e6dcc4; border-color: var(--warn); color: var(--warn); }
+.news-text { font-size: 0.92rem; line-height: 1.5; }
