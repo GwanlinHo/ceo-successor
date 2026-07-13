@@ -1,6 +1,6 @@
 # PROJECT STATUS：企業接班人養成術
 
-- 目前階段：開發中。M0（骨架）、M1（資料初版）已完成並驗收 → 等使用者確認後進入 M2（引擎核心）
+- 目前階段：**全部完成並上線**。M0~M10 已交付，線上可玩。
 - 專案位置：/home/pi/WorkDir/ceo_successor/
 - 目標部署：GitHub Pages（repo: ceo-successor）
 - Node 環境：非互動 shell 需手動加 PATH：`export PATH="$HOME/.config/nvm/versions/node/v22.17.0/bin:$PATH"`
@@ -21,6 +21,10 @@
 - [O] 2026-07-13 **M9 PWA與收尾**：manifest+sw.js離線(precache全資源)、icon;office站位微調;補3則tier3危機(占比35%);離線測試5/5(斷網完整可玩)、E2E 15/15;events 163件
 
 ## 下一步
-- [ ] **M10 端到端測試與部署**（完整測試彙整、建 GitHub repo、Pages 上線 gwanlinho.github.io/ceo-successor）
+- [O] 2026-07-13 **M10 端到端測試與部署**：README+TEST_REPORT;建 GitHub repo(GwanlinHo/ceo-successor,public)、推送、啟用Pages;線上實站puppeteer冒煙全過
+
+## 已上線
+- 線上遊玩：https://gwanlinho.github.io/ceo-successor/
+- Repo：https://github.com/GwanlinHo/ceo-successor
 - [ ] 難度分化：桿D已落地(M4)；A/B/C/E 於 M8 實作調參 → docs/DIFFICULTY_DESIGN.md
 - 註：M1 事件為 22 件種子版，完整 140~170 件於 M7 量產
