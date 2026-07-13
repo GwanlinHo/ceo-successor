@@ -125,3 +125,20 @@
 驗收:validate 0錯;單元37/37(含3新機制);E2E 15/15;30局冒煙0崩潰;每月事件5.2(vs前2.5)。
 [X][!] **揭露平衡退化**:事件變多但經濟常數未跟上,naive bot存活中位數18~26月、0達tier2。非死鎖(市占可回升),是調參問題。已詳記 DIFFICULTY_DESIGN 5.5 列M8第一優先。桿F tier3危機32%<40%亦列M8。
 下一步:M8 平衡調參(實作桿A/B/C/E + 修M7平衡退化 + 1000局模擬,這是最需要模擬迭代的一關)。
+
+---
+
+[2026-07-13] [M8] 平衡調參達標,所有量化驗收通過。
+工作內容:
+- 建 tests/simulate.js:3種bot(random/cautious/rational多維度加權)×3難度×N局,輸出結局分布/達tier/上市率/存活月。
+- 實作桿A(events.js typeWeightMul)、桿B(economy.js demandMul/adminRateMul/interestMul)、桿C(economy.js 對手反擊rivalRetaliation×share)、桿E(rules.js computeScore difficultyMul)。
+- 修M7平衡退化(比桿更關鍵,靠模擬追根因):
+  1. 診斷:市占升但營收降→產能與單價被事件單向棘輪到近0(無回復路徑),形成死亡螺旋;股東信心被事件噪音磨到撤換(100% fired)。
+  2. 修:單價回歸1.0+產能維護回升baseline(economy.js);股東信心錨點45弱回歸(終結噪音螺旋,但持續虧損季度-swing仍會撤換);升級時產能×4跳升(承接放大6倍的市場,否則升級即降級);moneyScale 4/15→3/8;tier2員工門檻50→30(原門檻在營收800萬下不可達)。
+決策與理由:
+- 用rational bot當理性玩家代理找平衡,不為bot過度調校(真人更強)。
+- 撤換仍是真實失敗:錨點回歸只抵銷噪音,績效持續差仍會被季度評價壓垮至0。
+- 迭代式:每改一組常數跑50~80局模擬看指標,約4輪收斂。
+驗收(80局/組):上市率易74/普31/難21%單調;達tier3 48/19/1%;倒閉21/19/54%;raw分數易>普>難;random 100%倒閉。單元38/38、E2E 15/15。詳見 DIFFICULTY_DESIGN 第6節。
+殘留(非阻擋):normal上市率31%在區間下緣、桿F tier3危機32%<40%、hard tier3事件17.8略高。
+下一步:M9 PWA與收尾(manifest/sw.js離線、存檔匯出入已有、遊戲說明、office站位微調)。

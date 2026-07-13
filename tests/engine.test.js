@@ -173,12 +173,21 @@ t("現金見底但信用好 → 銀行紓困續命", () => {
   ok(s.aux.debt > 0, "負債增加");
   ok(s.log.some((l) => l.text.includes("紓困")));
 });
-t("股東信心歸零 → 撤換結局", () => {
-  let s = noEvents(newGame(data, OPTS));
+t("股東信心歸零 → 撤換結局(規則本身)", () => {
+  // 直接測 checkRules：信心 <=0 當下即撤換(settle 的錨點回歸另計)
+  const s = noEvents(newGame(data, OPTS));
   s.kpi.shareholder = 0;
-  s = reduce(s, { type: "END_MONTH" }, data);
+  s.meta.month = 20;
+  const ending = checkRules(s, data);
   eq(s.meta.phase, "ended");
-  eq(s.ending.type, "fired");
+  eq(ending.type, "fired");
+});
+t("股東信心單次觸底會靠回歸回升(不會因噪音立即撤換)", () => {
+  let s = noEvents(newGame(data, OPTS));
+  s.kpi.shareholder = 1;
+  s = reduce(s, { type: "END_MONTH" }, data);
+  eq(s.meta.phase, "settled", "單次低點應存活");
+  ok(s.kpi.shareholder > 1, "應向錨點回升");
 });
 t("60 個月期滿 → timeup 結局且有分數評語", () => {
   let s = noEvents(newGame(data, OPTS));

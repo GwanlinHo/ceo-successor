@@ -7,9 +7,11 @@ export function settleMonth(s, data, rng) {
   const eco = data.balance.economy;
   const tierC = data.balance.tiers[String(s.tier)];
   const k = s.kpi, a = s.aux, w = s.world;
+  const diffL = data.difficulty.levels[s.meta.difficulty];
+  const diffEco = diffL.economy || { demandMul: 1, adminRateMul: 1, interestMul: 1 };
 
-  // --- 營收 ---
-  const demand = tierC.baseDemand * w.economyIndex * (1 + k.brand / eco.brandDemandFactor);
+  // --- 營收 ---（桿B：困難市場需求較小）
+  const demand = tierC.baseDemand * diffEco.demandMul * w.economyIndex * (1 + k.brand / eco.brandDemandFactor);
   const moraleEff = 1 + (k.morale - 50) * eco.moraleEffSlope;
   const capacityValue = a.capacity * eco.capacityUnitValue * a.yieldRate * moraleEff;
   const demandValue = demand * (k.share / 100);
@@ -19,11 +21,11 @@ export function settleMonth(s, data, rng) {
   // 利用率為導出值(供報表顯示與事件觸發條件，如產線瓶頸)
   setVar(s, "aux.utilization", capacityValue > 0 ? salesValue / capacityValue : 0);
 
-  // --- 成本 ---
+  // --- 成本 ---（桿B：困難管理費率與利率較高）
   const material = salesValue * a.materialRate;
   const personnel = k.headcount * a.salaryAvg;
-  const admin = revenue * tierC.adminRate;
-  const interest = a.interest + a.debt * eco.debtMonthlyRate;
+  const admin = revenue * tierC.adminRate * diffEco.adminRateMul;
+  const interest = (a.interest + a.debt * eco.debtMonthlyRate) * diffEco.interestMul;
   const totalCost = material + personnel + a.marketing + a.rnd + admin + interest;
 
   // --- 損益 ---
@@ -45,18 +47,22 @@ export function settleMonth(s, data, rng) {
     if (s.streaks.profitMonths >= 3) setVar(s, "kpi.shareholder", k.shareholder + swing);
     else if (s.streaks.lossMonths >= 3) setVar(s, "kpi.shareholder", k.shareholder - swing);
   }
+  // 股東信心向錨點弱回歸：抵銷事件噪音的緩慢磨損，但績效持續差時季度 -swing 仍會壓垮(撤換仍是真實失敗)
+  if (k.shareholder > eco.shareholderAnchor) setVar(s, "kpi.shareholder", Math.max(eco.shareholderAnchor, k.shareholder - eco.shareholderDrift));
+  else if (k.shareholder < eco.shareholderAnchor) setVar(s, "kpi.shareholder", Math.min(eco.shareholderAnchor, k.shareholder + eco.shareholderDrift));
 
   // --- 漂移(每月自然變化) ---
   // 研發累積產品競爭力，同時自然折舊
   setVar(s, "kpi.product", k.product + a.rnd * eco.rndEffect - eco.productDecay);
   // 對手成長(難度加成)
-  const diffL = data.difficulty.levels[s.meta.difficulty];
   setVar(s, "world.rivalProduct", w.rivalProduct + eco.rivalGrowthBase * diffL.rivalGrowthMul);
-  // 市占拉鋸：產品差距 + 行銷投入 - 對手侵蝕
+  // 市占拉鋸：產品差距 + 行銷投入 - 對手侵蝕 - 對手反擊(桿C：市占愈高被圍剿愈兇)
+  const retaliation = k.share * eco.rivalRetaliation * (diffL.retaliationMul ?? 1);
   const shareDelta =
     (k.product - w.rivalProduct) / eco.shareGainDivisor +
     a.marketing / (tierC.baseDemand * eco.marketingSharePct) -
-    tierC.rivalErosion * diffL.rivalGrowthMul;
+    tierC.rivalErosion * diffL.rivalGrowthMul -
+    retaliation;
   setVar(s, "kpi.share", k.share + shareDelta);
   // 員工數向「營收/人均產值」靠攏，扣除離職
   const targetHead = revenue / tierC.revenuePerEmployee;
@@ -65,6 +71,13 @@ export function settleMonth(s, data, rng) {
   setVar(s, "kpi.headcount", k.headcount + hire - quits);
   // 獲利時小幅自然添購產能
   if (profit > 0) setVar(s, "aux.capacity", a.capacity * (1 + eco.capacityDrift));
+  // 產能維護：低於基準時緩慢回升(廠房維護，避免事件把產能單向棘輪到死)
+  if (a.capacity < eco.capacityBaseline) {
+    setVar(s, "aux.capacity", Math.min(eco.capacityBaseline, a.capacity + eco.capacityMaintain));
+  }
+  // 單價回歸 1.0(一次性降價/漲價是暫時的，會逐月回到市場行情，避免單價單向腰斬)
+  if (a.price > 1) setVar(s, "aux.price", Math.max(1, a.price - eco.priceRevert));
+  else if (a.price < 1) setVar(s, "aux.price", Math.min(1, a.price + eco.priceRevert));
   // 景氣隨機漫步
   setVar(s, "world.economyIndex", w.economyIndex + rng.float(-eco.economyWalk, eco.economyWalk));
   // 均值回歸(防鎖死於極端)

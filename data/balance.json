@@ -70,8 +70,8 @@
   },
   "moneyScaleByTier": {
     "1": 1,
-    "2": 4,
-    "3": 15
+    "2": 3,
+    "3": 8
   },
   "economy": {
     "_doc": "月結算公式參數。銷售額 = min(市場需求×市占率, 產能上限×利用率×良率×士氣效率)；營收 = 銷售額×單價指數。capacityUnitValue: 產能指數1.0對應的月產值(萬元)。",
@@ -87,8 +87,13 @@
     "marketingSharePct": 0.01,
     "hireSpeed": 0.25,
     "capacityDrift": 0.01,
+    "priceRevert": 0.04,
+    "capacityMaintain": 0.05,
+    "capacityBaseline": 1.0,
     "economyWalk": 0.02,
-    "quarterlyShareholderSwing": 5,
+    "quarterlyShareholderSwing": 4,
+    "shareholderAnchor": 45,
+    "shareholderDrift": 0.6,
     "regressToMean": 1,
     "regressTargets": {
       "morale": 50,
@@ -96,14 +101,16 @@
       "satisfaction": 50,
       "supplierRel": 50,
       "channelRel": 50
-    }
+    },
+    "rivalRetaliation": 0.006,
+    "upgradeCapacityBoost": 4.0
   },
   "thresholds": {
     "_doc": "升降級與結局門檻。holdMonths 為需連續維持的月數。金額單位萬元。",
     "upgradeTo2": {
       "revenue": 800,
       "equity": 3000,
-      "headcount": 50,
+      "headcount": 30,
       "profitStreak": 3,
       "holdMonths": 2
     },
@@ -173,7 +180,12 @@
         "min": 0,
         "label": "敗家子"
       }
-    ]
+    ],
+    "difficultyMul": {
+      "easy": 0.85,
+      "normal": 1.0,
+      "hard": 1.2
+    }
   },
   "duration": {
     "totalMonths": 60

@@ -35,6 +35,7 @@ export function checkRules(s, data) {
     if (ok && s.streaks.upgradeHold >= t.holdMonths) {
       s.tier = 2;
       s.streaks.upgradeHold = 0;
+      s.aux.capacity *= (data.balance.economy.upgradeCapacityBoost || 1); // 產能跳升以承接更大市場
       s.log.push({ month: s.meta.month, text: "[O] 公司規模升級：中型企業。市場更大，管理成本與競爭壓力也更高。" });
     }
   } else if (s.tier === 2) {
@@ -55,6 +56,7 @@ export function checkRules(s, data) {
       s.tier = 3;
       s.streaks.upgradeHold = 0;
       s.flags.ipoDone = true;
+      s.aux.capacity *= (data.balance.economy.upgradeCapacityBoost || 1); // 產能跳升以承接更大市場
       s.log.push({ month: s.meta.month, text: "[O] 通過上市審查，正式掛牌！公司晉升大型企業。" });
     }
   }
@@ -100,9 +102,12 @@ export function computeScore(s, data, endType) {
   const qualityAvg = sc.qualityMetrics.reduce((sum, m) => sum + k[m], 0) / sc.qualityMetrics.length;
   const qualityPts = Math.round(sc.qualityMax * qualityAvg / 100);
   const achievementPts = 0; // TODO(M9): 特殊成就
-  const score = endType === "bankrupt" ? 0 : tierPts + financePts + qualityPts + achievementPts;
+  const raw = tierPts + financePts + qualityPts + achievementPts;
+  // 桿E：計分難度係數(困難同表現得分更高)
+  const diffMul = sc.difficultyMul?.[s.meta.difficulty] ?? 1;
+  const score = endType === "bankrupt" ? 0 : Math.round(raw * diffMul);
   const grade = endType === "bankrupt"
     ? sc.grades[sc.grades.length - 1].label
     : sc.grades.find((g, i) => i < sc.grades.length - 1 && score >= g.min)?.label ?? sc.grades[sc.grades.length - 2].label;
-  return { score, parts: { tier: tierPts, finance: financePts, quality: qualityPts, achievement: achievementPts }, grade };
+  return { score, parts: { tier: tierPts, finance: financePts, quality: qualityPts, achievement: achievementPts }, diffMul, grade };
 }

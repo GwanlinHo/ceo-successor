@@ -28,6 +28,9 @@ function isEligible(s, ev, month) {
 }
 
 function weightOf(ev, diffL) {
+  // 桿A：事件類型權重隨難度(困難機會少、危機多)；typeWeightMul 缺省回退舊 crisisWeightMul
+  const tw = diffL.typeWeightMul;
+  if (tw) return ev.trigger.weight * (tw[ev.type] ?? (ev.type === "chain" ? tw.crisis : 1) ?? 1);
   return ev.trigger.weight * (ev.type === "crisis" ? diffL.crisisWeightMul : 1);
 }
 
