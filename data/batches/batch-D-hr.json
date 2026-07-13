@@ -1,0 +1,1183 @@
+{
+  "batch": "D-hr",
+  "events": [
+    {
+      "id": "H-11",
+      "dept": "hr",
+      "tier": [1, 2],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": [
+          {
+            "var": "kpi.headcount",
+            "op": "<",
+            "value": 80
+          }
+        ]
+      },
+      "title": "關鍵職缺難以補缺",
+      "text": "尤仁慈遞上招聘報告：「技術和業務職缺都掛了好幾個月，市場上找不到合適的人才。得想辦法加快進度。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "提高薪資和福利吸引",
+          "hint": "花錢搶人，快速補缺，但持續成本高",
+          "effects": [
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -80,
+              "months": 3
+            },
+            {
+              "var": "kpi.headcount",
+              "delta": 6,
+              "delayMonths": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "放寬條件，以在職訓練補充",
+          "hint": "快速補人，但新手上路需指導，短期生產力下降",
+          "effects": [
+            {
+              "var": "kpi.headcount",
+              "delta": 4,
+              "delayMonths": 1
+            },
+            {
+              "var": "kpi.product",
+              "delta": -5,
+              "months": 4
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -40
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "導入外包或約聘制補充",
+          "hint": "靈活應對，但人才流動快、組織認同度低",
+          "effects": [
+            {
+              "var": "kpi.headcount",
+              "delta": 5,
+              "delayMonths": 1
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -8
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.12
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "先維持現況，逐步補缺",
+          "hint": "保持成本控制，但職缺拖久會傷現有員工士氣",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": -6,
+              "months": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-12",
+      "dept": "hr",
+      "tier": [2, 3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.product",
+            "op": ">",
+            "value": 75
+          }
+        ]
+      },
+      "title": "明星業務被大企業挖角",
+      "text": "尤仁慈神情凝重：「我們表現最好的業務經理剛收到獵人頭的邀約，薪資開得滿高的。他還在考慮，我們要把握時間。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "加薪加升職挽留",
+          "hint": "穩住核心人才，成本高，但避免核心職能空窗",
+          "effects": [
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.15
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -120
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "尊重其生涯發展，放他離開",
+          "hint": "省成本，但失去核心戰力，後續需時間補充",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -6,
+              "months": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -10,
+              "months": 2
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.08
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "立即招聘補充，分散其職能",
+          "hint": "避免依賴單一人才，但交接期會有空窗",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.share",
+              "delta": -4,
+              "delayMonths": 1,
+              "months": 2
+            },
+            {
+              "var": "kpi.headcount",
+              "delta": 2,
+              "delayMonths": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-13",
+      "dept": "hr",
+      "tier": [1, 2],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 60
+          }
+        ]
+      },
+      "title": "部門間明爭暗鬥，互推責任",
+      "text": "尤仁慈急忙敲門：「總經理，研發和生產又鬧翻了，都在主管群組互相甩鍋，會議氣氛很尷尬。這樣下去團隊會撕裂。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "強力介入，主持對話和整改",
+          "hint": "耗時耗力，但能快速修復團隊關係",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 15,
+              "delayMonths": 1
+            },
+            {
+              "var": "kpi.product",
+              "delta": -8,
+              "months": 1
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "中立冷靜，觀察自然發展",
+          "hint": "少介入，但衝突會持續，長期傷害組織",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": -12,
+              "months": 4
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.15
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "組織調整，分拆衝突部門",
+          "hint": "根本解決，但重組成本高、短期混亂",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "kpi.product",
+              "delta": -15,
+              "months": 2
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 10,
+              "delayMonths": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-14",
+      "dept": "hr",
+      "tier": [1, 2, 3],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 55
+          }
+        ]
+      },
+      "title": "員工申訴遭受職場霸凌",
+      "text": "尤仁慈面容沉重：「收到一封匿名申訴信，說某主管長期對下屬言語辱罵和工作刁難，已有幾人請假或想離職。這個得馬上處理。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "立即啟動調查，嚴肅處分",
+          "hint": "快速止血，保護受害者，但可能激怒當事主管",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 18
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -60
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "快速調解，雙方和解",
+          "hint": "低調解決，成本低，但可能掩蓋問題",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 5
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "aux.turnover",
+                  "op": "mul",
+                  "delta": 1.2
+                }
+              ],
+              "resultText": "調解破局，受害者最終離職。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [],
+              "resultText": "雙方勉強同意改善，但氣氛尷尬。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "先觀望，待進一步蒐集證據",
+          "hint": "謹慎行動，但拖延會惡化局面和風險",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": "H-C1",
+          "setFlag": "hr_bullying_unresolved"
+        }
+      ]
+    },
+    {
+      "id": "H-15",
+      "dept": "hr",
+      "tier": [2, 3],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "員工要求遠距辦公彈性",
+      "text": "尤仁慈遞上調查報告：「疫後不少員工希望能有更多遠距彈性，有人甚至考慮跳槽到完全遠距的公司。我們該如何應對？」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "推行彈性遠距，員工自主選擇",
+          "hint": "吸引和留住人才，但管理挑戰和辦公室使用率下降",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 12
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 0.9
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -80,
+              "months": 12
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "混合制，每週回辦公室幾天",
+          "hint": "平衡辦公文化和員工期待，但執行細節容易激怒雙方",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 6
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 0.95
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "堅持回辦公室打卡制",
+          "hint": "保留公司文化，但會加速有能力的人才流失",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": -15
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.25
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-16",
+      "dept": "hr",
+      "tier": [2, 3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "考慮組織重整以優化成本",
+      "text": "尤仁慈拿著財務分析：「最近營運成本攀升，我分析了組織結構，有幾個職能重複或冗餘。總經理，有沒有考慮過優化人力？」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "大刀闊斧重組，直接裁員",
+          "hint": "立即降成本，但士氣挫折和可能的法律風險",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 200
+            },
+            {
+              "var": "kpi.headcount",
+              "delta": -20
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -25,
+              "months": 3
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -8
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "循序漸進，自然減員或調整",
+          "hint": "穩定士氣，但降成本速度慢",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 80,
+              "months": 6
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "反向投資，新增跨域人才充實組織",
+          "hint": "強化能力，但成本高，需信任長期回報",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -250
+            },
+            {
+              "var": "kpi.headcount",
+              "delta": 8,
+              "delayMonths": 2
+            },
+            {
+              "var": "kpi.product",
+              "delta": 8,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-17",
+      "dept": "hr",
+      "tier": [1, 2, 3],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 8,
+        "conditions": []
+      },
+      "title": "勞動檢查機構臨檢",
+      "text": "尤仁慈接到通知，焦急地匯報：「勞檢單位要來臨檢，範圍包括工時、安全、合規等。我們得趕緊自查，看有沒有重大漏洞。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "積極應對，全力整改符合法規",
+          "hint": "投入成本但確保合規，長期降低風險",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -180
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 20
+            },
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.06
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "尋求法律和顧問協助，精心準備",
+          "hint": "專業應對，風險較低，但成本也高",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -120
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.7,
+              "effects": [],
+              "resultText": "檢查順利通過，公司聲譽無損。"
+            },
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -100
+                }
+              ],
+              "resultText": "發現輕微違規，被罰款。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "低調應對，隱瞞或遮掩問題",
+          "hint": "短期省成本，但風險極高",
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.2,
+              "effects": [],
+              "resultText": "幸運地未被查中重點。"
+            },
+            {
+              "chance": 0.8,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -300
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -30
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": -15
+                }
+              ],
+              "resultText": "被查獲嚴重違規，面臨重罰和聲譽損失。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-18",
+      "dept": "hr",
+      "tier": [1, 2],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 1,
+        "conditions": [
+          {
+            "var": "kpi.product",
+            "op": ">",
+            "value": 80
+          }
+        ]
+      },
+      "title": "員工普遍加班過度，投訴增多",
+      "text": "尤仁慈嘆著氣：「最近每個月都有員工反映加班太兇，有人甚至在員工群組表示身體吃不消。這樣下去留不住人。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "招聘補充人手，分攤工作量",
+          "hint": "長期解決，但短期成本高、新人上手需時間",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.headcount",
+              "delta": 4,
+              "delayMonths": 2
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "導入彈性工時，員工自主調配",
+          "hint": "改善士氣，但產出不一定增加",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            },
+            {
+              "var": "kpi.product",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "強制休假制度，保護員工健康",
+          "hint": "長期健康，但短期可能影響進度",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 12
+            },
+            {
+              "var": "kpi.product",
+              "delta": -8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "提高加班費，改善補償",
+          "hint": "給付更多，但不解決根本的工作量問題",
+          "effects": [
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.1
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 4
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-19",
+      "dept": "hr",
+      "tier": [1, 2, 3],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "競爭對手提升福利，人才流失加速",
+      "text": "尤仁慈帶來人才市場分析：「隔壁科技公司最近大幅提升福利，提供更好的健保和股票期權，我們已有員工詢問跳槽機會了。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "跟進提升福利方案",
+          "hint": "快速應對流失，但成本持續增加",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -120,
+              "months": 12
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 0.85
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "維持現狀，強調公司其他優勢",
+          "hint": "省成本，但可能持續流失優秀人才",
+          "effects": [
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "推出公司獨特的福利方案",
+          "hint": "差異化應對，創意十足，但效果難預測",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.morale",
+                  "delta": 12
+                },
+                {
+                  "var": "aux.turnover",
+                  "op": "mul",
+                  "delta": 0.9
+                }
+              ],
+              "resultText": "員工很買單，士氣大幅提升。"
+            },
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.morale",
+                  "delta": -3
+                }
+              ],
+              "resultText": "反應冷淡，感覺不及現金福利。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "削減福利，強化績效獎金",
+          "hint": "轉型激勵模式，風險是可能激怒現有員工",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 40
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -20
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.35
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-20",
+      "dept": "hr",
+      "tier": [2, 3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.headcount",
+            "op": ">",
+            "value": 100
+          }
+        ]
+      },
+      "title": "現行績效考核制度需要升級",
+      "text": "尤仁慈提案：「目前的績效考核比較傳統，員工反映評分主觀。許多先進公司都導入 OKR，我建議我們也試試。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "導入 OKR 管理，重建評核體系",
+          "hint": "現代管理，長期能提升績效，但過渡期會有陣痛",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            },
+            {
+              "var": "kpi.product",
+              "delta": -5,
+              "months": 2
+            },
+            {
+              "var": "kpi.product",
+              "delta": 12,
+              "delayMonths": 4,
+              "months": 6
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 6,
+              "delayMonths": 4
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "保留現行制度，微調透明度",
+          "hint": "變動最小，但創新不足",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "外包給專業顧問公司設計和執行",
+          "hint": "專業能力，但失去自主性和客製化彈性",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "kpi.product",
+              "delta": 5,
+              "delayMonths": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "簡化流程，減少評核頻率",
+          "hint": "降低管理負擔，但可能弱化激勵效果",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": -8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-21",
+      "dept": "hr",
+      "tier": [1, 2, 3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 65
+          }
+        ]
+      },
+      "title": "員工開始籌組工會",
+      "text": "尤仁慈轉達前線訊息：「我聽說有員工私下在籌組工會，主要是希望爭取更好的工資和條件。這事兒該怎麼處理？」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "主動配合，建立勞資協商機制",
+          "hint": "彰顯開放態度，長期可建立健康勞資關係",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 16
+            },
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.06
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "中立冷靜，既不阻止也不主動參與",
+          "hint": "迴避風險，但可能被視為消極態度",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": -5
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.compliance",
+                  "delta": 5
+                }
+              ],
+              "resultText": "工會形成但溫和理性，風波過去。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.morale",
+                  "delta": -15
+                },
+                {
+                  "var": "aux.turnover",
+                  "op": "mul",
+                  "delta": 1.15
+                }
+              ],
+              "resultText": "工會激進化，發動行動要求改善。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暗示警告，勸阻員工成立工會",
+          "hint": "試圖壓制，但可能觸法或激化矛盾",
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.morale",
+                  "delta": -20
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -15
+                }
+              ],
+              "resultText": "被控不當勞動行為，惹來勞檢和公眾批評。"
+            },
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "kpi.morale",
+                  "delta": -10
+                }
+              ],
+              "resultText": "員工察覺到不友善態度，士氣下滑。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "H-C1",
+      "dept": "hr",
+      "tier": [1, 2, 3],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "職場霸凌惡化，員工準備提起訴訟",
+      "text": "尤仁慈拿著律師信急匆匆進門：「事情惡化了，受害者找了律師，準備控告公司和當事主管失職，要求賠償。我們得馬上應對。」",
+      "speaker": "you",
+      "options": [
+        {
+          "label": "緊急調查並提出和解方案",
+          "hint": "快速止血，但成本高、可能面臨指控",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -250
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 10
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 15
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "聘請律師全力應訴",
+          "hint": "防守態度，但訴訟費用和聲譽風險高",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.brand",
+              "delta": -20
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [],
+              "resultText": "訴訟最終和解或撤回，風波逐漸平息。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -200
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": -15
+                }
+              ],
+              "resultText": "敗訴或判賠，加重公司損失和形象傷害。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "協助受害者離職，密約和解",
+          "hint": "低調解決，但可能被指責隱瞞問題",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -120
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -25,
+              "months": 2
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    }
+  ]
+}
