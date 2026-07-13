@@ -1,0 +1,912 @@
+{
+  "batch": "B-prod",
+  "events": [
+    {
+      "id": "P-11",
+      "dept": "prod",
+      "tier": [2, 3],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "設備老化故障危機",
+      "text": "郝製造一臉憂慮：「廠裡幾台老設備頻頻出狀況，再這樣下去產線得停頓。這筆更新費用不小啊。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "立即全面更新設備",
+          "hint": "一次投入大，但徹底解決",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1200
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.15
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "勉強維修先度過難關",
+          "hint": "短期省錢，但風險高",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 0.85
+                },
+                {
+                  "var": "kpi.morale",
+                  "delta": -8
+                }
+              ],
+              "resultText": "設備在關鍵時刻故障，產線停頓，損失更大。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "aux.utilization",
+                  "op": "mul",
+                  "delta": 0.92
+                }
+              ],
+              "resultText": "僥倖撐過這個月，但效率明顯下降。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "分批汰換關鍵設備",
+          "hint": "折中方案，漸進式改善",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -700
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.08,
+              "delayMonths": 1
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-12",
+      "dept": "prod",
+      "tier": [2, 3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "自動化升級投資計畫",
+      "text": "郝製造遞上一份提案：「技術團隊提出導入自動化設備的計畫，能省人力成本，也能提升良率和產能。值不值得投？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "全力推動自動化導入",
+          "hint": "前期投入大，後期人力和品質雙贏",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1500
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.12,
+              "delayMonths": 2
+            },
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 0.92,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "試點推行，逐步擴大",
+          "hint": "風險低，進度慢",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.04,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫緩投資，維持現狀",
+          "hint": "無額外支出，但競爭力停滯",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 0
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-13",
+      "dept": "prod",
+      "tier": [1, 2],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 50
+          }
+        ]
+      },
+      "title": "產線工安意外",
+      "text": "郝製造衝進辦公室：「不好了，產線上有員工受傷了。已經送醫，現在要怎麼處理？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "全額賠償並改善工安設施",
+          "hint": "花錢止血，員工信任回升",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "協商壓低賠償金額",
+          "hint": "短期省錢，但士氣受打擊",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -12
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "按法律程序處理，保險理賠",
+          "hint": "被動但正規，耗時",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200,
+              "delayMonths": 2
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -5
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-14",
+      "dept": "prod",
+      "tier": [2, 3],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "環保排放管理達標",
+      "text": "郝製造拿著環保部門的來函：「政府要求改善排放標準，或者我們主動升級設備搶先達標。要投資多少呢？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "投資環保設備主動達標",
+          "hint": "先發制人，品牌加分",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -500
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 4
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "微調製程臨時應付",
+          "hint": "成本低，但持續投入",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 0.98
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "等待政策調整與寬限期",
+          "hint": "規避支出，但被動",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-15",
+      "dept": "prod",
+      "tier": [1, 2],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": [
+          {
+            "var": "aux.utilization",
+            "op": "<",
+            "value": 0.65
+          }
+        ]
+      },
+      "title": "庫存積壓與消化困境",
+      "text": "郝製造看著堆滿的倉庫嘆氣：「原料和成品庫存太多，占用現金流。得想辦法消化，或者改變產品組合。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "特賣清倉出清庫存",
+          "hint": "快速換現金，但利潤被壓低",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 400
+            },
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 0.85
+            },
+            {
+              "var": "kpi.share",
+              "delta": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "改變產品組合消化庫存",
+          "hint": "靈活應對，但開發新產品耗力",
+          "effects": [
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.15
+            },
+            {
+              "var": "kpi.product",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫停採購讓庫存自然消化",
+          "hint": "保留現金彈性，但短期產能受限",
+          "effects": [
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 0.9
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-16",
+      "dept": "prod",
+      "tier": [1, 2, 3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "aux.utilization",
+            "op": "<",
+            "value": 0.7
+          }
+        ]
+      },
+      "title": "產能過剩與代工訂單機會",
+      "text": "郝製造接到通路夥伴的電話：「有產能閒置嗎？有個代工訂單量不小，有興趣合作嗎？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "接下代工訂單充分利用產能",
+          "hint": "增加營收，但可能排擠自有品牌",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -3
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.2
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 5
+            },
+            {
+              "var": "kpi.product",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "謹慎評估，先試小單",
+          "hint": "風險最小，但見效慢",
+          "effects": [
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.05
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "拒絕並聚焦自有品牌發展",
+          "hint": "保持策略專注，產能閒置",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-17",
+      "dept": "prod",
+      "tier": [1, 2],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 55
+          }
+        ]
+      },
+      "title": "夜班人力持續流失",
+      "text": "郝製造在人資主任報告後皺眉：「夜班員工離職率又上升了，新人也不好招。這樣下去夜班怎麼排班？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "提高夜班津貼與福利",
+          "hint": "花錢穩定人力，長期見效",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "調整輪班制度與加班管理",
+          "hint": "改善待遇體驗，但成本溫和",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "減少夜班班次壓低成本",
+          "hint": "省成本，但產能下降",
+          "effects": [
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 0.85
+            },
+            {
+              "var": "kpi.cash",
+              "delta": 100
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-18",
+      "dept": "prod",
+      "tier": [1, 2, 3],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": true,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "廠房租約即將到期決策",
+      "text": "郝製造向董事長提報：「現廠房租約快到期了，得決定是續租還是搬遷。每個選項的投入和風險都不小。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "原地續租並優化廠房設施",
+          "hint": "風險最低，延續現狀",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.03
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "搬遷到成本更低的地區",
+          "hint": "前期搬遷費大，後期租賃與運輸省成本",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -800
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.05,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -8
+            },
+            {
+              "var": "kpi.headcount",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "升級搬遷至更好的廠房",
+          "hint": "投入大，但產能和形象同步升級",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1200
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.2
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 6
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-19",
+      "dept": "prod",
+      "tier": [2, 3],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 3,
+        "conditions": []
+      },
+      "title": "精實生產改革推進與阻力",
+      "text": "郝製造與改善顧問討論完後說：「精實生產可以大幅提升效率，但員工會有抗拒。怎麼推進？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "強推改革並投入培訓",
+          "hint": "中期見效，但需克服阻力",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.18,
+              "delayMonths": 2
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -6
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "溫和試點推進，逐步擴大",
+          "hint": "阻力小，進展較慢",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.08,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫緩推行，等更好時機",
+          "hint": "零投入，但機會成本高",
+          "effects": [],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-20",
+      "dept": "prod",
+      "tier": [1, 2, 3],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "關鍵原料即將短缺預警",
+      "text": "郝製造接到供應商的警告電話：「某關鍵原料快要短缺了，市場搶購已經開始，你們得提前下訂。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "提前大量備貨規避風險",
+          "hint": "花錢囤貨，但規避後續產線停頓",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.supplierRel",
+              "delta": 5
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.05
+            }
+          ],
+          "random": [],
+          "followUp": "P-C1",
+          "setFlag": null
+        },
+        {
+          "label": "觀望等待局勢發展",
+          "hint": "短期省錢，但風險極高",
+          "effects": [],
+          "random": [],
+          "followUp": "P-C1",
+          "setFlag": null
+        },
+        {
+          "label": "尋找替代原料或新供應商",
+          "hint": "分散風險，但切換有難度",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 0.95
+            },
+            {
+              "var": "aux.supplierRel",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-C1",
+      "dept": "prod",
+      "tier": [1, 2, 3],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 1,
+        "conditions": []
+      },
+      "title": "原料真的短缺了，產線困境",
+      "text": "郝製造急得不行：「短缺真的來了，市場上找不到替代品。產線得停下來，怎麼辦？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "緊急空運進口替代原料",
+          "hint": "花大錢應急，但恢復產線",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -900
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.25
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.1
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "降低產量度過短缺期",
+          "hint": "保護現金流，但營收損失",
+          "effects": [
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 0.65
+            },
+            {
+              "var": "kpi.share",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "與競爭對手協商借用原料",
+          "hint": "創意求存，但協議複雜",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": -4
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 0.8
+                }
+              ],
+              "resultText": "借料協議談判破裂，產線部分停頓。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 0.95
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": -2
+                }
+              ],
+              "resultText": "借料協議成立，但合作關係受些許影響。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    }
+  ]
+}

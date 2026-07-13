@@ -1895,6 +1895,2053 @@
           "random": []
         }
       ]
+    },
+    {
+      "id": "R-11",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "專利侵權訴訟風險",
+      "speaker": "shen",
+      "text": "沈技安神情緊張：「我們的新型編碼器可能踩到了競爭對手的核心專利。他們律師已發出律師函。」",
+      "options": [
+        {
+          "label": "立即積極抗辯",
+          "hint": "花錢、長期解決，但風險重",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200,
+              "months": 12
+            },
+            {
+              "var": "kpi.brand",
+              "delta": -8
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.credit",
+                  "delta": 5
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": 3
+                }
+              ],
+              "resultText": "訴訟勝訴，品牌信譽與信用額度回升。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -10
+                },
+                {
+                  "var": "kpi.share",
+                  "delta": -2
+                }
+              ],
+              "resultText": "訴訟敗訴，品牌與市占進一步下滑。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "尋求和解及授權",
+          "hint": "快速解決，但長期付權利金",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -500
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.03
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "擱置新產品上市，等待訴訟",
+          "hint": "省錢短期，但市場機會消失、後續惡化",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": -6
+            }
+          ],
+          "random": [],
+          "followUp": "R-C1",
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-12",
+      "dept": "rnd",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.product",
+            "op": ">=",
+            "value": 60
+          }
+        ]
+      },
+      "title": "與知名大學產學合作",
+      "speaker": "shen",
+      "text": "沈技安遞上合作提案：「國立大學電機所願意和我們共同研發下一代編碼模組。他們要求投資實驗室設備。」",
+      "options": [
+        {
+          "label": "深度合作，共同設立研究中心",
+          "hint": "花錢但能進階技術、培養人才",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300,
+              "months": 6
+            },
+            {
+              "var": "aux.rnd",
+              "delta": 80
+            },
+            {
+              "var": "kpi.product",
+              "delta": 5,
+              "delayMonths": 8
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 4
+                },
+                {
+                  "var": "kpi.morale",
+                  "delta": 3
+                }
+              ],
+              "resultText": "合作成果發表獲媒體關注，員工士氣提升。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "輕度合作，僅授權技術使用",
+          "hint": "花費少、風險低，但收穫有限",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            },
+            {
+              "var": "kpi.product",
+              "delta": 2,
+              "delayMonths": 6
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "拒絕合作",
+          "hint": "保持獨立自研，但錯失外部資源",
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-13",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 1,
+        "conditions": []
+      },
+      "title": "研發設備老化，急需更新",
+      "speaker": "shen",
+      "text": "沈技安指著檢測設備：「這台已經跑了十年，故障越來越頻繁。再拖下去會影響產品良率。」",
+      "options": [
+        {
+          "label": "採購新型自動化測試系統",
+          "hint": "花錢多，但效率大幅提升",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.12
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.08
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "維修舊設備，支撐一年",
+          "hint": "省錢，但效率難以改善",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 0.98
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -100,
+                  "delayMonths": 3
+                }
+              ],
+              "resultText": "數月後設備再次故障，緊急維修花費更大。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "租賃設備，靈活付費",
+          "hint": "平衡成本與效率，長期成本高",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50,
+              "months": 36
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.06
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-14",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "開源元件授權爭議",
+      "speaker": "shen",
+      "text": "沈技安皺著眉頭：「法務部指出我們使用的某個開源演算法若有衍生盈利，可能觸犯 GPL 條款。」",
+      "options": [
+        {
+          "label": "替換為自研演算法",
+          "hint": "花時間、花錢，但保持完全自主",
+          "effects": [
+            {
+              "var": "aux.rnd",
+              "delta": 120,
+              "months": 4
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "採用相容的開源替代方案",
+          "hint": "中間方案，時間短，但仍需驗證",
+          "effects": [
+            {
+              "var": "aux.rnd",
+              "delta": 60,
+              "months": 2
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.product",
+                  "delta": -2
+                }
+              ],
+              "resultText": "替代方案效能略低，需調整產品規格。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "改為商用授權方案",
+          "hint": "快速解決，但長期成本增加",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200,
+              "months": 60
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-15",
+      "dept": "rnd",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.product",
+            "op": ">=",
+            "value": 50
+          }
+        ]
+      },
+      "title": "核心模組重構機遇",
+      "speaker": "shen",
+      "text": "沈技安提出方案：「現在我們的核心編碼模組已經積累了不少技術債。如果趁市場相對平穩時重構，能奠定五年的競爭力基礎。」",
+      "options": [
+        {
+          "label": "投入全力重構，四個月集中開發",
+          "hint": "長期競爭力飆升，短期產品迭代停滯",
+          "effects": [
+            {
+              "var": "aux.rnd",
+              "delta": 200,
+              "months": 4
+            },
+            {
+              "var": "kpi.product",
+              "delta": -5,
+              "months": 4
+            },
+            {
+              "var": "kpi.product",
+              "delta": 20,
+              "delayMonths": 5
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.35,
+              "effects": [
+                {
+                  "var": "kpi.morale",
+                  "delta": -4
+                }
+              ],
+              "resultText": "長期集中開發導致團隊疲勞與離職率提升。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "漸進式重構，保持產品節奏",
+          "hint": "平衡但進度緩，效果分散",
+          "effects": [
+            {
+              "var": "aux.rnd",
+              "delta": 100,
+              "months": 12
+            },
+            {
+              "var": "kpi.product",
+              "delta": 8,
+              "delayMonths": 12
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫時擱置重構，優先新功能開發",
+          "hint": "短期營收優先，技術債持續累積",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": 2
+            },
+            {
+              "var": "aux.rnd",
+              "delta": -30
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-16",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "AI 模型導入產品研發流程",
+      "speaker": "shen",
+      "text": "沈技安展示了 AI 輔助設計的原型：「生成式 AI 可以加速我們的電路設計與模擬。但導入成本與風險都不小。」",
+      "options": [
+        {
+          "label": "建立 AI 輔助研發中心，深度整合",
+          "hint": "花費大、賦能強，長期優勢明顯",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "aux.rnd",
+              "delta": 180
+            },
+            {
+              "var": "kpi.product",
+              "delta": 8,
+              "delayMonths": 6
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 5
+                }
+              ],
+              "resultText": "AI 研發成果獲業界關注，品牌聲譽提升。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "小規模試點，逐步擴大應用",
+          "hint": "成本可控，學習機會多，進度較慢",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -120
+            },
+            {
+              "var": "aux.rnd",
+              "delta": 70,
+              "months": 8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "保持傳統研發方式，觀望市場",
+          "hint": "保守策略，避免技術賭注",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": -3,
+              "delayMonths": 12
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-17",
+      "dept": "rnd",
+      "tier": [
+        1
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "實驗室化學事故",
+      "speaker": "shen",
+      "text": "沈技安神情急迫：「電池測試區發生小規模溶液外洩，所幸無人重傷。但檢測部門被勒令停工三天。」",
+      "options": [
+        {
+          "label": "投入整改，升級實驗室安全設施",
+          "hint": "花費大，但杜絕後患，提升形象",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -250
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "基本整改加強培訓，恢復運營",
+          "hint": "中等投入，風險仍存",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 5
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -2
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.25,
+              "effects": [
+                {
+                  "var": "kpi.compliance",
+                  "delta": -15
+                },
+                {
+                  "var": "kpi.cash",
+                  "delta": -300,
+                  "delayMonths": 1
+                }
+              ],
+              "resultText": "因整改不足再次被稽查，罰款與聲譽雙損。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "將危險測試外包給第三方實驗室",
+          "hint": "規避風險，但失去控制權與成本增",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150,
+              "months": 12
+            },
+            {
+              "var": "aux.rnd",
+              "delta": -50
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-18",
+      "dept": "rnd",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "跨部門聯合專案協調困難",
+      "speaker": "shen",
+      "text": "沈技安嘆氣：「與生產部合作的新型產線改造專案進度落後兩個月。雙方對需求理解有差異。」",
+      "options": [
+        {
+          "label": "投入協調員與專案經理，密集溝通",
+          "hint": "花錢快速解決，但增加固定成本",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "kpi.product",
+              "delta": 4,
+              "delayMonths": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "自行調整研發需求適應生產進度",
+          "hint": "省成本，但可能功能妥協",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "按原計畫推進，接受延遲風險",
+          "hint": "堅持品質，但進度仍滯後",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -1
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": 5
+                }
+              ],
+              "resultText": "最終按規格交付，客戶滿意度上升。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-19",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 1,
+        "conditions": []
+      },
+      "title": "研發人才流失與培訓計畫",
+      "speaker": "shen",
+      "text": "沈技安提交離職名單：「這季有三位中階工程師離職，都是市場搶手的人才。我們該怎麼補強。」",
+      "options": [
+        {
+          "label": "大幅加薪與建立內部培訓計畫",
+          "hint": "花費多，但留住與培育人才",
+          "effects": [
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "aux.rnd",
+              "delta": 100,
+              "months": 6
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 6
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "外聘資深顧問，帶領新人成長",
+          "hint": "成本次之，效果分散",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100,
+              "months": 12
+            },
+            {
+              "var": "aux.rnd",
+              "delta": 60
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "加快招聘新鮮人，降低薪資成本",
+          "hint": "省錢短期，但技術厚度下降",
+          "effects": [
+            {
+              "var": "kpi.headcount",
+              "delta": 3
+            },
+            {
+              "var": "aux.rnd",
+              "delta": -40
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-20",
+      "dept": "rnd",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.product",
+            "op": "<",
+            "value": 60
+          }
+        ]
+      },
+      "title": "關鍵產品原型開發失敗",
+      "speaker": "shen",
+      "text": "沈技安拿著失敗報告：「我們的新一代編碼器原型測試結果未達目標。用時已經八個月，預算也超支了。」",
+      "options": [
+        {
+          "label": "獲得追加投資，迭代改進原型",
+          "hint": "持續燒錢但可能扭轉局面",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150,
+              "months": 6
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.product",
+                  "delta": 12,
+                  "delayMonths": 6
+                }
+              ],
+              "resultText": "經過改進，新原型終於達到預期性能。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.product",
+                  "delta": -8
+                },
+                {
+                  "var": "kpi.morale",
+                  "delta": -5
+                }
+              ],
+              "resultText": "繼續投資仍未改善，團隊士氣崩潰。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "停止此專案，轉向現有產品優化",
+          "hint": "止損，但時間與資金已浪費",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": -8
+            },
+            {
+              "var": "kpi.product",
+              "delta": 3,
+              "delayMonths": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "尋求合作方接手，共同推進",
+          "hint": "分擔風險但失去主導權",
+          "effects": [
+            {
+              "var": "kpi.equity",
+              "delta": -5
+            },
+            {
+              "var": "kpi.product",
+              "delta": 5,
+              "delayMonths": 8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-21",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "業界標準規格主導權爭奪",
+      "speaker": "shen",
+      "text": "沈技安興高采烈：「我們有機會參與下一代編碼標準制定。如果能把我們的技術納入標準，會大幅提升競爭力。」",
+      "options": [
+        {
+          "label": "全力支持，投入標委會與國際推廣",
+          "hint": "花錢、花時間，但潛在收益巨大",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -180,
+              "months": 8
+            },
+            {
+              "var": "aux.rnd",
+              "delta": 150,
+              "months": 8
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.45,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 5
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": 8
+                }
+              ],
+              "resultText": "成功推動標準制定，市占與品牌雙升。"
+            },
+            {
+              "chance": 0.55,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -2
+                }
+              ],
+              "resultText": "標準競爭失利，投資打水漂。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "適度參與，保持技術影響力",
+          "hint": "投入適中，風險與回報都中等",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -60
+            },
+            {
+              "var": "aux.rnd",
+              "delta": 70
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "採取觀望態度，跟隨標準走",
+          "hint": "節省成本，但喪失話語權",
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "R-C1",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "專利訴訟進一步惡化",
+      "speaker": "shen",
+      "text": "沈技安面容沉重：「對手加重訴訟攻勢，現在要求高額賠償，並試圖申請產品禁銷令。情況比預想嚴重。」",
+      "options": [
+        {
+          "label": "緊急委託頂級律師團隊全力應訴",
+          "hint": "最後翻盤機會，代價高昂",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -500
+            },
+            {
+              "var": "kpi.brand",
+              "delta": -12
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 3
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": 5
+                }
+              ],
+              "resultText": "律師團隊力挽狂瀾，訴訟逆轉，市場信心恢復。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -5
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -20
+                }
+              ],
+              "resultText": "最終仍敗訴，禁銷令生效，市占重創。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "談判和解，即使條件苛刻也接受",
+          "hint": "快速終止訴訟，但付出巨大代價",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -800
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.05
+            },
+            {
+              "var": "kpi.brand",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "停止銷售該產品，承認失敗",
+          "hint": "控制損失，但市場地位一落千丈",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": -20
+            },
+            {
+              "var": "kpi.share",
+              "delta": -8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-11",
+      "dept": "prod",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "設備老化故障危機",
+      "text": "郝製造一臉憂慮：「廠裡幾台老設備頻頻出狀況，再這樣下去產線得停頓。這筆更新費用不小啊。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "立即全面更新設備",
+          "hint": "一次投入大，但徹底解決",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1200
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.15
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "勉強維修先度過難關",
+          "hint": "短期省錢，但風險高",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 0.85
+                },
+                {
+                  "var": "kpi.morale",
+                  "delta": -8
+                }
+              ],
+              "resultText": "設備在關鍵時刻故障，產線停頓，損失更大。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "aux.utilization",
+                  "op": "mul",
+                  "delta": 0.92
+                }
+              ],
+              "resultText": "僥倖撐過這個月，但效率明顯下降。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "分批汰換關鍵設備",
+          "hint": "折中方案，漸進式改善",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -700
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.08,
+              "delayMonths": 1
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-12",
+      "dept": "prod",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "自動化升級投資計畫",
+      "text": "郝製造遞上一份提案：「技術團隊提出導入自動化設備的計畫，能省人力成本，也能提升良率和產能。值不值得投？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "全力推動自動化導入",
+          "hint": "前期投入大，後期人力和品質雙贏",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1500
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.12,
+              "delayMonths": 2
+            },
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 0.92,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "試點推行，逐步擴大",
+          "hint": "風險低，進度慢",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.04,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫緩投資，維持現狀",
+          "hint": "無額外支出，但競爭力停滯",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 0
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-13",
+      "dept": "prod",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 50
+          }
+        ]
+      },
+      "title": "產線工安意外",
+      "text": "郝製造衝進辦公室：「不好了，產線上有員工受傷了。已經送醫，現在要怎麼處理？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "全額賠償並改善工安設施",
+          "hint": "花錢止血，員工信任回升",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 10
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "協商壓低賠償金額",
+          "hint": "短期省錢，但士氣受打擊",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -12
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "按法律程序處理，保險理賠",
+          "hint": "被動但正規，耗時",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200,
+              "delayMonths": 2
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -5
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-14",
+      "dept": "prod",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "環保排放管理達標",
+      "text": "郝製造拿著環保部門的來函：「政府要求改善排放標準，或者我們主動升級設備搶先達標。要投資多少呢？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "投資環保設備主動達標",
+          "hint": "先發制人，品牌加分",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -500
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 4
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "微調製程臨時應付",
+          "hint": "成本低，但持續投入",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 0.98
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "等待政策調整與寬限期",
+          "hint": "規避支出，但被動",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-15",
+      "dept": "prod",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": [
+          {
+            "var": "aux.utilization",
+            "op": "<",
+            "value": 0.65
+          }
+        ]
+      },
+      "title": "庫存積壓與消化困境",
+      "text": "郝製造看著堆滿的倉庫嘆氣：「原料和成品庫存太多，占用現金流。得想辦法消化，或者改變產品組合。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "特賣清倉出清庫存",
+          "hint": "快速換現金，但利潤被壓低",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 400
+            },
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 0.85
+            },
+            {
+              "var": "kpi.share",
+              "delta": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "改變產品組合消化庫存",
+          "hint": "靈活應對，但開發新產品耗力",
+          "effects": [
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.15
+            },
+            {
+              "var": "kpi.product",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫停採購讓庫存自然消化",
+          "hint": "保留現金彈性，但短期產能受限",
+          "effects": [
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 0.9
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-16",
+      "dept": "prod",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": [
+          {
+            "var": "aux.utilization",
+            "op": "<",
+            "value": 0.7
+          }
+        ]
+      },
+      "title": "產能過剩與代工訂單機會",
+      "text": "郝製造接到通路夥伴的電話：「有產能閒置嗎？有個代工訂單量不小，有興趣合作嗎？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "接下代工訂單充分利用產能",
+          "hint": "增加營收，但可能排擠自有品牌",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -3
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.2
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 5
+            },
+            {
+              "var": "kpi.product",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "謹慎評估，先試小單",
+          "hint": "風險最小，但見效慢",
+          "effects": [
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.05
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "拒絕並聚焦自有品牌發展",
+          "hint": "保持策略專注，產能閒置",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-17",
+      "dept": "prod",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 55
+          }
+        ]
+      },
+      "title": "夜班人力持續流失",
+      "text": "郝製造在人資主任報告後皺眉：「夜班員工離職率又上升了，新人也不好招。這樣下去夜班怎麼排班？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "提高夜班津貼與福利",
+          "hint": "花錢穩定人力，長期見效",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "調整輪班制度與加班管理",
+          "hint": "改善待遇體驗，但成本溫和",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "減少夜班班次壓低成本",
+          "hint": "省成本，但產能下降",
+          "effects": [
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 0.85
+            },
+            {
+              "var": "kpi.cash",
+              "delta": 100
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-18",
+      "dept": "prod",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": true,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "廠房租約即將到期決策",
+      "text": "郝製造向董事長提報：「現廠房租約快到期了，得決定是續租還是搬遷。每個選項的投入和風險都不小。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "原地續租並優化廠房設施",
+          "hint": "風險最低，延續現狀",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.03
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "搬遷到成本更低的地區",
+          "hint": "前期搬遷費大，後期租賃與運輸省成本",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -800
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.05,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -8
+            },
+            {
+              "var": "kpi.headcount",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "升級搬遷至更好的廠房",
+          "hint": "投入大，但產能和形象同步升級",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -1200
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.2
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 6
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-19",
+      "dept": "prod",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 3,
+        "conditions": []
+      },
+      "title": "精實生產改革推進與阻力",
+      "text": "郝製造與改善顧問討論完後說：「精實生產可以大幅提升效率，但員工會有抗拒。怎麼推進？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "強推改革並投入培訓",
+          "hint": "中期見效，但需克服阻力",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.18,
+              "delayMonths": 2
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -6
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "溫和試點推進，逐步擴大",
+          "hint": "阻力小，進展較慢",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.08,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "暫緩推行，等更好時機",
+          "hint": "零投入，但機會成本高",
+          "effects": [],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-20",
+      "dept": "prod",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "關鍵原料即將短缺預警",
+      "text": "郝製造接到供應商的警告電話：「某關鍵原料快要短缺了，市場搶購已經開始，你們得提前下訂。」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "提前大量備貨規避風險",
+          "hint": "花錢囤貨，但規避後續產線停頓",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.supplierRel",
+              "delta": 5
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.05
+            }
+          ],
+          "random": [],
+          "followUp": "P-C1",
+          "setFlag": null
+        },
+        {
+          "label": "觀望等待局勢發展",
+          "hint": "短期省錢，但風險極高",
+          "effects": [],
+          "random": [],
+          "followUp": "P-C1",
+          "setFlag": null
+        },
+        {
+          "label": "尋找替代原料或新供應商",
+          "hint": "分散風險，但切換有難度",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 0.95
+            },
+            {
+              "var": "aux.supplierRel",
+              "delta": -3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "P-C1",
+      "dept": "prod",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 1,
+        "conditions": []
+      },
+      "title": "原料真的短缺了，產線困境",
+      "text": "郝製造急得不行：「短缺真的來了，市場上找不到替代品。產線得停下來，怎麼辦？」",
+      "speaker": "hao",
+      "options": [
+        {
+          "label": "緊急空運進口替代原料",
+          "hint": "花大錢應急，但恢復產線",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -900
+            },
+            {
+              "var": "aux.materialRate",
+              "op": "mul",
+              "delta": 1.25
+            },
+            {
+              "var": "aux.utilization",
+              "op": "mul",
+              "delta": 1.1
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "降低產量度過短缺期",
+          "hint": "保護現金流，但營收損失",
+          "effects": [
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 0.65
+            },
+            {
+              "var": "kpi.share",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "與競爭對手協商借用原料",
+          "hint": "創意求存，但協議複雜",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": -4
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 0.8
+                }
+              ],
+              "resultText": "借料協議談判破裂，產線部分停頓。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "aux.capacity",
+                  "op": "mul",
+                  "delta": 0.95
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": -2
+                }
+              ],
+              "resultText": "借料協議成立，但合作關係受些許影響。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
     }
   ]
 }
