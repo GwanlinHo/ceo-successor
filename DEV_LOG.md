@@ -65,3 +65,18 @@
 - 不採用：砍困難事件數(牴觸每4分鐘一決策的核心需求)、主動選擇代價放大(破壞因果可預期性)。
 - A/B/C/E 集中於 M8 一次實作+100局×3策略×3難度模擬調參(分開調互相干擾)；M8 驗收標準已量化並更新至 DEV_PLAN。
 下一步：M4 可玩雛形(不變)。
+
+---
+
+[2026-07-13] [M4] 完成可玩雛形，E2E 完整一局通過。含順手落地桿 D。
+工作內容：
+- 桿 D 金額縮放：effects.js 重構為 resolve(rng+難度惡果+金額×tier係數，一次)→apply(確定性)兩階段；佇列存已解析效果，applyDueEffects 不再重抽/重縮放。balance.json 加 moneyScaleByTier{1,4,15}；事件 JSON 金額一律 tier1 尺度。
+- save.js：localStorage 單槽自動存讀(rngState 整數，讀檔亂數無縫續走)+匯出/匯入 JSON+版本檢查。
+- UI 層：ui/labels.js(中文標籤+萬/億格式化)、ui/hud.js(頂部KPI列+月結算摘要)、ui/dialog.js(事件對話框，簡單難度顯示效果數字)、ui/screens.js(開始/5頁說明/開局設定/結局+大事記)。
+- main.js：控制器(phase→畫面路由、事件委派、每步存檔、結束轉結局清存檔)。
+- css：M4 全畫面樣式(sticky HUD、選項卡、帳表、結局)；index.html 移除 manifest 連結(M9 再加)避免 404。
+決策與理由：
+- effects 兩階段化是桿D的必要重構：原本 applyEffectNow 同時服務「立即套用」與「佇列出列」，金額縮放只能發生一次，故把 resolve/apply 拆開，佇列存解析後結果。順帶更嚴謹(區間亂數不會因多月持續而重抽)。
+- 開局預設玩家「李承翰」公司「大山精工」可改；難度預設普通。
+驗收：單元 29/29(含桿D)；E2E puppeteer 11/11(完整一局+存讀檔+結局+零JS錯誤)；三張截圖確認色盤與版面。
+下一步：M5 報表中心六分頁(SVG趨勢圖)+新聞/小道消息系統(接 rumorTruthRate)。

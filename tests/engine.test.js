@@ -118,9 +118,24 @@ t("mul 效果與 pctOf 效果", () => {
 });
 t("區間 delta 以種子亂數取值且落在區間內", () => {
   const s = newGame(data, OPTS);
-  queueEffect(s, { var: "kpi.brand", delta: [3, 6] }, makeRng(7));
+  queueEffect(s, { var: "kpi.brand", delta: [3, 6] }, makeRng(7), data);
   const d = s.effects[0].delta;
   ok(d >= 3 && d <= 6, `delta=${d}`);
+});
+t("桿D：金額效果隨 tier 縮放，刻度值不縮放", () => {
+  const scale2 = data.balance.moneyScaleByTier["2"];
+  // tier1：-100 現金原值
+  let s1 = noEvents(newGame(data, OPTS));
+  const c1 = s1.kpi.cash;
+  queueEffect(s1, { var: "kpi.cash", delta: -100 }, makeRng(1), data);
+  eq(s1.effects[0].delta, -100, "tier1 金額");
+  // tier2：-100 現金應 ×scale
+  let s2 = noEvents(newGame(data, OPTS)); s2.tier = 2;
+  queueEffect(s2, { var: "kpi.cash", delta: -100 }, makeRng(1), data);
+  eq(s2.effects[0].delta, -100 * scale2, `tier2 金額應×${scale2}`);
+  // 刻度值(品牌)不因 tier 縮放
+  queueEffect(s2, { var: "kpi.brand", delta: 5 }, makeRng(1), data);
+  eq(s2.effects[1].delta, 5, "刻度值不縮放");
 });
 
 console.log("== 升降級與結局 ==");

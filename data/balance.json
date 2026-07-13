@@ -68,6 +68,11 @@
       "revenuePerEmployee": 25
     }
   },
+  "moneyScaleByTier": {
+    "1": 1,
+    "2": 4,
+    "3": 15
+  },
   "economy": {
     "_doc": "月結算公式參數。銷售額 = min(市場需求×市占率, 產能上限×利用率×良率×士氣效率)；營收 = 銷售額×單價指數。capacityUnitValue: 產能指數1.0對應的月產值(萬元)。",
     "taxRate": 0.2,

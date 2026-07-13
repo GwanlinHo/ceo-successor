@@ -81,9 +81,9 @@ export function applyDecision(s, action, data, rng) {
 
   const applyOrQueue = (eff) => {
     if ((eff.delayMonths || 0) === 0 && (eff.months || 1) === 1 && eff.pctOf === undefined) {
-      applyEffectNow(s, eff, rng);
+      applyEffectNow(s, eff, rng, data);
     } else {
-      queueEffect(s, eff, rng);
+      queueEffect(s, eff, rng, data);
     }
   };
 

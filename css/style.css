@@ -70,3 +70,91 @@ html, body {
 .val-good { color: var(--good); }
 .val-bad { color: var(--bad); }
 .val-warn { color: var(--warn); }
+
+/* ===== M4 遊戲畫面 ===== */
+#app { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+.screen { min-height: 90vh; }
+.center { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; }
+
+/* 開始畫面 */
+.title-block { text-align: center; }
+.game-title { font-size: 2.2rem; letter-spacing: 0.1em; }
+.game-sub { color: var(--ink-soft); margin-top: 0.5rem; }
+.menu { display: flex; flex-direction: column; gap: 0.75rem; width: 260px; }
+.menu .btn { width: 100%; }
+
+/* 說明 / 設定 卡片 */
+.howto, .setup, .ending { max-width: 480px; width: 100%; }
+.howto-step, .dialog-progress, .howto-nav { color: var(--ink-soft); font-size: 0.9rem; }
+.howto p { margin: 0.75rem 0 1.25rem; }
+.howto-nav { display: flex; justify-content: space-between; align-items: center; }
+.field { display: block; margin: 1rem 0; font-weight: 600; }
+.field input { display: block; width: 100%; margin-top: 0.4rem; padding: 0.6em; font-size: 1rem;
+  font-family: inherit; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); }
+.diff-group { display: flex; gap: 0.5rem; margin-top: 0.4rem; }
+.diff-btn { flex: 1; }
+.diff-btn.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.setup-actions { display: flex; justify-content: space-between; margin-top: 1.5rem; }
+
+/* HUD */
+.hud { position: sticky; top: 0; z-index: 5; background: var(--paper); border-bottom: 1px solid var(--line);
+  padding: 0.6rem 0; margin-bottom: 1rem; }
+.hud-title { display: flex; align-items: baseline; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.hud-company { font-weight: 700; font-size: 1.1rem; }
+.hud-tier { background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px; padding: 0.1em 0.7em; font-size: 0.85rem; }
+.hud-month { margin-left: auto; color: var(--ink-soft); font-size: 0.9rem; }
+.hud-kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; }
+.kpi { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 0.4rem 0.5rem; text-align: center; }
+.kpi-l { display: block; font-size: 0.75rem; color: var(--ink-soft); }
+.kpi-v { display: block; font-weight: 700; font-size: 0.95rem; margin-top: 0.15rem; }
+
+/* 遊戲主體 */
+.game-body { min-height: 45vh; }
+.month-clear { text-align: center; color: var(--ink-soft); padding: 2rem; }
+
+/* 事件對話框 */
+.dialog-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; }
+.tag { background: var(--paper-2); border: 1px solid var(--line); border-radius: 4px; padding: 0.1em 0.5em; font-size: 0.75rem; }
+.tag-crisis { background: #e8d9d6; border-color: var(--bad); color: var(--bad); }
+.tag-opportunity { background: #dbe4dc; border-color: var(--good); color: var(--good); }
+.tag-chain { background: #e6dcc4; border-color: var(--warn); color: var(--warn); }
+.dialog-progress { margin-left: auto; }
+.dialog-title { font-size: 1.3rem; margin-bottom: 0.3rem; }
+.dialog-npc { color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 0.75rem; }
+.dialog-text { margin-bottom: 1.25rem; line-height: 1.7; }
+.dialog-options { display: flex; flex-direction: column; gap: 0.6rem; }
+.option { text-align: left; display: flex; flex-direction: column; align-items: flex-start; gap: 0.15rem; padding: 0.7em 1em; }
+.option-label { font-weight: 700; }
+.option-hint { font-size: 0.85rem; color: var(--ink-soft); }
+.option-num { font-size: 0.8rem; color: var(--good); }
+.decision-result { background: var(--paper-2); border-left: 3px solid var(--warn); padding: 0.6rem 0.9rem;
+  margin-bottom: 1rem; border-radius: 0 var(--radius) var(--radius) 0; }
+
+/* 結算 / 帳表 */
+.settlement h2, .ending h3 { margin-bottom: 0.75rem; }
+.ledger { width: 100%; border-collapse: collapse; margin: 0.5rem 0; }
+.ledger td { padding: 0.25rem 0; border-bottom: 1px solid var(--line); }
+.ledger td.num, .ledger td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.settle-kpi { margin-top: 0.75rem; font-weight: 600; }
+.notes { margin-top: 0.75rem; list-style: none; }
+.notes li { color: var(--warn); font-size: 0.9rem; }
+
+/* 操作列 */
+.action-bar { display: flex; gap: 0.75rem; padding: 1rem 0 2rem; flex-wrap: wrap; }
+.action-bar .btn-primary { flex: 1; }
+.btn-ghost { background: transparent; color: var(--ink-soft); }
+
+/* 結局 */
+.ending { text-align: center; }
+.ending-type { font-size: 1.4rem; font-weight: 700; }
+.ending-score { font-size: 3rem; font-weight: 800; margin: 0.5rem 0; }
+.ending-score span { font-size: 1rem; font-weight: 400; color: var(--ink-soft); margin-left: 0.3rem; }
+.ending-grade { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.ending-final { color: var(--ink-soft); margin-bottom: 1rem; }
+.ending-log { text-align: left; margin-top: 1.5rem; }
+.ending-log ul { list-style: none; font-size: 0.85rem; color: var(--ink-soft); }
+.ending-log li { padding: 0.2rem 0; border-bottom: 1px solid var(--line); }
+
+@media (max-width: 640px) {
+  .hud-kpis { grid-template-columns: repeat(3, 1fr); }
+}
