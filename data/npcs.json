@@ -1,0 +1,22 @@
+{
+  "_doc": "NPC 名單。名字寫死；玩家角色與公司名開局自訂。id 對應事件的 speaker 與 SVG 頭像。",
+  "version": 1,
+  "npcs": [
+    { "id": "shen",   "name": "沈技安", "role": "研發經理",   "dept": "rnd",         "side": "internal" },
+    { "id": "hao",    "name": "郝製造", "role": "廠長",       "dept": "prod",        "side": "internal" },
+    { "id": "jia",    "name": "賈推銷", "role": "業務總監",   "dept": "mkt",         "side": "internal" },
+    { "id": "you",    "name": "尤仁慈", "role": "人資經理",   "dept": "hr",          "side": "internal" },
+    { "id": "qian",   "name": "錢守成", "role": "財務長",     "dept": "fin",         "side": "internal" },
+    { "id": "dong",   "name": "董大川", "role": "董事長",     "dept": "shareholder", "side": "external", "note": "玩家的長輩" },
+    { "id": "tian",   "name": "田利息", "role": "分行經理",   "dept": "bank",        "side": "external" },
+    { "id": "shi",    "name": "石原料", "role": "供應商老闆", "dept": "supplier",    "side": "external" },
+    { "id": "bai",    "name": "白買家", "role": "大客戶採購長","dept": "channel",     "side": "external" },
+    { "id": "guan",   "name": "官正義", "role": "主管機關科長","dept": "gov",         "side": "external" },
+    { "id": "maque",  "name": "麻雀姐", "role": "財經記者",   "dept": "media",       "side": "external" }
+  ],
+  "rival": { "name": "隆對手企業", "note": "背景競爭對手，不直接互動，透過新聞與市占變化呈現壓力" },
+  "depts": {
+    "rnd": "研發部", "prod": "生產部", "mkt": "行銷業務部", "hr": "人事部", "fin": "財務部",
+    "shareholder": "大股東", "bank": "銀行", "supplier": "供應商", "channel": "通路客戶", "gov": "政府部門", "media": "媒體"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "_doc": "經濟引擎常數與升降級門檻。金額單位一律「萬元」。0~100 為刻度值，rate 為 0~1 比率，index 為指數(基準1.0)。修改本檔即可調整平衡，不需動程式。",
+  "version": 1,
+
+  "init": {
+    "_doc": "新局初始值(普通難度基準；difficulty.json 會覆蓋 cash 等項)。",
+    "tier": 1,
+    "kpi": {
+      "cash": 2000,
+      "equity": 2000,
+      "headcount": 20,
+      "product": 40,
+      "morale": 55,
+      "share": 8,
+      "brand": 30,
+      "satisfaction": 55,
+      "credit": 50,
+      "shareholder": 55,
+      "compliance": 60
+    },
+    "aux": {
+      "capacity": 1.0,
+      "utilization": 0.8,
+      "yieldRate": 0.9,
+      "price": 1.0,
+      "materialRate": 0.45,
+      "turnover": 0.03,
+      "supplierRel": 55,
+      "channelRel": 55,
+      "debt": 0,
+      "interest": 0,
+      "salaryAvg": 4.5,
+      "marketing": 30,
+      "rnd": 40
+    },
+    "world": {
+      "economyIndex": 1.0,
+      "rivalProduct": 45,
+      "rivalErosion": 0.5
+    }
+  },
+
+  "tiers": {
+    "_doc": "三個規模級的常數組。升級後市場更大但管理更貴、對手更強：規模愈大賺得快也燒得快。",
+    "1": {
+      "name": "小型企業",
+      "baseDemand": 10000,
+      "adminRate": 0.08,
+      "rivalErosion": 0.5,
+      "bankLimit": 3000,
+      "salaryBase": 4.5
+    },
+    "2": {
+      "name": "中型企業",
+      "baseDemand": 60000,
+      "adminRate": 0.12,
+      "rivalErosion": 0.9,
+      "bankLimit": 20000,
+      "salaryBase": 5.5
+    },
+    "3": {
+      "name": "大型企業",
+      "baseDemand": 250000,
+      "adminRate": 0.15,
+      "rivalErosion": 1.4,
+      "bankLimit": 100000,
+      "salaryBase": 7.0
+    }
+  },
+
+  "economy": {
+    "_doc": "月結算公式參數。銷售量 = min(市場需求×市占率, 產能上限)；營收 = 銷售量×單價；成本見公式。",
+    "taxRate": 0.2,
+    "brandDemandFactor": 200,
+    "capacityValuePerUnit": 12000,
+    "moraleEfficiencyMid": 50,
+    "moraleEfficiencySlope": 0.004,
+    "shareGainDivisor": 400,
+    "regressToMean": 1,
+    "regressTargets": {
+      "morale": 50, "brand": 50, "satisfaction": 50,
+      "supplierRel": 50, "channelRel": 50, "shareholder": 50
+    }
+  },
+
+  "thresholds": {
+    "_doc": "升降級與結局門檻。holdMonths 為需連續維持的月數。金額單位萬元。",
+    "upgradeTo2": {
+      "revenue": 800, "equity": 3000, "headcount": 50,
+      "profitStreak": 3, "holdMonths": 2
+    },
+    "upgradeTo3": {
+      "revenue": 5000, "equity": 30000, "headcount": 200,
+      "profitStreak": 6,
+      "shareholder": 70, "compliance": 60, "brand": 60,
+      "holdMonths": 2,
+      "requireIpoChain": true
+    },
+    "downgrade": {
+      "lossStreak": 4,
+      "equityFloorRatio": 0.6,
+      "holdMonths": 2
+    },
+    "bankrupt": {
+      "_doc": "現金 < 0 且無法從銀行取得紓困(信用過低或已達額度上限)即倒閉。",
+      "cashFloor": 0,
+      "rescueMinCredit": 30
+    }
+  },
+
+  "scoring": {
+    "_doc": "結局計分(滿分1000)。權重可調。",
+    "max": 1000,
+    "tierPoints": { "3": 400, "2": 250, "1": 100, "bankrupt": 0 },
+    "financeMax": 300,
+    "equityGrowthTargetMultiple": 10,
+    "qualityMax": 200,
+    "qualityMetrics": ["morale", "brand", "satisfaction", "compliance"],
+    "achievementMax": 100,
+    "grades": [
+      { "min": 850, "label": "傳奇接班人" },
+      { "min": 700, "label": "卓越經營者" },
+      { "min": 550, "label": "稱職總經理" },
+      { "min": 400, "label": "平庸守成者" },
+      { "min": 1, "label": "危機邊緣人" },
+      { "min": 0, "label": "敗家子" }
+    ]
+  },
+
+  "duration": { "totalMonths": 60 }
+}

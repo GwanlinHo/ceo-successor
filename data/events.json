@@ -1,0 +1,324 @@
+{
+  "_doc": "種子事件庫(M1)。schema 見 docs/ARCHITECTURE.md 3.3。金額單位萬元；0~100 為刻度;rate/index 用 op:mul。禁對 kpi.revenue/profit 直接下效果(為結算導出值)。M7 擴充至 140~170 件。",
+  "version": 1,
+  "events": [
+    {
+      "id": "R-01", "dept": "rnd", "tier": [1,2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 6, "conditions": [ { "var": "kpi.product", "op": "<", "value": 70 } ] },
+      "title": "下一代產品的技術路線", "speaker": "shen",
+      "text": "沈技安推了推眼鏡：「總經理，現有產品再撐一年就會被市場淘汰，我們得決定下一代要押哪條路。」",
+      "options": [
+        { "label": "自主研發", "hint": "花錢、長期見效", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -100, "months": 3 }, { "var": "kpi.product", "delta": 15, "delayMonths": 6 } ],
+          "random": [ { "chance": 0.3, "effects": [ { "var": "kpi.product", "delta": 10, "delayMonths": 6 } ], "resultText": "研發團隊意外突破，競爭力額外提升。" } ] },
+        { "label": "授權國外技術", "hint": "快速見效，但長期背權利金", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -500 }, { "var": "kpi.product", "delta": 12, "delayMonths": 3 }, { "var": "aux.materialRate", "op": "mul", "delta": 1.02 } ], "random": [] },
+        { "label": "維持現狀", "hint": "省錢，但產品逐漸落伍", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.product", "delta": -1, "months": 6 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "R-07", "dept": "rnd", "tier": [1,2], "type": "crisis",
+      "trigger": { "weight": 12, "once": false, "cooldown": 6, "conditions": [ { "var": "kpi.product", "op": ">=", "value": 50 } ] },
+      "title": "競爭對手挖角研發主力", "speaker": "shen",
+      "text": "沈技安神色凝重：「對手開了雙倍薪水挖我們的首席工程師，他在猶豫。」",
+      "options": [
+        { "label": "加薪留人", "hint": "留住戰力，但墊高人事成本", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.salaryAvg", "op": "mul", "delta": 1.05 }, { "var": "kpi.morale", "delta": 5 } ], "random": [] },
+        { "label": "讓他走", "hint": "省錢，但技術受損且有外流風險", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.product", "delta": -8 } ],
+          "random": [ { "chance": 0.4, "effects": [ { "var": "kpi.product", "delta": -6, "delayMonths": 2 } ], "resultText": "兩個月後傳出技術外流，競爭力再受衝擊。" } ] },
+        { "label": "反挖對方團隊", "hint": "豪賭，成敗都有代價", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -400 } ],
+          "random": [ { "chance": 0.6, "effects": [ { "var": "kpi.product", "delta": 10 } ], "resultText": "成功挖來對手團隊，競爭力提升。" }, { "chance": 0.4, "effects": [ { "var": "kpi.morale", "delta": -5 }, { "var": "kpi.brand", "delta": -3 } ], "resultText": "挖角失敗還鬧上新聞，士氣與形象受損。" } ] }
+      ]
+    },
+    {
+      "id": "P-01", "dept": "prod", "tier": [1,2,3], "type": "routine",
+      "trigger": { "weight": 8, "once": false, "cooldown": 2, "conditions": [] },
+      "title": "月度原料採購議價", "speaker": "hao",
+      "text": "郝製造拿著報價單：「這個月的原料採購，供應商態度還算客氣，要不要順勢談談？」",
+      "options": [
+        { "label": "積極殺價", "hint": "壓低成本，但傷和氣", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.materialRate", "op": "mul", "delta": [0.96, 0.99] }, { "var": "aux.supplierRel", "delta": [-5, -2] } ], "random": [] },
+        { "label": "維持長期合作價", "hint": "穩定，雙方都舒服", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.supplierRel", "delta": [1, 3] } ], "random": [] },
+        { "label": "加量預訂換折扣", "hint": "先付現金換單價", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": [-120, -60] }, { "var": "aux.materialRate", "op": "mul", "delta": [0.95, 0.98] } ], "random": [] }
+      ]
+    },
+    {
+      "id": "P-03", "dept": "prod", "tier": [1], "type": "routine",
+      "trigger": { "weight": 8, "once": false, "cooldown": 3, "conditions": [ { "var": "aux.utilization", "op": ">=", "value": 0.85 } ] },
+      "title": "產線瓶頸", "speaker": "hao",
+      "text": "郝製造擦著汗：「訂單接得進來，可是產線快滿載了，得想辦法擴充產能。」",
+      "options": [
+        { "label": "買新設備", "hint": "花大錢，兩個月後見效", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -600 }, { "var": "aux.capacity", "op": "mul", "delta": 1.25, "delayMonths": 2 } ], "random": [] },
+        { "label": "加班趕工", "hint": "立即增產，但傷士氣與良率", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.capacity", "op": "mul", "delta": 1.1 }, { "var": "kpi.morale", "delta": -3, "months": 6 }, { "var": "aux.yieldRate", "op": "mul", "delta": 0.98, "months": 6 } ], "random": [] },
+        { "label": "外包代工", "hint": "快速擴產，但成本升、有品質風險", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.capacity", "op": "mul", "delta": 1.2 }, { "var": "aux.materialRate", "op": "mul", "delta": 1.05 } ],
+          "random": [ { "chance": 0.2, "effects": [ { "var": "kpi.satisfaction", "delta": -5 } ], "resultText": "外包品質不穩，引來客訴。" } ] }
+      ]
+    },
+    {
+      "id": "P-09", "dept": "prod", "tier": [2], "type": "crisis",
+      "trigger": { "weight": 12, "once": false, "cooldown": 6, "conditions": [ { "var": "aux.yieldRate", "op": "<", "value": 0.88 } ] },
+      "title": "品質事故：整批瑕疵品流出", "speaker": "hao",
+      "text": "郝製造臉色發白：「不好了，有一整批瑕疵品流到市面上，客戶已經開始反映。」",
+      "options": [
+        { "label": "全面回收並公開道歉", "hint": "短痛換信任", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -800 }, { "var": "kpi.satisfaction", "delta": 5 }, { "var": "kpi.brand", "delta": -3 }, { "var": "kpi.compliance", "delta": 5 } ], "random": [] },
+        { "label": "私下換貨壓下來", "hint": "省事，但紙包不住火", "followUp": null, "setFlag": "hushedDefect",
+          "effects": [ { "var": "kpi.cash", "delta": -200 } ],
+          "random": [ { "chance": 0.35, "effects": [ { "var": "kpi.brand", "delta": -20, "delayMonths": 2 }, { "var": "kpi.compliance", "delta": -10, "delayMonths": 2 } ], "resultText": "兩個月後媒體爆料，品牌重挫並引來稽查。" } ] },
+        { "label": "歸咎供應商", "hint": "推責任，但賠上關係", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.supplierRel", "delta": -20 } ],
+          "random": [ { "chance": 0.5, "effects": [ { "var": "aux.materialRate", "op": "mul", "delta": 1.08 } ], "resultText": "供應商不滿，下次報價報復性調漲。" } ] }
+      ]
+    },
+    {
+      "id": "M-01", "dept": "mkt", "tier": [1,2,3], "type": "routine",
+      "trigger": { "weight": 8, "once": false, "cooldown": 2, "conditions": [] },
+      "title": "季節性促銷檔期", "speaker": "jia",
+      "text": "賈推銷搓著手：「檔期快到了，這波促銷我們要不要用力一點？」",
+      "options": [
+        { "label": "大手筆促銷", "hint": "衝市占，花行銷費", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.marketing", "delta": [40, 80] }, { "var": "kpi.share", "delta": [1, 3] }, { "var": "kpi.brand", "delta": [1, 3] } ], "random": [] },
+        { "label": "小規模試水溫", "hint": "穩健", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.marketing", "delta": [15, 30] }, { "var": "kpi.share", "delta": [0, 1] } ], "random": [] },
+        { "label": "這次不參加", "hint": "省錢", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.share", "delta": [-1, 0] } ], "random": [] }
+      ]
+    },
+    {
+      "id": "M-02", "dept": "mkt", "tier": [1,2,3], "type": "routine",
+      "trigger": { "weight": 100, "once": false, "cooldown": 12, "conditions": [] },
+      "title": "年度廣告預算", "speaker": "jia",
+      "text": "賈推銷攤開提案：「年度品牌廣告的預算，總經理想怎麼配置？」",
+      "options": [
+        { "label": "大打品牌廣告", "hint": "吃營收比例三個月，換品牌與市占", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "pctOf": "kpi.revenue", "pct": -0.08, "months": 3 }, { "var": "kpi.brand", "delta": 8 }, { "var": "kpi.share", "delta": 1.5 } ], "random": [] },
+        { "label": "精準數位行銷", "hint": "花費較省，重轉換", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "pctOf": "kpi.revenue", "pct": -0.04, "months": 3 }, { "var": "kpi.share", "delta": 1 }, { "var": "kpi.satisfaction", "delta": 3 } ], "random": [] },
+        { "label": "縮減預算", "hint": "省錢，但品牌緩慢流失", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.brand", "delta": -1, "months": 6 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "M-08", "dept": "mkt", "tier": [2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 6, "conditions": [] },
+      "title": "大客戶要求獨家供貨", "speaker": "jia",
+      "text": "賈推銷壓低聲音：「白買家開條件了，要我們獨家供貨，量很大，但綁得也緊。」",
+      "options": [
+        { "label": "接受獨家", "hint": "衝市占，但通路依賴加深", "followUp": null, "setFlag": "exclusiveDeal",
+          "effects": [ { "var": "kpi.share", "delta": 4 }, { "var": "aux.channelRel", "delta": -15 } ], "random": [] },
+        { "label": "婉拒", "hint": "維持彈性，客戶略不滿", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.satisfaction", "delta": -5 } ], "random": [] },
+        { "label": "給半年獨家", "hint": "折衷，半年後再談", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.share", "delta": 2 }, { "var": "aux.channelRel", "delta": -5 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "H-01", "dept": "hr", "tier": [1], "type": "crisis",
+      "trigger": { "weight": 12, "once": false, "cooldown": 6, "conditions": [ { "var": "kpi.morale", "op": "<", "value": 50 } ] },
+      "title": "基層集體反映薪資過低", "speaker": "you",
+      "text": "尤仁慈憂心地說：「基層同仁集體反映薪水偏低，士氣有點浮動，得處理。」",
+      "options": [
+        { "label": "全面調薪 5%", "hint": "花錢買士氣與穩定", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.salaryAvg", "op": "mul", "delta": 1.05 }, { "var": "kpi.morale", "delta": 10 }, { "var": "aux.turnover", "op": "mul", "delta": 0.7 } ], "random": [] },
+        { "label": "只調關鍵人員", "hint": "省一半錢，但恐留不滿", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.salaryAvg", "op": "mul", "delta": 1.02 }, { "var": "kpi.morale", "delta": 3 } ],
+          "random": [ { "chance": 0.15, "effects": [ { "var": "kpi.morale", "delta": -8, "delayMonths": 1 } ], "resultText": "未調薪的同仁不滿，一個月後士氣下滑。" } ] },
+        { "label": "精神喊話", "hint": "不花錢，但難服眾", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.morale", "delta": -5 }, { "var": "aux.turnover", "op": "mul", "delta": 1.15 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "H-06", "dept": "hr", "tier": [1,2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 8, "conditions": [] },
+      "title": "要不要導入教育訓練制度", "speaker": "you",
+      "text": "尤仁慈提案：「我想建立一套教育訓練制度，長期能提升戰力，總經理覺得呢？」",
+      "options": [
+        { "label": "建立完整制度", "hint": "前期投入，多面向長期收益", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -150 }, { "var": "kpi.cash", "delta": -30, "months": 6 }, { "var": "aux.yieldRate", "op": "mul", "delta": 1.03, "delayMonths": 3 }, { "var": "kpi.product", "delta": 3, "delayMonths": 3 }, { "var": "kpi.morale", "delta": 5, "delayMonths": 3 } ], "random": [] },
+        { "label": "只送主管受訓", "hint": "小額投入", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -40 }, { "var": "kpi.morale", "delta": 1 }, { "var": "aux.yieldRate", "op": "mul", "delta": 1.01 } ], "random": [] },
+        { "label": "暫不辦理", "hint": "省錢，錯過扎根機會", "followUp": null, "setFlag": null, "effects": [], "random": [] }
+      ]
+    },
+    {
+      "id": "F-02", "dept": "fin", "tier": [1], "type": "routine",
+      "trigger": { "weight": 8, "once": false, "cooldown": 3, "conditions": [] },
+      "title": "應收帳款積壓", "speaker": "qian",
+      "text": "錢守成翻著帳：「應收帳款壓了不少，現金週轉開始緊，總經理要不要處理一下？」",
+      "options": [
+        { "label": "給折扣催收", "hint": "換現金，犧牲當月營收", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": 400 }, { "var": "aux.price", "op": "mul", "delta": 0.97, "months": 1 } ], "random": [] },
+        { "label": "應收帳款融資", "hint": "拿現金，付利息損信用", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": 500 }, { "var": "aux.interest", "delta": 8 }, { "var": "kpi.credit", "delta": -3 } ], "random": [] },
+        { "label": "不處理", "hint": "省事，有倒帳風險", "followUp": null, "setFlag": null,
+          "effects": [], "random": [ { "chance": 0.3, "effects": [ { "var": "kpi.cash", "delta": -600, "delayMonths": 2 } ], "resultText": "兩個月後客戶倒帳，現金蒸發。" } ] }
+      ]
+    },
+    {
+      "id": "F-07", "dept": "fin", "tier": [2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 6, "conditions": [ { "var": "kpi.cash", "op": ">=", "value": 3000 } ] },
+      "title": "閒置資金運用", "speaker": "qian",
+      "text": "錢守成推來一份提案：「帳上有些閒置資金，與其擺著，不如讓它動起來？」",
+      "options": [
+        { "label": "定存", "hint": "零風險小收益", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": 5, "months": 6 } ], "random": [] },
+        { "label": "投資理財商品", "hint": "有機會賺，也可能大賠", "followUp": null, "setFlag": null,
+          "effects": [], "random": [ { "chance": 0.6, "effects": [ { "var": "kpi.cash", "delta": 40, "months": 6 } ], "resultText": "投資順利，每月進帳。" }, { "chance": 0.2, "effects": [], "resultText": "不賺不賠，本金持平。" }, { "chance": 0.2, "effects": [ { "var": "kpi.cash", "delta": -500 } ], "resultText": "市場反轉，認賠出場。" } ] },
+        { "label": "加碼研發", "hint": "轉投內部，穩紮穩打", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -300 }, { "var": "kpi.product", "delta": 6, "delayMonths": 2 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "S-01", "dept": "shareholder", "tier": [1,2,3], "type": "routine",
+      "trigger": { "weight": 100, "once": false, "cooldown": 3, "conditions": [] },
+      "title": "季度業績質詢", "speaker": "dong",
+      "text": "董大川端著茶：「這一季的成績單，你自己覺得如何？跟董事會交代得過去嗎？」",
+      "options": [
+        { "label": "坦承並提改善計畫", "hint": "誠實，短空長多", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.shareholder", "delta": -3 } ], "random": [] },
+        { "label": "美化說法", "hint": "賭對方看不穿", "followUp": null, "setFlag": null,
+          "effects": [], "random": [ { "chance": 0.5, "effects": [ { "var": "kpi.shareholder", "delta": 2 } ], "resultText": "順利過關，董事會暫時安心。" }, { "chance": 0.5, "effects": [ { "var": "kpi.shareholder", "delta": -10 } ], "resultText": "被董大川識破，信任大跌。" } ] },
+        { "label": "請求增資支持", "hint": "拿現金，但拉高期待", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": 2000 }, { "var": "kpi.equity", "delta": 2000 }, { "var": "kpi.shareholder", "delta": -5 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "S-05", "dept": "shareholder", "tier": [2], "type": "crisis",
+      "trigger": { "weight": 10, "once": true, "cooldown": 0, "conditions": [] },
+      "title": "董大川想安插親戚當副總", "speaker": "dong",
+      "text": "董大川語重心長：「我有個姪子很有想法，讓他來當個副總歷練歷練，你意下如何？」",
+      "options": [
+        { "label": "接受安排", "hint": "討好股東，但埋管理隱憂", "followUp": null, "setFlag": "relativeVP",
+          "effects": [ { "var": "kpi.shareholder", "delta": 8 }, { "var": "kpi.morale", "delta": -8 } ], "random": [] },
+        { "label": "婉拒", "hint": "守住專業，得罪長輩", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.shareholder", "delta": -10 } ], "random": [] },
+        { "label": "給個閒職", "hint": "折衷，仍有變數", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.shareholder", "delta": 3 } ],
+          "random": [ { "chance": 0.1, "effects": [ { "var": "kpi.brand", "delta": -5 } ], "resultText": "親戚閒不住闖了禍，公司形象受損。" } ] }
+      ]
+    },
+    {
+      "id": "B-02", "dept": "bank", "tier": [1,2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 8, "conditions": [ { "var": "kpi.credit", "op": ">=", "value": 45 } ] },
+      "title": "銀行主動提供擴張貸款", "speaker": "tian",
+      "text": "田利息笑臉迎人：「貴公司信用不錯，我們有一筆擴張貸款額度，利率好談，要不要參考?」",
+      "options": [
+        { "label": "借 3000 萬", "hint": "大筆銀彈，背利息與負債", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": 3000 }, { "var": "aux.debt", "delta": 3000 }, { "var": "aux.interest", "delta": 22 } ], "random": [] },
+        { "label": "借 1000 萬", "hint": "保守取用", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": 1000 }, { "var": "aux.debt", "delta": 1000 }, { "var": "aux.interest", "delta": 8 } ], "random": [] },
+        { "label": "不借", "hint": "零負債，銀行略失望", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.credit", "delta": -2 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "B-06", "dept": "bank", "tier": [2,3], "type": "crisis",
+      "trigger": { "weight": 12, "once": false, "cooldown": 6, "conditions": [ { "var": "kpi.credit", "op": "<", "value": 50 } ] },
+      "title": "景氣緊縮，銀行抽銀根", "speaker": "tian",
+      "text": "田利息面有難色：「上面政策收緊，貴公司這筆授信我們得請你提前因應，抱歉了。」",
+      "options": [
+        { "label": "提前清償一半", "hint": "現金大失血，換回信用", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -1500 }, { "var": "aux.debt", "delta": -1500 }, { "var": "kpi.credit", "delta": 10 } ], "random": [] },
+        { "label": "協商展延", "hint": "拖時間，代價是信用與利率", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.credit", "delta": -5 }, { "var": "aux.interest", "delta": 10 } ], "random": [] },
+        { "label": "轉向股東求援", "hint": "拿股東的錢補洞", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.shareholder", "delta": -8 }, { "var": "kpi.cash", "delta": 1500 }, { "var": "kpi.equity", "delta": 1500 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "U-01", "dept": "supplier", "tier": [1], "type": "crisis",
+      "trigger": { "weight": 12, "once": false, "cooldown": 6, "conditions": [] },
+      "title": "原料漲價 15%", "speaker": "shi",
+      "text": "石原料一臉為難：「上游成本壓不住，這批料得漲個一成五，實在不好意思。」",
+      "options": [
+        { "label": "接受漲價", "hint": "成本直接上升", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.materialRate", "op": "mul", "delta": 1.15 } ], "random": [] },
+        { "label": "簽兩年長約鎖價", "hint": "只漲一點，但綁死彈性", "followUp": null, "setFlag": "longContract",
+          "effects": [ { "var": "aux.materialRate", "op": "mul", "delta": 1.05 }, { "var": "aux.supplierRel", "delta": 5 } ], "random": [] },
+        { "label": "換新供應商", "hint": "壓成本，但磨合有風險", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.materialRate", "op": "mul", "delta": 0.95 }, { "var": "aux.yieldRate", "op": "mul", "delta": 0.96, "months": 2 }, { "var": "aux.supplierRel", "delta": -10 } ],
+          "random": [ { "chance": 0.2, "effects": [ { "var": "aux.capacity", "op": "mul", "delta": 0.9, "months": 1 } ], "resultText": "新供應商斷料一次，當月產能受影響。" } ] }
+      ]
+    },
+    {
+      "id": "U-04", "dept": "supplier", "tier": [2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 8, "conditions": [] },
+      "title": "石原料週轉不靈求預付", "speaker": "shi",
+      "text": "石原料放低姿態：「最近週轉有點緊，如果能先預付半年貨款，價格好說，交情也記著。」",
+      "options": [
+        { "label": "預付半年貨款", "hint": "先掏現金，換長期低成本", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -900 }, { "var": "aux.supplierRel", "delta": 25 }, { "var": "aux.materialRate", "op": "mul", "delta": 0.92, "months": 12 } ], "random": [] },
+        { "label": "拒絕", "hint": "保留現金，關係略傷", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.supplierRel", "delta": -10 } ],
+          "random": [ { "chance": 0.15, "effects": [ { "var": "aux.capacity", "op": "mul", "delta": 0.9, "months": 1 } ], "resultText": "供應商週轉出問題，一個月後斷料。" } ] },
+        { "label": "趁機壓價", "hint": "撿便宜，但徹底得罪對方", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "aux.materialRate", "op": "mul", "delta": 0.88 }, { "var": "aux.supplierRel", "delta": -25 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "C-03", "dept": "channel", "tier": [1,2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 6, "conditions": [] },
+      "title": "白買家下年度大單但要求降價 12%", "speaker": "bai",
+      "text": "白買家把訂單推過來：「量我給你加大，但單價得讓我一成二，做不做?」",
+      "options": [
+        { "label": "接受大單", "hint": "衝量，但壓縮毛利", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.share", "delta": 5 }, { "var": "aux.price", "op": "mul", "delta": 0.88 } ], "random": [] },
+        { "label": "談判折衷", "hint": "賭談判結果", "followUp": null, "setFlag": null,
+          "effects": [], "random": [ { "chance": 0.6, "effects": [ { "var": "kpi.share", "delta": 3 }, { "var": "aux.price", "op": "mul", "delta": 0.94 } ], "resultText": "談成六折讓步，量價兼顧。" }, { "chance": 0.4, "effects": [ { "var": "kpi.satisfaction", "delta": -10 } ], "resultText": "談判破局，客戶不悅。" } ] },
+        { "label": "拒絕", "hint": "守住價格與骨氣", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.share", "delta": -2 }, { "var": "kpi.brand", "delta": 2 } ], "random": [] }
+      ]
+    },
+    {
+      "id": "G-02", "dept": "gov", "tier": [2], "type": "crisis",
+      "trigger": { "weight": 12, "once": true, "cooldown": 0, "conditions": [] },
+      "title": "環保法規加嚴", "speaker": "guan",
+      "text": "官正義公事公辦：「新的環保標準下來了，貴公司的產線需要在期限內改善，請及早規劃。」",
+      "options": [
+        { "label": "立即投資防治設備", "hint": "一次到位，換取合規", "followUp": null, "setFlag": "pollutionSolved",
+          "effects": [ { "var": "kpi.cash", "delta": -1200 }, { "var": "kpi.compliance", "delta": 15 } ], "random": [] },
+        { "label": "分期改善", "hint": "攤平現金壓力", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -100, "months": 12 }, { "var": "kpi.compliance", "delta": 8 } ], "random": [] },
+        { "label": "觀望", "hint": "賭不會被抓，風險高", "followUp": null, "setFlag": "pollutionRisk",
+          "effects": [], "random": [ { "chance": 0.25, "effects": [ { "var": "kpi.cash", "delta": -500 }, { "var": "kpi.compliance", "delta": -15 }, { "var": "kpi.brand", "delta": -5 } ], "resultText": "遭稽查開罰，合規與形象雙損。" } ] }
+      ]
+    },
+    {
+      "id": "G-05", "dept": "gov", "tier": [1,2], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 12, "conditions": [] },
+      "title": "產業升級補助開放申請", "speaker": "guan",
+      "text": "官正義難得帶著笑意：「這期有一筆產業升級補助開放申請，貴公司條件不錯，可以試試。」",
+      "options": [
+        { "label": "認真準備申請", "hint": "花小錢請顧問，合規高才易過", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.cash", "delta": -30 } ],
+          "random": [ { "chance": 0.7, "effects": [ { "var": "kpi.cash", "delta": 800 } ], "resultText": "補助核准，入帳 800 萬。" } ] },
+        { "label": "隨便送件", "hint": "碰運氣", "followUp": null, "setFlag": null,
+          "effects": [], "random": [ { "chance": 0.2, "effects": [ { "var": "kpi.cash", "delta": 800 } ], "resultText": "居然中了，補助入帳。" } ] },
+        { "label": "不申請", "hint": "省事", "followUp": null, "setFlag": null, "effects": [], "random": [] }
+      ]
+    },
+    {
+      "id": "N-01", "dept": "media", "tier": [1,2,3], "type": "opportunity",
+      "trigger": { "weight": 10, "once": false, "cooldown": 8, "conditions": [] },
+      "title": "麻雀姐邀請專訪", "speaker": "maque",
+      "text": "麻雀姐笑吟吟遞上名片：「總經理，做個專訪吧？讓讀者認識認識貴公司。」",
+      "options": [
+        { "label": "接受並開放參觀", "hint": "曝光加分，但怕被挖瘡疤", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.brand", "delta": 6 } ],
+          "random": [ { "chance": 0.3, "effects": [ { "var": "kpi.brand", "delta": -10 } ], "resultText": "訪談中被追問未解決的爭議，反被寫成負面報導。" } ] },
+        { "label": "只做書面回覆", "hint": "安全牌，加分有限", "followUp": null, "setFlag": null,
+          "effects": [ { "var": "kpi.brand", "delta": 2 } ], "random": [] },
+        { "label": "拒絕", "hint": "低調，但得罪記者", "followUp": null, "setFlag": "snubbedMedia",
+          "effects": [], "random": [] }
+      ]
+    }
+  ]
+}

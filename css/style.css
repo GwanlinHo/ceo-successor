@@ -1,0 +1,72 @@
+/* 企業接班人養成術 — 色盤與基礎樣式
+   風格：辦公室中性色（黑、白、灰階、米黃）。狀態以 [O][X][!] 文字符號表示，不用 emoji。 */
+
+:root {
+  /* 中性色盤 */
+  --ink: #2b2b29;          /* 主文字：近黑 */
+  --ink-soft: #55524c;     /* 次要文字 */
+  --paper: #f4f1ea;        /* 米黃紙面：主背景 */
+  --paper-2: #eae5da;      /* 米黃深一階：卡片 */
+  --white: #fdfcf9;        /* 近白：面板 */
+  --line: #cfc9bc;         /* 分隔線 */
+  --gray-1: #d8d4ca;
+  --gray-2: #b3afa2;
+  --gray-3: #8a8578;
+  --accent: #4a4640;       /* 深灰主按鈕 */
+  --accent-ink: #f4f1ea;
+  /* 語意色（僅用於數據漲跌，仍走低彩度） */
+  --good: #4d6b52;         /* 沉綠：正向 */
+  --bad: #8a4b45;          /* 磚紅：負向 */
+  --warn: #9a7d3e;         /* 芥黃：警示 */
+
+  --radius: 6px;
+  --shadow: 0 1px 3px rgba(43, 43, 41, 0.15);
+  --font: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+#app { min-height: 100%; display: flex; flex-direction: column; }
+
+.boot {
+  margin: auto;
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+  padding: 3rem;
+}
+
+/* 通用元件（畫面實作於 M4/M6 時擴充） */
+.btn {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.6em 1.2em;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+}
+.btn:hover { background: var(--paper-2); }
+.btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn-primary:hover { filter: brightness(1.1); }
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+}
+
+.val-good { color: var(--good); }
+.val-bad { color: var(--bad); }
+.val-warn { color: var(--warn); }

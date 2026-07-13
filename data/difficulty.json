@@ -1,0 +1,42 @@
+{
+  "_doc": "難度檔。以覆蓋(override)方式改寫 balance.json 的部分數值，並定義每月事件數矩陣。eventsPerMonth[難度][tier] = [min,max]，區間內隨機。",
+  "version": 1,
+
+  "levels": {
+    "easy": {
+      "label": "簡單",
+      "initCash": 3500,
+      "eventsPerMonth": { "1": [3, 5], "2": [5, 7], "3": [7, 9] },
+      "crisisWeightMul": 0.6,
+      "negativeEffectMul": 0.7,
+      "upgradeThresholdMul": 0.85,
+      "rumorTruthRate": 0.8,
+      "rivalGrowthMul": 0.6,
+      "showNumbers": true
+    },
+    "normal": {
+      "label": "普通",
+      "initCash": 2000,
+      "eventsPerMonth": { "1": [4, 6], "2": [6, 9], "3": [9, 12] },
+      "crisisWeightMul": 1.0,
+      "negativeEffectMul": 1.0,
+      "upgradeThresholdMul": 1.0,
+      "rumorTruthRate": 0.6,
+      "rivalGrowthMul": 1.0,
+      "showNumbers": false
+    },
+    "hard": {
+      "label": "困難",
+      "initCash": 1200,
+      "eventsPerMonth": { "1": [5, 8], "2": [9, 12], "3": [14, 16] },
+      "crisisWeightMul": 1.5,
+      "negativeEffectMul": 1.3,
+      "upgradeThresholdMul": 1.2,
+      "rumorTruthRate": 0.45,
+      "rivalGrowthMul": 1.4,
+      "showNumbers": false
+    }
+  },
+
+  "_designNote": "困難×大型 14~16(中心15)：一個遊戲月約1小時 → 平均每4分鐘一決策，模擬真實總經理每週3~4項重要決策×4週的壓力。"
+}

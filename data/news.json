@@ -1,0 +1,13 @@
+{
+  "_doc": "新聞與小道消息模板(M1 種子版，M7 擴充)。type: industry 產業(可信,預告市場變動) / company 公司(決策後果見報) / rumor 小道消息(依難度 rumorTruthRate 決定真偽)。{company}{rival} 為變數。",
+  "version": 1,
+  "templates": [
+    { "id": "IND-01", "type": "industry", "tier": [1,2,3], "text": "產業景氣領先指標轉強，下季市場需求可望回升。", "hint": "economyUp" },
+    { "id": "IND-02", "type": "industry", "tier": [1,2,3], "text": "原物料行情走高，分析師預期成本壓力將於一兩個月內浮現。", "hint": "materialUp" },
+    { "id": "IND-03", "type": "industry", "tier": [2,3], "text": "{rival}宣布擴廠，市場競爭恐加劇。", "hint": "rivalUp" },
+    { "id": "RUM-01", "type": "rumor", "tier": [1,2,3], "text": "聽說石原料下個月要調漲報價，不少同業已在搶簽長約。", "hint": "materialUp" },
+    { "id": "RUM-02", "type": "rumor", "tier": [1,2,3], "text": "小道消息：某大客戶採購策略要轉向，明年訂單可能重新洗牌。", "hint": "channelShift" },
+    { "id": "RUM-03", "type": "rumor", "tier": [2,3], "text": "業界傳聞主管機關近期將加強稽查，合規不良的廠商要當心。", "hint": "govAudit" },
+    { "id": "CMP-01", "type": "company", "tier": [1,2,3], "text": "{company}本月營運動向受同業關注。", "hint": "neutral" }
+  ]
+}
