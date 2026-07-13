@@ -35,6 +35,19 @@ export function hasSave() {
   return !!localStorage.getItem(KEY);
 }
 
+// 存檔防崩潰：清掉存檔中已不存在於當前事件庫的事件 id(進版刪/改名事件時，
+// 避免舊存檔的待處理佇列指向不存在事件而讓 getEvent 崩潰)。回傳清理後的 state。
+export function sanitizeSave(state, data) {
+  if (!state || !state.events) return state;
+  const known = new Set((data.events?.events || []).map((e) => e.id));
+  const ev = state.events;
+  ev.queue = (ev.queue || []).filter((id) => known.has(id));
+  ev.pending = (ev.pending || []).filter((p) => known.has(p.eventId));
+  // current 一律同步為佇列首(引擎不變量)；佇列清空則 null
+  ev.current = ev.queue[0] ?? null;
+  return state;
+}
+
 // 請求持久化儲存：降低 localStorage 在空間吃緊時被瀏覽器自動清除的機率。
 // 不影響「清除瀏覽器資料」或換裝置的情況(那仍需匯出檔備份)。失敗不影響遊戲。
 export function requestPersistentStorage() {

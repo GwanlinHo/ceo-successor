@@ -2,7 +2,7 @@
 
 import { loadData } from "./data-loader.js";
 import { newGame, reduce } from "./engine/engine.js";
-import { saveGame, loadGame, hasSave, clearSave, exportSave, importSave, requestPersistentStorage } from "./save.js";
+import { saveGame, loadGame, hasSave, clearSave, exportSave, importSave, requestPersistentStorage, sanitizeSave } from "./save.js";
 import { renderHud, renderSettlement } from "./ui/hud.js";
 import { renderDialog, renderDecisionResult } from "./ui/dialog.js";
 import { renderStart, renderHowTo, renderSetup, renderConfirmNew, renderEnding, HOW_PAGE_COUNT } from "./ui/screens.js";
@@ -22,7 +22,7 @@ async function boot() {
     // 自動載入：有未結束的存檔就直接進遊戲(想重來:遊戲中「存檔並離開」→「新遊戲」)
     const saved = loadGame();
     if (saved && saved.meta.phase !== "ended") {
-      state = saved;
+      state = sanitizeSave(saved, DATA); // 進版防崩潰：清掉已不存在的事件 id
       view.screen = "game";
     }
     render();
@@ -100,7 +100,7 @@ function onAction(act) {
     case "continue": {
       const s = loadGame();
       if (!s) return alert("找不到存檔");
-      state = s; view.screen = "game"; return render();
+      state = sanitizeSave(s, DATA); view.screen = "game"; return render();
     }
     case "start-game": return onStartGame();
     case "import": return onImport();
@@ -158,7 +158,7 @@ function onImport() {
   input.onchange = async () => {
     if (!input.files[0]) return;
     try {
-      state = await importSave(input.files[0]);
+      state = sanitizeSave(await importSave(input.files[0]), DATA);
       saveGame(state);
       view.screen = state.meta.phase === "ended" ? "ending" : "game";
       render();
@@ -169,10 +169,39 @@ function onImport() {
   input.click();
 }
 
-// 註冊 Service Worker(離線可玩)；失敗不影響遊戲
+// 註冊 Service Worker(離線可玩)＋進版更新提示；失敗不影響遊戲
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch((e) => console.warn("SW 註冊失敗:", e.message));
+  window.addEventListener("load", async () => {
+    try {
+      const reg = await navigator.serviceWorker.register("./sw.js");
+      // 偵測到新版 SW 安裝完成(且非首次安裝) → 顯示更新橫幅
+      reg.addEventListener("updatefound", () => {
+        const nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener("statechange", () => {
+          if (nw.state === "installed" && navigator.serviceWorker.controller) showUpdateBanner(reg);
+        });
+      });
+      // 僅在「使用者按了更新」後、新 SW 接管時才重整(首次安裝的 claim 不重整)
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (window.__ceoUpdating) location.reload();
+      });
+    } catch (e) {
+      console.warn("SW 註冊失敗:", e.message);
+    }
+  });
+}
+
+function showUpdateBanner(reg) {
+  if (document.querySelector(".update-bar")) return;
+  const bar = document.createElement("div");
+  bar.className = "update-bar";
+  bar.innerHTML = `<span>遊戲已有新版本</span><button class="btn btn-primary" data-update="1">重新整理更新</button>`;
+  document.body.appendChild(bar);
+  bar.querySelector("[data-update]").addEventListener("click", () => {
+    window.__ceoUpdating = true;
+    if (reg.waiting) reg.waiting.postMessage("SKIP_WAITING");
+    else location.reload();
   });
 }
 

@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 import { newGame, reduce, queueEffect } from "../js/engine/engine.js";
 import { makeRng } from "../js/engine/rng.js";
 import { checkRules } from "../js/engine/rules.js";
+import { sanitizeSave } from "../js/save.js";
 
 const ROOT = new URL("../", import.meta.url);
 const data = {};
@@ -465,6 +466,31 @@ t("上市審查閘門：財務達標但未過審不得升級 tier3", () => {
   let s2 = readyTier2(); s2.flags.ipoApproved = true;
   checkRules(s2, data); checkRules(s2, data);
   eq(s2.tier, 3, "過審且維持 holdMonths 後應升級 tier3");
+});
+
+console.log("== 進版存檔防崩潰(sanitizeSave) ==");
+t("清掉存檔中已不存在的事件 id，current 同步佇列首", () => {
+  const s = newGame(data, OPTS);
+  // 注入不存在的事件 id
+  s.events.queue = ["R-01", "NOPE-99", s.events.queue[0] || "R-01"].filter(Boolean);
+  s.events.current = "NOPE-99";
+  s.events.pending = [{ eventId: "GONE-1", dueMonth: s.meta.month + 1 }, { eventId: "R-07", dueMonth: s.meta.month + 2 }];
+  sanitizeSave(s, data);
+  ok(!s.events.queue.includes("NOPE-99"), "佇列不含不存在事件");
+  ok(!s.events.pending.some((p) => p.eventId === "GONE-1"), "pending 不含不存在事件");
+  ok(s.events.pending.some((p) => p.eventId === "R-07"), "pending 保留存在事件");
+  eq(s.events.current, s.events.queue[0] ?? null, "current 同步佇列首");
+});
+t("清理後的存檔可正常繼續遊玩不崩潰", () => {
+  let s = newGame(data, OPTS);
+  s.events.queue = ["BAD-1", ...s.events.queue];
+  s.events.current = "BAD-1";
+  s.events.pending = [{ eventId: "BAD-2", dueMonth: s.meta.month + 1 }];
+  sanitizeSave(s, data);
+  // 決策完剩餘事件、結算、進月 — 不應 throw
+  while (s.events.current && s.meta.phase === "events") s = reduce(s, { type: "DECIDE", optionIndex: 0 }, data);
+  s = reduce(s, { type: "END_MONTH" }, data);
+  ok(s.meta.phase === "settled" || s.meta.phase === "ended", "清理後仍可完成一個月");
 });
 
 console.log(`\n結果: ${pass} 通過, ${fail} 失敗`);

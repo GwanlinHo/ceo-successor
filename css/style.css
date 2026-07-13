@@ -248,3 +248,10 @@ html, body {
   .office-scene { max-height: 240px; }
   .dialog-speaker { flex-direction: column; align-items: center; text-align: center; }
 }
+
+/* 進版更新提示橫幅 */
+.update-bar { position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 50;
+  display: flex; align-items: center; gap: 0.8rem; padding: 0.6rem 1rem; max-width: 92%;
+  background: var(--ink); color: var(--paper); border-radius: var(--radius); box-shadow: 0 4px 16px rgba(43,43,41,0.35);
+  font-size: 0.9rem; animation: banner-in 0.35s ease; }
+.update-bar .btn { padding: 0.35em 0.8em; font-size: 0.85rem; white-space: nowrap; }
