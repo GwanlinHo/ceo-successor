@@ -13,12 +13,13 @@
 | M4 | 可玩雛形 | main.js 路由、hud.js、dialog.js、開局設定畫面；純文字版可完整玩 60 個月 | 瀏覽器手動走完一局；決策後存檔、重載可續玩 |
 | M5 | 報表與新聞 | reports.js 六分頁（SVG 趨勢圖）、news.js（新聞 / 小道消息產生與真偽） | 報表數字與引擎 state 對帳一致；新聞真偽率符合難度設定 |
 | M6 | 美術與畫面 | sprites.js（11 位 NPC + 物件 SVG）、office.js 三張 tier 場景、開始 / 說明 / 月結算 / 升級 / 結局畫面 | 全部畫面走查；色盤僅黑白灰米黃；無 emoji |
-| M7 | 事件庫量產 | 事件擴充至 140~170 件（tier 2/3 加重）+ 連鎖劇情 6 條 + news.json 模板庫；例行事件參數隨機化、冷卻設定 | validate 通過；每 tier 每單位事件數達下限（tier 3 需足以支撐每月 14~16 件不明顯重複）；人工抽查 20% 文案 |
-| M8 | 平衡調參 | simulate.js 跑 1000 局 × 3 難度，調 balance / difficulty 至驗收區間 | 普通難度隨機策略：倒閉率 15~40%、上市率 ≤ 10%、無數值爆炸；報告存 TEST_LOG.md |
+| M7 | 事件庫量產 | 事件擴充至 140~170 件（tier 2/3 加重）+ 連鎖劇情 6 條 + news.json 模板庫；例行事件參數隨機化、冷卻設定；金額一律以 tier1 尺度撰寫（依 DIFFICULTY_DESIGN 桿 D）；tier3 危機占比 ≥ 40%、危機擱置選項接惡化 followUp 鏈、上市審查鏈困難有額外階段（桿 F） | validate 通過；每 tier 每單位事件數達下限（tier 3 需足以支撐每月 14~16 件不明顯重複）；人工抽查 20% 文案 |
+| M8 | 平衡調參 | 實作 DIFFICULTY_DESIGN 桿 A/B/C/E（事件配比、經濟係數、對手反擊、計分係數）；simulate.js 跑 100 局 × 3 策略 × 3 難度調參 | 依 DIFFICULTY_DESIGN 第 5 節量化標準：避雷策略上市率簡單 ≥60%／普通 30~55%／困難 10~25% 單調遞減；隨機策略失敗率 ≥80%；原始分單調；無數值爆炸；報告存 TEST_LOG.md 並回寫 DIFFICULTY_DESIGN 第 6 節 |
 | M9 | PWA 與收尾 | manifest、sw.js（precache 含 data/*.json）、存檔匯出匯入、遊戲說明內容 | 離線斷網可完整遊玩；匯出檔可匯入還原 |
 | M10 | 端到端測試與部署 | puppeteer-core 自動走完整局；建 GitHub repo、Pages 上線 | E2E 通過；線上網址可玩；TEST_LOG.md 完整 |
 
 里程碑順序即依賴順序：M2 依賴 M1 的資料、M4 依賴 M2/M3、M8 依賴 M7。M5 與 M6 可並行。
+[!] 桿 D（事件金額隨規模縮放，見 docs/DIFFICULTY_DESIGN.md）須於 M7 之前落地——併入 M4~M6 任一 session 順手實作。
 
 ## 2. 開發進程（預估）
 
