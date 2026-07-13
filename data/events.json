@@ -10627,6 +10627,3284 @@
           "random": []
         }
       ]
+    },
+    {
+      "id": "C-11",
+      "dept": "channel",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "大型客戶資金鏈斷裂無法付款",
+      "speaker": "bai",
+      "text": "白買家面無表情地說：「那個中型客戶爆出資金危機，已交貨的訂單款現在沒法付。你們要嘛停止出貨，要嘛跟著陪錢。」",
+      "options": [
+        {
+          "label": "立即停止出貨",
+          "hint": "保護現金流，但失去訂單機會",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -2
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": -5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "寬期待，背應收帳款",
+          "hint": "賭客戶恢復，現金流受壓",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -250,
+                -150
+              ],
+              "months": 3
+            },
+            {
+              "var": "kpi.share",
+              "delta": 1
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": 150,
+                  "delayMonths": 6
+                }
+              ],
+              "resultText": "客戶恢復後回款，風險解除。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -150
+                }
+              ],
+              "resultText": "客戶最後倒閉，應收帳款化為烏有。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "與銀行協商應收帳款融資",
+          "hint": "轉移風險，但背利息成本",
+          "effects": [
+            {
+              "var": "aux.debt",
+              "op": "mul",
+              "delta": 1.2
+            },
+            {
+              "var": "aux.interest",
+              "delta": [
+                20,
+                40
+              ]
+            },
+            {
+              "var": "kpi.cash",
+              "delta": 100
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-12",
+      "dept": "channel",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "終端市場退貨潮來襲",
+      "speaker": "bai",
+      "text": "白買家皺著眉說：「終端退貨激增，退回來都是我們要處理。查了查是品質問題還是市場需求下滑，搞不清楚，你們得給個說法。」",
+      "options": [
+        {
+          "label": "全額承擔退貨損失與物流",
+          "hint": "短痛換信任，但虧損明顯",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -350,
+                -200
+              ]
+            },
+            {
+              "var": "kpi.satisfaction",
+              "delta": 8
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 5
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "與通路商分擔責任並聯合調查",
+          "hint": "談判結果未卜先知",
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -80
+                },
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": 2
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": 0
+                }
+              ],
+              "resultText": "談成對半分擔，查出品質改善點，雙方達成共識。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": -8
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": -8
+                }
+              ],
+              "resultText": "談判沒結果，互相指責，關係變冷。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "快速改善產品並補償市場信心",
+          "hint": "投資品質提升，長期見效",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -200,
+                -150
+              ]
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "kpi.product",
+              "delta": 3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": 6
+                },
+                {
+                  "var": "kpi.share",
+                  "delta": 2
+                }
+              ],
+              "resultText": "品質改善見效，市場信心恢復，銷量逐步回升。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-13",
+      "dept": "channel",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "白買家提議獨家代理協議",
+      "speaker": "bai",
+      "text": "白買家推了一份合約過來：「我想做你們的獨家代理，但得給我優惠的折扣和聯合行銷支持。不然我就各家都代理，反正選擇多。」",
+      "options": [
+        {
+          "label": "簽獨家協議並給予優惠折扣",
+          "hint": "換取市占穩定和通路深度",
+          "effects": [
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 0.92
+            },
+            {
+              "var": "kpi.share",
+              "delta": 3
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 10
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 2
+                }
+              ],
+              "resultText": "白買家承諾並增加投入，市占進一步提升。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "多通路併行，保留靈活性",
+          "hint": "價格不優但自主性高",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": 1
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": -3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "aux.channelRel",
+                  "delta": -5
+                },
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": -5
+                }
+              ],
+              "resultText": "白買家感覺被輕視，與對手更近，業務轉單。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "要求更多聯合行銷與投資承諾",
+          "hint": "談判打臉，要看白買家底氣",
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "aux.price",
+                  "op": "mul",
+                  "delta": 0.94
+                },
+                {
+                  "var": "aux.marketing",
+                  "delta": [
+                    50,
+                    80
+                  ]
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": 8
+                }
+              ],
+              "resultText": "白買家同意投入更多，達成雙贏協議。"
+            },
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "aux.channelRel",
+                  "delta": -8
+                },
+                {
+                  "var": "kpi.share",
+                  "delta": -1
+                }
+              ],
+              "resultText": "白買家不滿，轉向對手，獨家協議破局。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-14",
+      "dept": "channel",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "客戶要求產品客製化",
+      "speaker": "bai",
+      "text": "白買家說：「我這邊有個大客戶，要在你們的標準產品上做客製化改進。投資多不多？能不能做？」",
+      "options": [
+        {
+          "label": "投資研發客製化版本",
+          "hint": "花錢換長期訂單，但需求風險高",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -150,
+                -100
+              ]
+            },
+            {
+              "var": "kpi.product",
+              "delta": 2
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 2
+                },
+                {
+                  "var": "aux.price",
+                  "op": "mul",
+                  "delta": 1.1
+                }
+              ],
+              "resultText": "客製化版本成功上市，帶來新增市占和高毛利。"
+            },
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.product",
+                  "delta": -1
+                }
+              ],
+              "resultText": "客戶最後要求變更或降價，投資收不回來。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "推薦標準產品方案",
+          "hint": "保護成本結構，但可能失客",
+          "effects": [
+            {
+              "var": "aux.channelRel",
+              "delta": -2
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -1
+                }
+              ],
+              "resultText": "客戶失望，業務被對手搶走。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": -3
+                }
+              ],
+              "resultText": "客戶勉強接受標準方案，但滿意度下降。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "與供應商協商分擔客製化成本",
+          "hint": "轉移風險，但需要談判功力",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.product",
+                  "delta": 1
+                },
+                {
+                  "var": "aux.supplierRel",
+                  "delta": -3
+                }
+              ],
+              "resultText": "供應商同意投入但有怨言，關係略縮。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "aux.supplierRel",
+                  "delta": -8
+                }
+              ],
+              "resultText": "供應商拒絕，客製化計畫擱置。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-15",
+      "dept": "channel",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "單一客戶佔銷售比重超過半數",
+      "speaker": "bai",
+      "text": "白買家直言不諱：「我看你們的數字，最大客戶佔銷售超過一半，這風險太高。對手一挖你們就完蛋。得想辦法分散。」",
+      "options": [
+        {
+          "label": "主動分散風險，加速開發新客戶",
+          "hint": "長期保障，短期分散精力",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -120,
+                -80
+              ]
+            },
+            {
+              "var": "aux.marketing",
+              "delta": [
+                50,
+                100
+              ]
+            },
+            {
+              "var": "kpi.share",
+              "delta": 1
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 2
+                }
+              ],
+              "resultText": "開發新客戶成功，銷售結構逐步優化。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "加強與大客戶關係，深化合作粘性",
+          "hint": "賭長期信任，但集中風險不變",
+          "effects": [
+            {
+              "var": "aux.channelRel",
+              "delta": 8
+            },
+            {
+              "var": "kpi.satisfaction",
+              "delta": 5
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "擱置觀望，暫不行動",
+          "hint": "省錢，但風險轉為定時炸彈",
+          "effects": [],
+          "random": [],
+          "followUp": "C-C1",
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-16",
+      "dept": "channel",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "白買家提出新區域通路開發機會",
+      "speaker": "bai",
+      "text": "白買家說：「東南區域那塊市場還沒開發，我看大有潛力。我可以幫你們開發，但要投入推廣費和樣品。怎樣？」",
+      "options": [
+        {
+          "label": "投資全力拓展新通路",
+          "hint": "攻略新市場，前期投入大",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -180,
+                -120
+              ]
+            },
+            {
+              "var": "aux.marketing",
+              "delta": [
+                60,
+                100
+              ]
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.55,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 3
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": 5
+                }
+              ],
+              "resultText": "新區域開發成功，市占穩步提升。"
+            },
+            {
+              "chance": 0.45,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 0
+                }
+              ],
+              "resultText": "新區域市場需求低於預期，回報有限。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "觀望等待成熟時機",
+          "hint": "保留彈性，但可能被對手搶先",
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -1
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": -3
+                }
+              ],
+              "resultText": "對手搶先進入新區域，白買家轉單。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [],
+              "resultText": "市場暫未成熟，時機稍待。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "與白買家合資共同開發",
+          "hint": "分擔風險，但利潤分配有爭議",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -60
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 6
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.7,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 2
+                }
+              ],
+              "resultText": "合資進展順利，風險分擔得當。"
+            },
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "aux.channelRel",
+                  "delta": -5
+                }
+              ],
+              "resultText": "利潤分配爭執不下，合作陷入僵局。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-17",
+      "dept": "channel",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "白買家建議在主流電商平台上架",
+      "speaker": "bai",
+      "text": "白買家建議：「我看你們的產品很適合電商渠道，線上客流那麼大。但要上架主流平台，得投行銷推廣和運營。趁機會還在，不搭就晚了。」",
+      "options": [
+        {
+          "label": "投資全面上架並進行行銷推廣",
+          "hint": "搶佔電商風口，前期燒錢明顯",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -250,
+                -150
+              ]
+            },
+            {
+              "var": "aux.marketing",
+              "delta": [
+                80,
+                150
+              ]
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 4
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": 3
+                }
+              ],
+              "resultText": "電商銷售迅速起量，帶動整體市占和品牌知名度。"
+            },
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 1
+                }
+              ],
+              "resultText": "電商銷售平凡，投入難以收回。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "限量試點，測試市場反應",
+          "hint": "保守進入，風險可控",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -60
+            },
+            {
+              "var": "aux.marketing",
+              "delta": [
+                20,
+                40
+              ]
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 1
+                }
+              ],
+              "resultText": "試點反應良好，後續可擴大投入。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [],
+              "resultText": "試點反應平凡，擴大投入有風險。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "保留傳統渠道為主，冷眼旁觀",
+          "hint": "守住傳統優勢，但失去新增長點",
+          "effects": [
+            {
+              "var": "aux.channelRel",
+              "delta": -4
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -2
+                }
+              ],
+              "resultText": "對手進入電商搶市，市占漸失。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [],
+              "resultText": "傳統渠道暫時穩定，無進一步變化。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-18",
+      "dept": "channel",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "終端客戶投訴需要賠償處理",
+      "speaker": "bai",
+      "text": "白買家公事公辦地說：「終端客戶投訴你們產品品質，要求賠償。按合約條款我必須處理，最後還是落到你們頭上。」",
+      "options": [
+        {
+          "label": "全額賠償並改善流程",
+          "hint": "短痛換信任和體驗改善",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -100,
+                -50
+              ]
+            },
+            {
+              "var": "kpi.satisfaction",
+              "delta": 6
+            },
+            {
+              "var": "aux.yieldRate",
+              "op": "mul",
+              "delta": 1.05
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "部分賠償加改善方案",
+          "hint": "成本與信任的平衡",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -30
+            },
+            {
+              "var": "kpi.satisfaction",
+              "delta": 2
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": 2
+                }
+              ],
+              "resultText": "客戶接受部分賠償，體驗漸進改善。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.satisfaction",
+                  "delta": -4
+                }
+              ],
+              "resultText": "客戶仍感不滿，後續轉向對手。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "推敲責任劃分，消磨扯皮",
+          "hint": "省錢，但傷害關係和形象",
+          "effects": [
+            {
+              "var": "aux.channelRel",
+              "delta": -8
+            },
+            {
+              "var": "kpi.brand",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-19",
+      "dept": "channel",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "白買家要求延長付款期限",
+      "speaker": "bai",
+      "text": "白買家直言：「市場現在現金流都吃緊，我需要從你們這裡延長付款期。從三十天改到六十天，不然我就得去找對手。」",
+      "options": [
+        {
+          "label": "同意延長付款期限",
+          "hint": "爭取訂單，現金流受壓",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": 2
+            },
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -150,
+                -100
+              ],
+              "months": 2
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": 3
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "部分同意，但提高價格補償",
+          "hint": "試圖通過提價對沖現金壓力",
+          "effects": [
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 1.03
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.45,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 1
+                },
+                {
+                  "var": "kpi.cash",
+                  "delta": -60,
+                  "months": 2
+                }
+              ],
+              "resultText": "白買家接受高價長期，現金流改善。"
+            },
+            {
+              "chance": 0.55,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -1
+                },
+                {
+                  "var": "aux.channelRel",
+                  "delta": -4
+                }
+              ],
+              "resultText": "白買家不滿漲價，轉向對手尋求更好條件。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "堅持原條件，寧可放棄訂單",
+          "hint": "守住現金流和定價權，但銷量受損",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -2
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": -6
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-20",
+      "dept": "channel",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "客戶被競爭對手挖走",
+      "speaker": "bai",
+      "text": "白買家冷靜地通知：「有個中型客戶被對手以更優條件挖走了。他們給了更低的價格和更長的期限。你們要追回去的話得想想辦法。」",
+      "options": [
+        {
+          "label": "主動降價搶回客戶",
+          "hint": "短期搶單，長期傷利潤",
+          "effects": [
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 0.96
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 1
+                }
+              ],
+              "resultText": "降價奏效，客戶回心轉意。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -1
+                }
+              ],
+              "resultText": "客戶已承諾對手，降價也搶不回來。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "強化產品與服務品質，走差異化",
+          "hint": "長期競爭力，短期難見效",
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": 2
+            },
+            {
+              "var": "kpi.satisfaction",
+              "delta": 3
+            },
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -80,
+                -50
+              ]
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 1
+                }
+              ],
+              "resultText": "客戶感受到品質差異，後續訂單回流。"
+            },
+            {
+              "chance": 0.6,
+              "effects": [],
+              "resultText": "品質改善未能挽回客戶流失。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "接受流失，專注開發其他客戶",
+          "hint": "放棄跟風，專注高價值客戶",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -1
+            },
+            {
+              "var": "aux.channelRel",
+              "delta": -2
+            }
+          ],
+          "random": [],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "C-C1",
+      "dept": "channel",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "最大客戶被競爭對手正式挖走",
+      "speaker": "bai",
+      "text": "白買家通知：「那個最大客戶已經簽了對手的合約，後續訂單全轉過去。看來當初你們擱置觀望的決定，成本比想像大得多。」",
+      "options": [
+        {
+          "label": "緊急開發新客戶補缺口",
+          "hint": "高投入轉身，需要時間見效",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -300,
+                -200
+              ]
+            },
+            {
+              "var": "aux.marketing",
+              "delta": [
+                100,
+                150
+              ]
+            },
+            {
+              "var": "kpi.share",
+              "delta": -3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.55,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 2
+                }
+              ],
+              "resultText": "新客戶開發成功，逐步補回市占缺口。"
+            },
+            {
+              "chance": 0.45,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -1
+                }
+              ],
+              "resultText": "新客戶開發遲緩，市占持續下滑。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "大幅降價搶救流失客戶",
+          "hint": "豪賭，成功機率低但成本巨大",
+          "effects": [
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 0.85
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.2,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 1
+                }
+              ],
+              "resultText": "天方夜譚，客戶還是留在對手那邊。"
+            },
+            {
+              "chance": 0.8,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": -2
+                }
+              ],
+              "resultText": "大幅降價也換不回來，反而損傷整體定價。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        },
+        {
+          "label": "進行戰略調整，轉向高端市場",
+          "hint": "放棄低端，尋求新的增長路線",
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -2
+            },
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 1.12
+            },
+            {
+              "var": "kpi.product",
+              "delta": 3
+            },
+            {
+              "var": "kpi.cash",
+              "delta": [
+                -150,
+                -100
+              ]
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 1
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": 4
+                }
+              ],
+              "resultText": "高端市場轉型成功，品牌升級，新客群產生。"
+            },
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -3
+                }
+              ],
+              "resultText": "高端定位不符市場，銷售陷入困境。"
+            }
+          ],
+          "followUp": null,
+          "setFlag": null
+        }
+      ]
+    },
+    {
+      "id": "N-11",
+      "dept": "media",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "產品瑕疵被踢爆",
+      "text": "麻雀姐一臉認真地說：「總經理，有人爆料你們的產品存在品質問題，現在網上議論紛紛。我先打聲招呼，看你們怎麼回應。」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "立即道歉並啟動回收",
+          "hint": "主動認錯，修復信任",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 8
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 5
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "公開否認，聲稱品質沒問題",
+          "hint": "堵住輿論，但風險大",
+          "followUp": "N-C1",
+          "setFlag": "deniedDefect",
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": -5
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "暗示是競爭對手惡意栽贓",
+          "hint": "轉移焦點，成本低",
+          "followUp": null,
+          "setFlag": "blamedRival",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -8
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": -4
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -12
+                }
+              ],
+              "resultText": "媒體查證發現說法經不起推敲，反而加深大眾懷疑。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "N-12",
+      "dept": "media",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "高價業配邀約",
+      "text": "麻雀姐遞來一份媒體代理的企劃：「某人氣節目有檔業配，機會難得。我先問問你們有沒有興趣？」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "砸下預算，黃金檔期全上",
+          "hint": "品牌曝光最大化",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -120
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 12
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 8
+                }
+              ],
+              "resultText": "節目口碑爆表，業配效果超預期。"
+            }
+          ]
+        },
+        {
+          "label": "小額試水，單檔測試效果",
+          "hint": "風險低，但曝光有限",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -35
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 4
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "禮貌謝絕，專注其他管道",
+          "hint": "保留現金，但失去曝光",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-13",
+      "dept": "media",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "產業評比入榜爭取",
+      "text": "麻雀姐笑著說：「有份業界權威排名要選出年度最佳企業。贊助名單裡排名會往前。要不要考慮？」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "贊助排名，確保入榜前列",
+          "hint": "品牌認可度提升，但代價不菲",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 14
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -3
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "參賽但不贊助，靠實力排名",
+          "hint": "保持操守，排名取決於實力",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 5
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 6
+                }
+              ],
+              "resultText": "強勢擠入前十，媒體大篇幅報導實力派企業。"
+            }
+          ]
+        },
+        {
+          "label": "不參賽，認為排名沒有代表性",
+          "hint": "節省成本，但錯過曝光",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-14",
+      "dept": "media",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "社群假新聞流傳",
+      "text": "麻雀姐接到爆料電話：「網上說你們公司要倒閉，員工都在跳槽。其實是真的嗎？」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "火速發聲明澄清，邀媒體驗廠",
+          "hint": "快速止血，展現透明",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 6
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": 4
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "先觀察態勢，等輿論熱度下降",
+          "hint": "低調應對，但風險累積",
+          "followUp": "N-C2",
+          "setFlag": "ignoredRumor",
+          "effects": [],
+          "random": []
+        },
+        {
+          "label": "投放網路廣告與文章壓下搜尋結果",
+          "hint": "快速見效，但花錢多",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -60
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 4
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-15",
+      "dept": "media",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "新品上市記者會籌備",
+      "text": "麻雀姐問道：「新產品上市時間定了沒？要不要辦個記者會？我可以幫你們牽線媒體。」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "大手筆記者會加酒會，邀請主流媒體",
+          "hint": "聲勢浩大，媒體覆蓋廣",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -95
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 10
+            },
+            {
+              "var": "kpi.share",
+              "delta": 3
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "簡樸記者會，重點在產品展示",
+          "hint": "成本適中，專業取向",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -40
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 6
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "線上虛擬記者會，邀請遠端參與",
+          "hint": "成本最低，但現場感不足",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -15
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 2
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-16",
+      "dept": "media",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "獨家消息交換建議",
+      "text": "麻雀姐靠過來，眯著眼：「我手裡有些行業內幕。你要是願意透露公司的策略方向，我可以給你獨家優先報。怎麼樣？」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "同意透露內部策略，換獨家正面報導",
+          "hint": "品牌加分明顯，但資訊洩漏風險",
+          "followUp": null,
+          "setFlag": "sharedStrategy",
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 8
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": 3
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.25,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -6
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -4
+                }
+              ],
+              "resultText": "內幕被轉載到競爭對手手中，公司策略提前洩漏。"
+            }
+          ]
+        },
+        {
+          "label": "客套拒絕，堅守保密底線",
+          "hint": "安全保險，但失去機會",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        },
+        {
+          "label": "要求簽保密協議，再談合作",
+          "hint": "保護自己，但可能惹記者反感",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 2
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.2,
+              "effects": [
+                {
+                  "var": "kpi.shareholder",
+                  "delta": -3
+                }
+              ],
+              "resultText": "麻雀姐轉身去找其他企業，該獨家被對手搶到。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "N-17",
+      "dept": "media",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "社群KOL開砲評擊",
+      "text": "麻雀姐一早就來電：「某個大V在社群上開砲，說你們公司管理混亂、員工流失嚴重。話題正在延燒，要我幫你們發聲嗎？」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "雇網路輿情公司進行反制",
+          "hint": "快速壓制聲量，但合規有風險",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -70
+            },
+            {
+              "var": "kpi.brand",
+              "delta": -8
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -6
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "高層親自發文回應，闡述實情",
+          "hint": "展現誠意，但需要良好表現",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 5
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 4
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.3,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 6
+                }
+              ],
+              "resultText": "網友認可誠懇回應，輿論逆轉支持。"
+            }
+          ]
+        },
+        {
+          "label": "低調忽視，不主動回應",
+          "hint": "節省資源，但輿論可能擴散",
+          "followUp": "N-C3",
+          "setFlag": "ignoredAttack",
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-18",
+      "dept": "media",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "知名人士代言邀約",
+      "text": "麻雀姐帶來好消息：「某位高人氣明星有意代言產品，經紀公司問你們有沒有預算。這是大曝光機會。」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "簽長約並配合重度宣傳",
+          "hint": "品牌認可度爆增，支出龐大",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 16
+            },
+            {
+              "var": "kpi.share",
+              "delta": 5
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "單檔小額合作，試試效果",
+          "hint": "品牌加分適度，成本可控",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -55
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 6
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "客套推辭，認為不需代言",
+          "hint": "保留現金，錯過機會",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-19",
+      "dept": "media",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 10,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "前員工投訴爆料",
+      "text": "麻雀姐打來電話：「有位前員工來爆料，說你們公司存在違規操作。我準備寫成專題，想先聽聽你們的版本。」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "主動回應並展示改善措施",
+          "hint": "先發制人，展現企業責任",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": 6
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 4
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "委託律師發函警告記者",
+          "hint": "法律防線，但容易引發反感",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": -8
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": -5
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -10
+                }
+              ],
+              "resultText": "律師函被轉發網路，激起「打壓言論自由」的批評。"
+            }
+          ]
+        },
+        {
+          "label": "私下協商，要求媒體緩刊",
+          "hint": "低調處理，但可能無法長期壓制",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -50
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": -3
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-20",
+      "dept": "media",
+      "tier": [
+        1,
+        2
+      ],
+      "type": "routine",
+      "trigger": {
+        "weight": 8,
+        "once": false,
+        "cooldown": 2,
+        "conditions": []
+      },
+      "title": "置入行銷專案推廣",
+      "text": "麻雀姐遞上企劃書：「有個系列專題，專寫企業創新故事。我可以幫你們量身打造一篇軟性文章，放在頻道大版位。有興趣嗎？」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "贊助置入，打造企業形象報導",
+          "hint": "品牌形象好轉，成本適中",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -65
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 8
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.25,
+              "effects": [
+                {
+                  "var": "kpi.share",
+                  "delta": 2
+                }
+              ],
+              "resultText": "報導刊出後，投資人反應熱烈，股價短期上揚。"
+            }
+          ]
+        },
+        {
+          "label": "只提供企業資訊，不付置入費",
+          "hint": "保持新聞真實性，無成本",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 2
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "拒絕，認為置入行銷言過其實",
+          "hint": "保守策略，但失去曝光",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-C1",
+      "dept": "media",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "品質爭議輿論擴散",
+      "text": "麻雀姐追蹤報導：「幾家媒體跟進查證，越來越多消費者出面指證。你的否認反而引發更多質疑，現在事態惡化了。」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "緊急宣布產品改善計畫，賠償受害消費者",
+          "hint": "止血但燒錢，但能重建信任",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 6
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "關閉生產線，下架全系列產品",
+          "hint": "徹底解決，但營收重創",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "kpi.share",
+              "delta": -8
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 12
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "請獨立第三方單位測試，證明產品安全",
+          "hint": "用數據堵嘴，效果看情況",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -45
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 8
+                }
+              ],
+              "resultText": "第三方檢測結果證實產品無誤，輿論反轉向責任媒體。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -10
+                }
+              ],
+              "resultText": "網友質疑報告公信力，認為是「花錢造假」。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "N-C2",
+      "dept": "media",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "銀行風聲逼收貸",
+      "text": "麻雀姐報告最新進展：「你沒想到吧，那個謠言已經傳到銀行了。他們嗅到風險，在詢問你們要不要提早還貸。情況很棘手。」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "主動向銀行說明，發布正式澄清",
+          "hint": "化解誤會，重建信心",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 5
+            },
+            {
+              "var": "kpi.credit",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "迅速籌措現金，準備應對提前還款",
+          "hint": "規避風險但燒錢快",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            },
+            {
+              "var": "kpi.credit",
+              "delta": 6
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "尋求其他金融機構轉貸，準備換銀行",
+          "hint": "曲線救國，手續費高",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "aux.debt",
+              "op": "mul",
+              "delta": 1.08
+            },
+            {
+              "var": "kpi.credit",
+              "delta": -5
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "N-C3",
+      "dept": "media",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 6,
+        "conditions": []
+      },
+      "title": "社群論戰持續延燒",
+      "text": "麻雀姐來電通報：「那位KOL的批評越滾越大，現在連教授、業內大咖都開始發表評論。你再沒動作的話，就會被完全淹沒。」",
+      "speaker": "maque",
+      "options": [
+        {
+          "label": "邀請名人背書公司，出面聲援",
+          "hint": "用影響力對抗，但成本高",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 10
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "發表詳細聲明，逐點回應質疑",
+          "hint": "直面問題，需要好好準備",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 5
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 8
+                }
+              ],
+              "resultText": "聲明邏輯縝密、事實清晰，輿論開始轉向中立評估。"
+            }
+          ]
+        },
+        {
+          "label": "宣布內部改革方案，邀KOL實地察訪",
+          "hint": "用行動證明，需時間但有說服力",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -70
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 6
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "IPO-1",
+      "dept": "shareholder",
+      "tier": [
+        2
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 40,
+        "once": true,
+        "cooldown": 0,
+        "conditions": [
+          {
+            "var": "kpi.equity",
+            "op": ">=",
+            "value": 15000
+          }
+        ]
+      },
+      "title": "董事會提議啟動上市計畫",
+      "speaker": "dong",
+      "text": "董大川難得正色：「公司規模到了，董事會希望啟動上市計畫。這條路不好走，但走通了就是另一個層次。你想清楚了嗎？」",
+      "options": [
+        {
+          "label": "全力衝刺上市",
+          "hint": "投入輔導成本，開啟上市審查之路",
+          "followUp": "IPO-2",
+          "followUpDelay": 1,
+          "setFlag": "ipoInProgress",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": 5
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "再等等，先把體質顧好",
+          "hint": "不急，日後仍可啟動",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": -3
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "IPO-2",
+      "dept": "shareholder",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "上市輔導：財報透明度檢視",
+      "speaker": "qian",
+      "text": "錢守成抱來一疊資料：「上市輔導會計師要求我們把帳務攤在陽光下，有些過去的模糊地帶得處理乾淨。」",
+      "options": [
+        {
+          "label": "全面補正、誠實揭露",
+          "hint": "花錢花時間，但根基穩",
+          "followUp": "IPO-3",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "能遮的先遮，加快進度",
+          "hint": "省事，但埋審查地雷",
+          "followUp": "IPO-3",
+          "followUpDelay": 1,
+          "setFlag": "ipoCutCorners",
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -6
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "IPO-3",
+      "dept": "shareholder",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "承銷商簡報與上市定價",
+      "speaker": "tian",
+      "text": "田利息這回帶來承銷團隊：「定價要拿捏，開高了募得多但破發難看，開低了對不起老股東。你的意思是？」",
+      "options": [
+        {
+          "label": "穩健定價，重視上市後表現",
+          "hint": "募資略少，但形象穩",
+          "followUp": "IPO-4",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 400
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 4
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "積極定價，衝最大募資",
+          "hint": "拿到最多錢，但有破發風險",
+          "followUp": "IPO-4",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": 800
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -8
+                },
+                {
+                  "var": "kpi.shareholder",
+                  "delta": -6
+                }
+              ],
+              "resultText": "上市即破發，市場觀感受損。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "IPO-4",
+      "dept": "shareholder",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "上市審查委員會的最後一關",
+      "speaker": "guan",
+      "text": "官正義代表審查單位坐在對面：「所有書件都在這裡了。貴公司若一切屬實，我們樂觀其成；若有隱匿，後果自負。」",
+      "options": [
+        {
+          "label": "坦然接受審查",
+          "hint": "問心無愧就過關",
+          "followUp": null,
+          "setFlag": "ipoApproved",
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 6
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "私下打點加速",
+          "hint": "走捷徑，賭不被抓",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -300
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.6,
+              "effects": [],
+              "resultText": "打點奏效，審查通過。",
+              "setFlag": "ipoApproved"
+            },
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.compliance",
+                  "delta": -15
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": -12
+                }
+              ],
+              "resultText": "打點東窗事發，上市審查駁回、形象重挫。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "STORM-1",
+      "dept": "hr",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 14,
+        "once": false,
+        "cooldown": 12,
+        "conditions": [
+          {
+            "var": "kpi.morale",
+            "op": "<",
+            "value": 38
+          }
+        ]
+      },
+      "title": "勞資大風暴：員工醞釀集體行動",
+      "speaker": "you",
+      "text": "尤仁慈壓低聲音：「總經理，基層私下串連得很厲害，再壓下去恐怕會爆。這不是加點薪就能了事的了。」",
+      "options": [
+        {
+          "label": "主動開協商大會、誠意溝通",
+          "hint": "投入成本，正面化解",
+          "followUp": "STORM-2",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -120
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "強硬帶頭者調職",
+          "hint": "殺雞儆猴，但火上加油",
+          "followUp": "STORM-2",
+          "followUpDelay": 1,
+          "setFlag": "stormHardline",
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": -8
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "STORM-2",
+      "dept": "hr",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "勞資風暴延燒：媒體找上門",
+      "speaker": "you",
+      "text": "尤仁慈拿著手機：「事情上了新聞，記者在門口堵人。內部的火還沒滅，外面又燒起來了。」",
+      "options": [
+        {
+          "label": "公開承諾改善勞動條件",
+          "hint": "止血，代價是成本上升",
+          "followUp": "STORM-3",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "aux.salaryAvg",
+              "op": "mul",
+              "delta": 1.04
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 6
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "冷處理、等風頭過",
+          "hint": "省錢，但傷害擴大",
+          "followUp": "STORM-3",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": -8
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 1.3
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "STORM-3",
+      "dept": "hr",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "勞資風暴落幕",
+      "speaker": "you",
+      "text": "尤仁慈鬆了口氣：「總算要收尾了。這次的教訓，我們得決定怎麼記取。」",
+      "options": [
+        {
+          "label": "建立長期勞資溝通機制",
+          "hint": "花錢買長治久安",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -80
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 8
+            },
+            {
+              "var": "aux.turnover",
+              "op": "mul",
+              "delta": 0.85
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "當作單一事件翻篇",
+          "hint": "省錢，但根因還在",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.morale",
+              "delta": 2
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "LEAK-1",
+      "dept": "rnd",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 18,
+        "conditions": [
+          {
+            "var": "kpi.product",
+            "op": ">=",
+            "value": 62
+          }
+        ]
+      },
+      "title": "技術外流疑雲",
+      "speaker": "shen",
+      "text": "沈技安神色凝重：「我們的核心製程好像被競爭對手拿到了。內鬼、還是資安漏洞，現在還說不準。」",
+      "options": [
+        {
+          "label": "立即展開內部調查與資安強化",
+          "hint": "花錢止血、查清源頭",
+          "followUp": "LEAK-2",
+          "followUpDelay": 2,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -180
+            },
+            {
+              "var": "kpi.product",
+              "delta": -4
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "先觀望，避免打草驚蛇",
+          "hint": "省錢，但外流恐擴大",
+          "followUp": "LEAK-2",
+          "followUpDelay": 2,
+          "setFlag": "leakIgnored",
+          "effects": [
+            {
+              "var": "world.rivalProduct",
+              "delta": 6
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "LEAK-2",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "外流真相水落石出",
+      "speaker": "shen",
+      "text": "沈技安把調查報告放到桌上：「查到了。接下來怎麼處理，攸關我們的技術護城河，也攸關公司名聲。」",
+      "options": [
+        {
+          "label": "循法律途徑追究到底",
+          "hint": "耗成本但立威、追回優勢",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -220
+            },
+            {
+              "var": "kpi.product",
+              "delta": 6
+            },
+            {
+              "var": "kpi.brand",
+              "delta": 3
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "私下和解、低調處理",
+          "hint": "省錢息事，但對手已得利",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "world.rivalProduct",
+              "delta": 4
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "FAM-1",
+      "dept": "shareholder",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 11,
+        "once": true,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "家族接班內鬥浮上檯面",
+      "speaker": "dong",
+      "text": "董大川面色複雜：「家裡幾房為了接班的事鬧得不愉快，有人質疑你的位子。這是家事，也是公司的事。」",
+      "options": [
+        {
+          "label": "用經營績效證明自己",
+          "hint": "以實力服人，不涉入派系",
+          "followUp": "FAM-2",
+          "followUpDelay": 2,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": -4
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "拉攏關鍵長輩結盟",
+          "hint": "鞏固支持，但欠人情",
+          "followUp": "FAM-2",
+          "followUpDelay": 2,
+          "setFlag": "famAllied",
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": 6
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -100
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "FAM-2",
+      "dept": "shareholder",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "董事會攤牌",
+      "speaker": "dong",
+      "text": "董大川把你叫到一旁：「下次董事會，有人要提案表決你的去留。做好準備吧。」",
+      "options": [
+        {
+          "label": "端出完整的經營藍圖爭取信任",
+          "hint": "正面對決，用願景說服",
+          "followUp": "FAM-3",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "承諾釋出部分經營權妥協",
+          "hint": "換取穩定，但綁手綁腳",
+          "followUp": "FAM-3",
+          "followUpDelay": 1,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": 4
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -4
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "FAM-3",
+      "dept": "shareholder",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "接班之爭的結局",
+      "speaker": "dong",
+      "text": "塵埃落定。董大川拍拍你的肩：「這一關過了，往後路還長。」",
+      "options": [
+        {
+          "label": "藉勢推動組織改革",
+          "hint": "趁機整頓，長期加分",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": 4
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 5
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "低調鞏固現狀",
+          "hint": "求穩不冒進",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": 2
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "FINX-1",
+      "dept": "fin",
+      "tier": [
+        2,
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 10,
+        "once": true,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "金融風暴來襲",
+      "speaker": "qian",
+      "text": "錢守成臉色發白：「總經理，全球金融情勢急轉直下，銀行開始收傘、市場需求同步萎縮，未來幾個月都不好過。」",
+      "options": [
+        {
+          "label": "保守應對、囤積現金",
+          "hint": "犧牲成長換安全",
+          "followUp": "FINX-2",
+          "followUpDelay": 3,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "world.economyIndex",
+              "delta": -0.15
+            },
+            {
+              "var": "world.economyIndex",
+              "delta": 0.15,
+              "delayMonths": 3
+            },
+            {
+              "var": "aux.marketing",
+              "delta": -20,
+              "months": 3
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "逆勢擴張、趁低搶進",
+          "hint": "高風險，賭復甦搶市占",
+          "followUp": "FINX-2",
+          "followUpDelay": 3,
+          "setFlag": "finxAggressive",
+          "effects": [
+            {
+              "var": "world.economyIndex",
+              "delta": -0.15
+            },
+            {
+              "var": "world.economyIndex",
+              "delta": 0.15,
+              "delayMonths": 3
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -400
+            },
+            {
+              "var": "kpi.share",
+              "delta": 3
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "FINX-2",
+      "dept": "fin",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "風暴過後的盤整",
+      "speaker": "qian",
+      "text": "錢守成翻著報表：「最壞的時候過去了。這波下來，我們得決定怎麼重新站穩。」",
+      "options": [
+        {
+          "label": "重整體質、償還高息負債",
+          "hint": "花現金換財務健康",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -200
+            },
+            {
+              "var": "aux.debt",
+              "delta": -300
+            },
+            {
+              "var": "kpi.credit",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "把握復甦、加碼投資",
+          "hint": "趁勢而上，但留意現金",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.product",
+              "delta": 5
+            },
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "KILL-1",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "opportunity",
+      "trigger": {
+        "weight": 50,
+        "once": true,
+        "cooldown": 0,
+        "conditions": [
+          {
+            "var": "kpi.product",
+            "op": ">=",
+            "value": 80
+          }
+        ]
+      },
+      "title": "殺手級新產品的雛形",
+      "speaker": "shen",
+      "text": "沈技安兩眼發光：「總經理，實驗室做出了一個可能改變戰局的東西。如果我們押對，這會是市場的下一個標準。」",
+      "options": [
+        {
+          "label": "全力量產、搶市場先機",
+          "hint": "重壓一把，回報巨大",
+          "followUp": "KILL-2",
+          "followUpDelay": 2,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -500
+            },
+            {
+              "var": "kpi.product",
+              "delta": 6
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "謹慎試水溫、小量投放",
+          "hint": "穩健，回報也較小",
+          "followUp": "KILL-2",
+          "followUpDelay": 2,
+          "setFlag": "killCautious",
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -150
+            },
+            {
+              "var": "kpi.share",
+              "delta": 2
+            }
+          ],
+          "random": []
+        }
+      ]
+    },
+    {
+      "id": "KILL-2",
+      "dept": "rnd",
+      "tier": [
+        1,
+        2,
+        3
+      ],
+      "type": "chain",
+      "trigger": {
+        "weight": 0.001,
+        "once": false,
+        "cooldown": 0,
+        "conditions": []
+      },
+      "title": "新產品的市場反應",
+      "speaker": "jia",
+      "text": "賈推銷衝進辦公室：「總經理！市場反應超乎預期，訂單像雪片一樣飛來，通路都在問貨！」",
+      "options": [
+        {
+          "label": "順勢拉高品牌定位",
+          "hint": "把聲勢化為品牌資產",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.brand",
+              "delta": 10
+            },
+            {
+              "var": "kpi.share",
+              "delta": 5
+            },
+            {
+              "var": "aux.price",
+              "op": "mul",
+              "delta": 1.06
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "衝量搶占最大市占",
+          "hint": "薄利多銷擴版圖",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": 8
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 1.1
+            }
+          ],
+          "random": []
+        }
+      ]
     }
   ]
 }

@@ -26,3 +26,10 @@
 [2026-07-13] [E2E-M6] tests/e2e-m4.mjs 15 項 / 結果 [O] / 新增:事件對話框NPC頭像SVG;修sprites.js檔尾process自我檢查(瀏覽器無process致載入崩潰,已移除);完整一局全過、零JS錯誤。
 [2026-07-13] [視覺-M6] docs/screenshots/m6-*.png / 結果 [O] / 對話框NPC頭像(尤仁慈包頭);辦公室場景五部門NPC可辨(研發眼鏡/生產安全帽/人事包頭/財務背心)、桌+盆栽+櫃、tier標題「一層辦公室」;2頭身Q版、中性色、無emoji。
 [!] M6 小瑕疵(非阻擋):行銷業務部標籤靠右偏移、部分NPC與桌略重疊,M9收尾可微調office站位。
+
+[2026-07-13] [M7量產] 事件庫 22→160件 / 結果 [O] / 6波(A~L)分批,每批Haiku產出+merge-batch驗證+主線抽查合併;連鎖劇情L由主線親撰16件。各部門:rnd18/prod14/mkt14/hr17/fin16/shareholder19/bank12/supplier12/channel12/gov12/media14。validate 0錯0警告。
+[2026-07-13] [單元-M7] tests/engine.test.js 37項 / 結果 [O] / 新增3項:followUpDelay延月觸發、random分支setFlag、上市審查閘門(ipoApproved把關tier2→3)。
+[2026-07-13] [冒煙-M7] 30局×3難度 / 結果 [O] / 0崩潰;每月平均事件5.2(前22件庫僅2.5,證庫變大不再抽乾);劇情鏈觸達100次;IPO鏈隨機play未觸達(需tier2高淨值,屬正常)。
+[2026-07-13] [E2E-M7] tests/e2e-m4.mjs 15項 / 結果 [O] / 160件庫下完整一局+存讀檔+結局+零JS錯誤。
+[X][!] **M7揭露平衡退化(M8第一優先,詳見 DIFFICULTY_DESIGN 5.5)**:事件5.2/月但經濟常數仍是2.5/月時代所定,naive bot存活中位數僅18~26月、0局達tier2。追蹤證實為調參問題(市占跌地板仍可回升,非死鎖)。M8需重調經濟基礎+可能加市占單月跌幅上限+改用理性bot當勝率基準。
+[!] 桿F tier3危機占比32%<目標40%(agent未完全達標),列M8微調。

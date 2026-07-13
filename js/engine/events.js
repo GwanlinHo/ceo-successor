@@ -62,8 +62,14 @@ export function drawMonthlyEvents(s, data, rng) {
     take(pool[rng.weightedIndex(pool.map((e) => weightOf(e, diffL)))]);
   }
 
-  s.events.queue = picked.map((e) => e.id);
+  // 3) 到期的延月劇情事件強制插到本月最前面(不受抽取名額限制)
+  const duePending = s.events.pending.filter((p) => p.dueMonth <= month);
+  s.events.pending = s.events.pending.filter((p) => p.dueMonth > month);
+  const pendingIds = duePending.map((p) => p.eventId).filter((id) => !pickedIds.has(id));
+
+  s.events.queue = [...pendingIds, ...picked.map((e) => e.id)];
   s.events.current = s.events.queue[0] ?? null;
+  for (const id of pendingIds) s.events.lastFired[id] = month;
   for (const e of picked) {
     s.events.lastFired[e.id] = month;
     s.events.deptLast[e.dept] = month;
@@ -100,6 +106,7 @@ export function applyDecision(s, action, data, rng) {
         for (const eff of branch.effects || []) {
           applyOrQueue(scaleBadEffect(eff, diffL.negativeEffectMul));
         }
+        if (branch.setFlag) s.flags[branch.setFlag] = true; // 分支層級旗標(如打點成功才過審)
         resultText = branch.resultText || null;
         break;
       }
@@ -112,11 +119,16 @@ export function applyDecision(s, action, data, rng) {
   s.lastDecision = { eventId: evId, optionIndex: action.optionIndex, label: opt.label, resultText };
   if (resultText) s.log.push({ month: s.meta.month, text: `${ev.title}：${resultText}` });
 
-  // 推進佇列；followUp 事件鏈插到最前面
+  // 推進佇列；followUp 事件鏈：followUpDelay>0 延月觸發(劇情跨月)，否則同月立即插隊
   s.events.queue.shift();
   if (opt.followUp) {
-    s.events.queue.unshift(opt.followUp);
-    s.events.lastFired[opt.followUp] = s.meta.month;
+    const delay = opt.followUpDelay || 0;
+    if (delay > 0) {
+      s.events.pending.push({ eventId: opt.followUp, dueMonth: s.meta.month + delay });
+    } else {
+      s.events.queue.unshift(opt.followUp);
+      s.events.lastFired[opt.followUp] = s.meta.month;
+    }
   }
   s.events.current = s.events.queue[0] ?? null;
 }

@@ -4,6 +4,7 @@
 import { readFileSync } from "node:fs";
 import { newGame, reduce, queueEffect } from "../js/engine/engine.js";
 import { makeRng } from "../js/engine/rng.js";
+import { checkRules } from "../js/engine/rules.js";
 
 const ROOT = new URL("../", import.meta.url);
 const data = {};
@@ -390,6 +391,71 @@ t("新聞排程的真實效果會在往後月份生效(確定性重播含新聞)
   let b = newGame(data, OPTS);
   for (let i = 0; i < 6 && a.meta.phase !== "ended"; i++) { a = playMonth(a); b = playMonth(b); }
   eq(JSON.stringify(a), JSON.stringify(b), "含新聞的完整流程仍可重播一致");
+});
+
+console.log("== 劇情鏈機制(M7) ==");
+const CHAIN_FX = [
+  { id: "ST-1", dept: "rnd", tier: [1], type: "opportunity",
+    trigger: { weight: 999, once: true, cooldown: 0, conditions: [] },
+    title: "起點", speaker: "shen", text: "測試起點",
+    options: [
+      { label: "延月觸發", hint: "", effects: [], random: [], followUp: "ST-2", followUpDelay: 2, setFlag: null },
+      { label: "不觸發", hint: "", effects: [], random: [], followUp: null, setFlag: null },
+    ] },
+  { id: "ST-2", dept: "rnd", tier: [1, 2, 3], type: "chain",
+    trigger: { weight: 0.001, once: false, cooldown: 0, conditions: [{ var: "kpi.product", op: ">", value: 999 }] },
+    title: "後續", speaker: "shen", text: "延月後觸發",
+    options: [
+      { label: "設分支旗標", hint: "", effects: [], random: [{ chance: 1, effects: [], resultText: "成功", setFlag: "branchFlag" }], followUp: null, setFlag: null },
+      { label: "無", hint: "", effects: [], random: [], followUp: null, setFlag: null },
+    ] },
+];
+const CFX = { ...data, events: { events: CHAIN_FX } };
+t("followUpDelay 使後續事件延月觸發(非同月)", () => {
+  let s = newGame(CFX, OPTS);
+  ok(s.events.queue.includes("ST-1"), "首月應有起點");
+  // 決策起點的延月選項
+  while (s.events.current !== "ST-1") s = reduce(s, { type: "DECIDE", optionIndex: 1 }, CFX);
+  s = reduce(s, { type: "DECIDE", optionIndex: 0 }, CFX);
+  ok(!s.events.queue.includes("ST-2"), "同月不應出現後續");
+  ok(s.events.pending.some((p) => p.eventId === "ST-2" && p.dueMonth === s.meta.month + 2), "應排入 pending 延2月");
+  // 推進到第 month+2
+  const startMonth = s.meta.month;
+  while (s.events.current) s = reduce(s, { type: "DECIDE", optionIndex: 1 }, CFX);
+  s = reduce(s, { type: "END_MONTH" }, CFX); s = reduce(s, { type: "ACK" }, CFX); // +1
+  ok(!s.events.queue.includes("ST-2"), "延1月時尚未觸發");
+  while (s.events.current) s = reduce(s, { type: "DECIDE", optionIndex: 1 }, CFX);
+  s = reduce(s, { type: "END_MONTH" }, CFX); s = reduce(s, { type: "ACK" }, CFX); // +2
+  eq(s.meta.month, startMonth + 2);
+  ok(s.events.queue.includes("ST-2"), "延2月應強制觸發後續(不受抽取名額限制)");
+});
+t("random 分支 setFlag 生效", () => {
+  let s = newGame(CFX, OPTS);
+  // 把 ST-2 直接放入佇列決策
+  s.events.queue = ["ST-2"]; s.events.current = "ST-2";
+  s = reduce(s, { type: "DECIDE", optionIndex: 0 }, CFX);
+  eq(s.flags.branchFlag, true, "分支 setFlag 應寫入 flags");
+});
+t("上市審查閘門：財務達標但未過審不得升級 tier3", () => {
+  // 直接測 checkRules(繞過 settle 覆寫手設 kpi)
+  const t3 = data.balance.thresholds.upgradeTo3;
+  function readyTier2() {
+    const s = noEvents(newGame(data, OPTS));
+    s.tier = 2;
+    Object.assign(s.kpi, { revenue: t3.revenue * 2, equity: t3.equity * 2, headcount: t3.headcount + 50,
+      shareholder: 80, compliance: 70, brand: 70, cash: 5000 });
+    s.streaks.profitMonths = t3.profitStreak;
+    s.meta.month = 30; // 避開期滿
+    return s;
+  }
+  let s = readyTier2();
+  checkRules(s, data); checkRules(s, data); // 跑兩次(holdMonths=2)
+  eq(s.tier, 2, "未過上市審查不得升級");
+  ok(s.flags.ipoHinted, "應提示啟動上市審查");
+  // 過審後可升級
+  let s2 = readyTier2(); s2.flags.ipoApproved = true;
+  checkRules(s2, data); checkRules(s2, data);
+  eq(s2.tier, 3, "過審且維持 holdMonths 後應升級 tier3");
 });
 
 console.log(`\n結果: ${pass} 通過, ${fail} 失敗`);

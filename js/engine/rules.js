@@ -39,12 +39,19 @@ export function checkRules(s, data) {
     }
   } else if (s.tier === 2) {
     const t = th.upgradeTo3;
-    const ok = k.revenue >= t.revenue * mul && k.equity >= t.equity * mul &&
+    const financialsOk = k.revenue >= t.revenue * mul && k.equity >= t.equity * mul &&
       k.headcount >= t.headcount * mul && s.streaks.profitMonths >= t.profitStreak &&
       k.shareholder >= t.shareholder && k.compliance >= t.compliance && k.brand >= t.brand;
+    // 上市審查劇情把關：達標且需通過上市審查事件鏈(flags.ipoApproved)
+    const ipoOk = !t.requireIpoChain || s.flags.ipoApproved;
+    const ok = financialsOk && ipoOk;
     s.streaks.upgradeHold = ok ? s.streaks.upgradeHold + 1 : 0;
+    // 達到財務門檻但尚未通過上市審查：提示玩家啟動上市流程(僅提示一次)
+    if (financialsOk && !ipoOk && !s.flags.ipoHinted) {
+      s.flags.ipoHinted = true;
+      s.log.push({ month: s.meta.month, text: "[!] 財務已達上市標準，但尚未通過上市審查——留意董事會啟動的上市審查事件。" });
+    }
     if (ok && s.streaks.upgradeHold >= t.holdMonths) {
-      // TODO(M7): requireIpoChain 改由「上市審查」事件鏈把關；種子版直接視為通過審查
       s.tier = 3;
       s.streaks.upgradeHold = 0;
       s.flags.ipoDone = true;

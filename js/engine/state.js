@@ -34,6 +34,7 @@ export function initState(data, opts) {
       onceFired: [],
       lastFired: {},           // eventId -> 上次觸發月(冷卻用)
       deptLast: {},            // dept -> 上次登場月(輪替保底用)
+      pending: [],             // 延月觸發的事件鏈 {eventId, dueMonth}(劇情跨月用)
       chains: {},
     },
     lastDecision: null,        // {eventId, optionIndex, label, resultText} UI 顯示隨機結果用
