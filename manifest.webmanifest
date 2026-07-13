@@ -1,0 +1,15 @@
+{
+  "name": "企業接班人養成術",
+  "short_name": "企業接班人",
+  "description": "扮演小型企業總經理，五年內從小型企業成長為成功上市的大型企業。單機離線經營模擬遊戲。",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4f1ea",
+  "theme_color": "#3a3a38",
+  "icons": [
+    { "src": "./assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

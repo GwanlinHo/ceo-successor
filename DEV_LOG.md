@@ -142,3 +142,14 @@
 驗收(80局/組):上市率易74/普31/難21%單調;達tier3 48/19/1%;倒閉21/19/54%;raw分數易>普>難;random 100%倒閉。單元38/38、E2E 15/15。詳見 DIFFICULTY_DESIGN 第6節。
 殘留(非阻擋):normal上市率31%在區間下緣、桿F tier3危機32%<40%、hard tier3事件17.8略高。
 下一步:M9 PWA與收尾(manifest/sw.js離線、存檔匯出入已有、遊戲說明、office站位微調)。
+
+---
+
+[2026-07-13] [M9] PWA離線+收尾完成。
+工作內容:
+- PWA:assets/icon.svg(中性色大樓+成長箭頭)、manifest.webmanifest(繁中/standalone)、sw.js(cache-first,precache全部27個資源含data/*.json);index.html加回manifest/icon連結;main.js註冊SW。
+- office站位微調:DESK_LAYOUT五部門重排(上排3下排2、離邊界留白),修M6標籤偏移/重疊瑕疵。
+- 桿F補強:加3則tier3危機(P-21廠區工安/G-21反壟斷/S-21經營權挑戰),tier3危機占比32%→35%(接近40%目標);events 160→163。
+驗收:PWA離線測試5/5(SW啟用+斷網完整開新局+零錯誤);單元38/38;E2E-m4 15/15;office截圖確認站位;資料驗證163件通過。
+決策:遊戲說明沿用M4的5頁圖文(目標/玩法/監控/升級/難度),內容已足;存檔匯出入M4已完成。
+下一步:M10 端到端完整測試+GitHub Pages部署(最後一關)。

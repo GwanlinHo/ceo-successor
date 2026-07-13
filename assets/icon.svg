@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="企業接班人養成術">
+  <rect width="512" height="512" rx="96" fill="#3a3a38"/>
+  <!-- 公司大樓剪影(中性色) -->
+  <rect x="150" y="150" width="212" height="240" rx="8" fill="#f4f1ea"/>
+  <rect x="196" y="120" width="120" height="60" rx="6" fill="#eae5da"/>
+  <!-- 窗格 -->
+  <g fill="#8a8578">
+    <rect x="176" y="196" width="32" height="32" rx="3"/>
+    <rect x="240" y="196" width="32" height="32" rx="3"/>
+    <rect x="304" y="196" width="32" height="32" rx="3"/>
+    <rect x="176" y="256" width="32" height="32" rx="3"/>
+    <rect x="240" y="256" width="32" height="32" rx="3"/>
+    <rect x="304" y="256" width="32" height="32" rx="3"/>
+    <rect x="176" y="316" width="32" height="32" rx="3"/>
+    <rect x="304" y="316" width="32" height="32" rx="3"/>
+  </g>
+  <!-- 大門 -->
+  <rect x="236" y="316" width="40" height="74" rx="4" fill="#4a4640"/>
+  <!-- 向上箭頭(成長) -->
+  <path d="M256 92 L288 130 L268 130 L268 150 L244 150 L244 130 L224 130 Z" fill="#f4f1ea"/>
+</svg>

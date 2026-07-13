@@ -13905,6 +13905,284 @@
           "random": []
         }
       ]
+    },
+    {
+      "id": "P-21",
+      "dept": "prod",
+      "tier": [
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 10,
+        "conditions": []
+      },
+      "title": "大型廠區重大工安事故",
+      "speaker": "hao",
+      "text": "郝製造聲音發抖：「總經理，主力廠區出了嚴重工安事故，已經驚動主管機關和媒體，停工調查在所難免。」",
+      "options": [
+        {
+          "label": "全面停工徹查、從優撫卹",
+          "hint": "重創產能與現金，換信任與合規",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -600
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 0.8
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 10
+            },
+            {
+              "var": "kpi.morale",
+              "delta": 4
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "局部停工、儘速復工",
+          "hint": "折衷，但賭不再出事",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -250
+            },
+            {
+              "var": "aux.capacity",
+              "op": "mul",
+              "delta": 0.92
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.4,
+              "effects": [
+                {
+                  "var": "kpi.compliance",
+                  "delta": -12
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": -10
+                }
+              ],
+              "resultText": "復工後再出狀況，主管機關重罰、形象重挫。"
+            }
+          ]
+        },
+        {
+          "label": "淡化處理、對外低調",
+          "hint": "省錢，但紙包不住火",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.compliance",
+              "delta": -8
+            }
+          ],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": -18
+                },
+                {
+                  "var": "kpi.shareholder",
+                  "delta": -10
+                }
+              ],
+              "resultText": "事故遭爆料，品牌與股東信心雙重打擊。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-21",
+      "dept": "gov",
+      "tier": [
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 12,
+        "conditions": []
+      },
+      "title": "反壟斷調查上門",
+      "speaker": "guan",
+      "text": "官正義神情嚴肅：「貴公司市場地位顯著，我們接獲檢舉，須就競爭行為展開調查。請充分配合。」",
+      "options": [
+        {
+          "label": "全力配合、聘專業團隊應對",
+          "hint": "花大錢，力求全身而退",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -500
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 8
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "主動提改善承諾",
+          "hint": "讓步換和解，犧牲部分市占",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.share",
+              "delta": -4
+            },
+            {
+              "var": "kpi.compliance",
+              "delta": 5
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "強硬抗辯到底",
+          "hint": "賭贏省錢，賭輸重罰",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.brand",
+                  "delta": 4
+                }
+              ],
+              "resultText": "抗辯成功，全身而退還贏得業界敬意。"
+            },
+            {
+              "chance": 0.5,
+              "effects": [
+                {
+                  "var": "kpi.cash",
+                  "delta": -800
+                },
+                {
+                  "var": "kpi.compliance",
+                  "delta": -15
+                }
+              ],
+              "resultText": "抗辯失敗遭巨額裁罰、合規重挫。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "S-21",
+      "dept": "shareholder",
+      "tier": [
+        3
+      ],
+      "type": "crisis",
+      "trigger": {
+        "weight": 12,
+        "once": false,
+        "cooldown": 12,
+        "conditions": []
+      },
+      "title": "市場派股東發動經營權挑戰",
+      "speaker": "dong",
+      "text": "董大川面色凝重：「有市場派在外面大量收購股權，放話要在股東會改組董事會。這是硬仗。」",
+      "options": [
+        {
+          "label": "斥資買回股權鞏固經營權",
+          "hint": "燒大錢守江山",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.cash",
+              "delta": -900
+            },
+            {
+              "var": "kpi.shareholder",
+              "delta": 10
+            }
+          ],
+          "random": []
+        },
+        {
+          "label": "端出亮眼經營成績爭取委託書",
+          "hint": "以績效服眾，成敗看基本面",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [],
+          "random": [
+            {
+              "chance": 0.55,
+              "effects": [
+                {
+                  "var": "kpi.shareholder",
+                  "delta": 12
+                },
+                {
+                  "var": "kpi.brand",
+                  "delta": 4
+                }
+              ],
+              "resultText": "多數股東力挺，經營權穩固。"
+            },
+            {
+              "chance": 0.45,
+              "effects": [
+                {
+                  "var": "kpi.shareholder",
+                  "delta": -12
+                }
+              ],
+              "resultText": "委託書大戰落敗，經營權岌岌可危。"
+            }
+          ]
+        },
+        {
+          "label": "與市場派談判分享席次",
+          "hint": "妥協換穩定，但綁手綁腳",
+          "followUp": null,
+          "setFlag": null,
+          "effects": [
+            {
+              "var": "kpi.shareholder",
+              "delta": 3
+            },
+            {
+              "var": "kpi.morale",
+              "delta": -5
+            }
+          ],
+          "random": []
+        }
+      ]
     }
   ]
 }

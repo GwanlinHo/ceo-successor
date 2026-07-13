@@ -160,4 +160,11 @@ function onImport() {
   input.click();
 }
 
+// 註冊 Service Worker(離線可玩)；失敗不影響遊戲
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch((e) => console.warn("SW 註冊失敗:", e.message));
+  });
+}
+
 boot();

@@ -222,7 +222,7 @@ html, body {
 .office-sprite { position: relative; z-index: 2; }
 .office-sprite svg { display: block; }
 .office-desk { margin-top: -14px; opacity: 0.9; }
-.office-tag { font-size: 0.68rem; color: var(--ink-soft); background: rgba(253,252,249,0.7);
+.office-tag { font-size: 0.66rem; color: var(--ink-soft); background: rgba(253,252,249,0.82);
   padding: 0 0.35em; border-radius: 3px; margin-top: 2px; white-space: nowrap; }
 .office-prop { position: absolute; opacity: 0.85; }
 .office-caption { text-align: center; font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.4rem; }

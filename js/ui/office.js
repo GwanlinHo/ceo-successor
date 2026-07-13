@@ -10,13 +10,13 @@ const TIER_SCENE = {
   3: { name: "企業總部大樓", objects: ["desk", "monitor", "cabinet", "printer", "plant", "cup", "cabinet"], floor: "#ded7c8" },
 };
 
-// 五個內部部門 NPC 與其站位(百分比座標)
+// 五個內部部門 NPC 與其站位(百分比座標；上排三、下排二，離邊界留白避免標籤溢出)
 const DESK_LAYOUT = [
-  { id: "shen", dept: "研發部", x: 16, y: 30 },
-  { id: "hao", dept: "生產部", x: 40, y: 22 },
-  { id: "jia", dept: "行銷業務部", x: 64, y: 30 },
-  { id: "you", dept: "人事部", x: 30, y: 60 },
-  { id: "qian", dept: "財務部", x: 58, y: 60 },
+  { id: "shen", dept: "研發部", x: 20, y: 32 },
+  { id: "hao", dept: "生產部", x: 50, y: 28 },
+  { id: "jia", dept: "行銷業務部", x: 80, y: 32 },
+  { id: "you", dept: "人事部", x: 35, y: 70 },
+  { id: "qian", dept: "財務部", x: 65, y: 70 },
 ];
 
 // 主畫面辦公室俯視場景
