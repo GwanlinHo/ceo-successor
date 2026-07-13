@@ -46,6 +46,21 @@ export function renderHowTo(page = 0) {
 }
 export const HOW_PAGE_COUNT = HOW_PAGES.length;
 
+export function renderConfirmNew() {
+  return `
+    <div class="screen center">
+      <div class="card howto">
+        <h2>開新遊戲？</h2>
+        <p>你有一局尚未結束的遊戲。開新遊戲會<b>覆蓋目前的存檔</b>，這局進度將無法復原。</p>
+        <p style="color:var(--ink-soft);font-size:0.9rem;">想保留這局，可先返回、用「繼續遊戲」進入後「匯出存檔」備份。</p>
+        <div class="setup-actions">
+          <button class="btn" data-act="back">返回</button>
+          <button class="btn btn-primary" data-act="confirm-new">覆蓋並開新局</button>
+        </div>
+      </div>
+    </div>`;
+}
+
 export function renderSetup() {
   return `
     <div class="screen center">

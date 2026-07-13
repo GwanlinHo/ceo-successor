@@ -5,7 +5,7 @@ import { newGame, reduce } from "./engine/engine.js";
 import { saveGame, loadGame, hasSave, clearSave, exportSave, importSave } from "./save.js";
 import { renderHud, renderSettlement } from "./ui/hud.js";
 import { renderDialog, renderDecisionResult } from "./ui/dialog.js";
-import { renderStart, renderHowTo, renderSetup, renderEnding, HOW_PAGE_COUNT } from "./ui/screens.js";
+import { renderStart, renderHowTo, renderSetup, renderConfirmNew, renderEnding, HOW_PAGE_COUNT } from "./ui/screens.js";
 import { renderReports } from "./ui/reports.js";
 import { renderNews } from "./ui/news.js";
 import { renderOffice } from "./ui/office.js";
@@ -29,6 +29,7 @@ function render() {
   let html;
   if (view.screen === "start") html = renderStart(hasSave());
   else if (view.screen === "howto") html = renderHowTo(view.howPage);
+  else if (view.screen === "confirmNew") html = renderConfirmNew();
   else if (view.screen === "setup") html = renderSetup();
   else if (view.screen === "ending") html = renderEnding(state, DATA);
   else html = renderGame();
@@ -82,7 +83,8 @@ document.addEventListener("click", (ev) => {
 
 function onAction(act) {
   switch (act) {
-    case "new": view.screen = "setup"; return render();
+    case "new": view.screen = hasSave() ? "confirmNew" : "setup"; return render();
+    case "confirm-new": view.screen = "setup"; return render();
     case "how": view.howPage = 0; view.screen = "howto"; return render();
     case "how-next": view.howPage = Math.min(HOW_PAGE_COUNT - 1, view.howPage + 1); return render();
     case "how-prev": view.howPage = Math.max(0, view.howPage - 1); return render();

@@ -132,6 +132,35 @@ try {
   ok(cleared, "結局後存檔已清除");
 
   ok(errors.length === 0, `無 JS 錯誤${errors.length ? "：" + errors.join(" | ") : ""}`);
+
+  // 新遊戲覆蓋確認流程(獨立、不依賴前面遊戲狀態)
+  // 開一局以產生存檔
+  await page.click('[data-act="new"]');
+  await page.waitForSelector('#in-company');
+  await page.click('[data-act="start-game"]');
+  await page.waitForSelector('.hud');
+  await page.click('[data-act="save-quit"]');
+  await page.waitForSelector('[data-act="new"]');
+  // 有存檔時點新遊戲 → 應跳覆蓋確認
+  await page.click('[data-act="new"]');
+  const gotConfirm = await page.waitForSelector('[data-act="confirm-new"]', { timeout: 3000 }).then(() => true).catch(() => false);
+  ok(gotConfirm, "有存檔時新遊戲先跳覆蓋確認");
+  ok(await page.evaluate(() => !!localStorage.getItem("ceo_successor_save_v1")), "確認畫面尚未覆蓋存檔");
+  // 取消(返回) → 存檔仍在
+  await page.click('[data-act="back"]');
+  await page.waitForSelector('[data-act="continue"]');
+  ok(await page.evaluate(() => !!localStorage.getItem("ceo_successor_save_v1")), "取消後存檔仍在");
+  // 確認覆蓋 → 進設定 → 開新局後存檔被新局覆蓋
+  const cashOld = await page.evaluate(() => JSON.parse(localStorage.getItem("ceo_successor_save_v1")).kpi.cash);
+  await page.click('[data-act="new"]');
+  await page.waitForSelector('[data-act="confirm-new"]');
+  await page.click('[data-act="confirm-new"]');
+  await page.waitForSelector('#in-company');
+  await page.click('[data-diff="easy"]'); // 換難度以區分
+  await page.click('[data-act="start-game"]');
+  await page.waitForSelector('.hud');
+  const cashNew = await page.evaluate(() => JSON.parse(localStorage.getItem("ceo_successor_save_v1")).kpi.cash);
+  ok(cashNew !== cashOld, "確認覆蓋後開新局，存檔已更新為新局");
 } finally {
   await browser.close();
 }
