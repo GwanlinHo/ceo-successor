@@ -83,6 +83,7 @@
     "hireSpeed": 0.25,
     "capacityDrift": 0.01,
     "economyWalk": 0.02,
+    "quarterlyShareholderSwing": 5,
     "regressToMean": 1,
     "regressTargets": {
       "morale": 50,

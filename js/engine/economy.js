@@ -11,11 +11,13 @@ export function settleMonth(s, data, rng) {
   // --- 營收 ---
   const demand = tierC.baseDemand * w.economyIndex * (1 + k.brand / eco.brandDemandFactor);
   const moraleEff = 1 + (k.morale - 50) * eco.moraleEffSlope;
-  const capacityValue = a.capacity * eco.capacityUnitValue * a.utilization * a.yieldRate * moraleEff;
+  const capacityValue = a.capacity * eco.capacityUnitValue * a.yieldRate * moraleEff;
   const demandValue = demand * (k.share / 100);
   const salesValue = Math.min(demandValue, capacityValue);
   const revenue = salesValue * a.price;
   const capped = capacityValue < demandValue; // 產能不足吃不下需求
+  // 利用率為導出值(供報表顯示與事件觸發條件，如產線瓶頸)
+  setVar(s, "aux.utilization", capacityValue > 0 ? salesValue / capacityValue : 0);
 
   // --- 成本 ---
   const material = salesValue * a.materialRate;
@@ -36,6 +38,13 @@ export function settleMonth(s, data, rng) {
   // --- 連續獲利/虧損 ---
   if (profit > 0) { s.streaks.profitMonths += 1; s.streaks.lossMonths = 0; }
   else { s.streaks.lossMonths += 1; s.streaks.profitMonths = 0; }
+
+  // --- 季度自動評價：整季獲利股東信心升、整季虧損則跌(企劃 S-01 的自動評價部分) ---
+  if (s.meta.month % 3 === 0) {
+    const swing = eco.quarterlyShareholderSwing;
+    if (s.streaks.profitMonths >= 3) setVar(s, "kpi.shareholder", k.shareholder + swing);
+    else if (s.streaks.lossMonths >= 3) setVar(s, "kpi.shareholder", k.shareholder - swing);
+  }
 
   // --- 漂移(每月自然變化) ---
   // 研發累積產品競爭力，同時自然折舊

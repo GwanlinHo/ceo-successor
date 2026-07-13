@@ -39,3 +39,19 @@
 - upgradeTo3 的 requireIpoChain 種子版直接視為通過(TODO M7 改由上市審查事件鏈把關)。
 驗收：18/18 單元測試通過；60月放置模擬三難度走勢合理(easy平盤/normal衰退/hard近倒閉)；validate 仍 0 錯 0 警告。
 下一步：M3 事件系統(抽取輪替保底+權重+條件+冷卻、DECIDE、機率結果、followUp)。
+
+---
+
+[2026-07-13] [M3] 完成事件系統，28 項測試全過，行為模擬驗證因果鏈成立。
+工作內容：
+- js/engine/effects.js：效果函式自 engine.js 獨立(避免循環相依)；新增 scaleBadEffect(隨機惡果依難度 negativeEffectMul 放大，僅套用於 random 分支，玩家主動選擇的代價不放大)。
+- js/engine/events.js：drawMonthlyEvents(難度×tier 件數矩陣、輪替保底=3個月未登場單位優先且亂數洗牌、危機權重×難度、冷卻/once/條件過濾、庫存不足自動縮水)＋applyDecision(立即效果 vs 佇列、隨機分支單擲累積機率、setFlag、followUp 插隊列首可跨 tier 強制、歷史紀錄、lastDecision 供 UI)。
+- engine.js 接線 DECIDE/ACK 抽事件；END_MONTH 擋未決策完。
+決策與理由(過程中修的三個系統 bug)：
+1. aux.utilization 原為靜態值→P-03(唯一擴產事件)觸發條件永不成立→產能死鎖。改為每月結算導出值(salesValue/capacityValue)。
+2. M-01 促銷把 aux.marketing(月支出水位)永久疊加→20次後月燒1200萬必死。改為 +N 後 delayMonths 2 自動 -N。
+3. S-01 質詢改為僅 kpi.profit<0 時觸發；獲利季度改由結算的季度自動評價(±quarterlyShareholderSwing=5)處理——原本股東信心無回升管道，任何玩法都陰跌至撤換。
+- 其他：P-03 適用 tier 擴為[1,2,3](中大型原本無擴產手段)；P-01/M-01 冷卻 2→1；validator 條件變數允許 kpi.profit/revenue(效果仍禁止)。
+驗收：28/28；行為模擬三組對照(亂玩必敗/爛策略必虧/避雷策略可上市)。
+[!] M8 待辦：難度分化、聰明策略勝率、事件庫量能(見 TEST_LOG)。
+下一步：M4 可玩雛形(main.js 路由、hud、事件對話框、開局設定；純文字版可完整玩60個月)。

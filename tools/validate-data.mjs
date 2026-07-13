@@ -28,8 +28,9 @@ const VARS = new Set([
   "aux.salaryAvg", "aux.marketing", "aux.rnd",
   "world.economyIndex", "world.rivalProduct",
 ]);
-// 禁止直接下效果(結算導出值)
+// 禁止直接下效果(結算導出值)；但允許作為觸發「條件」使用
 const FORBIDDEN_VARS = new Set(["kpi.revenue", "kpi.profit"]);
+const COND_VARS = new Set([...VARS, "kpi.revenue", "kpi.profit"]);
 const DEPTS = new Set(["rnd", "prod", "mkt", "hr", "fin", "shareholder", "bank", "supplier", "channel", "gov", "media"]);
 const TYPES = new Set(["routine", "opportunity", "crisis", "chain"]);
 const OPS_COND = new Set(["<", "<=", ">", ">=", "=="]);
@@ -133,7 +134,7 @@ if (eventsFile) {
     if (typeof tr.weight !== "number" || tr.weight <= 0) err(`${w} trigger.weight 需正數`);
     if (tr.cooldown !== undefined && (!Number.isInteger(tr.cooldown) || tr.cooldown < 0)) err(`${w} cooldown 非法`);
     for (const c of tr.conditions || []) {
-      if (!VARS.has(c.var)) err(`${w} condition.var 非法: ${c.var}`);
+      if (!COND_VARS.has(c.var)) err(`${w} condition.var 非法: ${c.var}`);
       if (!OPS_COND.has(c.op)) err(`${w} condition.op 非法: ${c.op}`);
       if (typeof c.value !== "number") err(`${w} condition.value 需數字`);
     }

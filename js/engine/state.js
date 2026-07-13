@@ -33,8 +33,10 @@ export function initState(data, opts) {
       history: [],             // {month, eventId, optionIndex}
       onceFired: [],
       lastFired: {},           // eventId -> 上次觸發月(冷卻用)
+      deptLast: {},            // dept -> 上次登場月(輪替保底用)
       chains: {},
     },
+    lastDecision: null,        // {eventId, optionIndex, label, resultText} UI 顯示隨機結果用
     effects: [],               // 延遲/持續效果佇列 {var, op, delta, pctOf, pct, dueMonth, monthsLeft, note}
     news: [],                  // {month, type, text, truth}
     flags: {},
@@ -50,7 +52,7 @@ const CLAMPS = {
   "kpi.brand": [0, 100], "kpi.satisfaction": [0, 100], "kpi.credit": [0, 100],
   "kpi.shareholder": [0, 100], "kpi.compliance": [0, 100],
   "kpi.headcount": [3, 100000],
-  "aux.capacity": [0.2, 1000], "aux.utilization": [0.5, 1], "aux.yieldRate": [0.6, 1],
+  "aux.capacity": [0.2, 1000], "aux.utilization": [0, 1], "aux.yieldRate": [0.6, 1],
   "aux.price": [0.5, 2], "aux.materialRate": [0.2, 0.8], "aux.turnover": [0.005, 0.3],
   "aux.supplierRel": [0, 100], "aux.channelRel": [0, 100],
   "aux.debt": [0, 10000000], "aux.interest": [0, 100000],
