@@ -99,38 +99,38 @@ function scaleFeatures(inner, k = FEATURE_SCALE) {
   return `<g transform="matrix(${k},0,0,${k},${tx},${ty})">${inner}</g>`;
 }
 
-// 五官：眼睛一律偏大(不再是小點)。
+// 五官：眼睛一律偏大(不再是小點)。可調眼距與眼睛大小，讓每人不同。
 // eye: 'big'(預設) | 'huge' | 'round' | 'sleepy'(半月上彎) | 'shrewd'(精明微瞇，仍有神)
+// gap: 半瞳距(眼睛離臉中線的距離，預設 9；大=眼距寬、小=眼距窄)
+// eyeScale: 眼睛大小倍率(預設 1)
 // brow: 'none' | 'thick'(濃眉) | 'flat'(一字眉) | 'worried'
 // mouth: 'smile' | 'bigsmile' | 'neutral' | 'frown'(嘴角下彎) | 'small'
 // fold: true 加法令紋
 function face(opts = {}) {
-  const { eye = 'big', brow = 'none', mouth = 'smile', fold = false, ink = C.hair } = opts;
-  const LX = 41, RX = 59, EY = 46;
+  const { eye = 'big', brow = 'none', mouth = 'smile', fold = false, ink = C.hair, gap = 9, eyeScale = 1 } = opts;
+  const LX = 50 - gap, RX = 50 + gap, EY = 46;
+  // 各眼型的基準半徑，再乘 eyeScale
+  const R = { huge: [5, 6], round: [4.4, 4.8], shrewd: [4.4, 3.2], big: [4.2, 5] };
+  const es = (s) => (s * eyeScale).toFixed(2);
   let eyes = '';
-  if (eye === 'huge') {
-    eyes = bigEye(LX, EY, 5, 6, ink) + bigEye(RX, EY, 5, 6, ink);
-  } else if (eye === 'round') {
-    eyes = bigEye(LX, EY, 4.4, 4.8, ink) + bigEye(RX, EY, 4.4, 4.8, ink);
-  } else if (eye === 'sleepy') {
-    eyes = `<path d="M37,47 Q41,42 45,47" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
-      + `<path d="M55,47 Q59,42 63,47" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
-  } else if (eye === 'shrewd') {
-    // 精明微瞇：扁一點的大眼(仍看得到瞳孔)
-    eyes = bigEye(LX, EY, 4.4, 3.2, ink) + bigEye(RX, EY, 4.4, 3.2, ink);
+  if (eye === 'sleepy') {
+    const w = 4 * eyeScale;
+    eyes = `<path d="M${LX - w},47 Q${LX},42 ${LX + w},47" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
+      + `<path d="M${RX - w},47 Q${RX},42 ${RX + w},47" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
   } else {
-    eyes = bigEye(LX, EY, 4.2, 5, ink) + bigEye(RX, EY, 4.2, 5, ink);
+    const [rx, ry] = R[eye] || R.big;
+    eyes = bigEye(LX, EY, es(rx), es(ry), ink) + bigEye(RX, EY, es(rx), es(ry), ink);
   }
   let brows = '';
   if (brow === 'thick') {
-    brows = `<path d="M35,37 Q41,33 47,37" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
-      + `<path d="M53,37 Q59,33 65,37" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+    brows = `<path d="M${LX - 6},37 Q${LX},33 ${LX + 6},37" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+      + `<path d="M${RX - 6},37 Q${RX},33 ${RX + 6},37" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
   } else if (brow === 'flat') {
-    brows = `<line x1="36" y1="37.5" x2="46" y2="37.5" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`
-      + `<line x1="54" y1="37.5" x2="64" y2="37.5" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`;
+    brows = `<line x1="${LX - 5}" y1="37.5" x2="${LX + 5}" y2="37.5" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`
+      + `<line x1="${RX - 5}" y1="37.5" x2="${RX + 5}" y2="37.5" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`;
   } else if (brow === 'worried') {
-    brows = `<path d="M36,36 Q41,39 46,38" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`
-      + `<path d="M54,38 Q59,39 64,36" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    brows = `<path d="M${LX - 5},36 Q${LX},39 ${LX + 5},38" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`
+      + `<path d="M${RX - 5},38 Q${RX},39 ${RX + 5},36" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
   }
   let mouthPath = '';
   if (mouth === 'smile') {
@@ -195,17 +195,18 @@ function ponytail(color = C.hair) {
 function hairclip(color = C.gray1) {
   return `<rect x="28" y="26" width="10" height="4" rx="2" fill="${color}" stroke="${C.line}" stroke-width="0.6"/>`;
 }
-// 眼鏡（shape: 'round' | 'square'）— 與放大後的眼睛對齊
-function glasses(shape = 'round', color = C.darkGray) {
+// 眼鏡（shape: 'round' | 'square'）— 依眼距 gap 對齊放大後的眼睛
+function glasses(shape = 'round', color = C.darkGray, gap = 9) {
+  const LX = 50 - gap, RX = 50 + gap;
   let g;
   if (shape === 'square') {
-    g = `<rect x="34" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
-      + `<rect x="53" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
-      + `<line x1="47" y1="45" x2="53" y2="45" stroke="${color}" stroke-width="2"/>`;
+    g = `<rect x="${LX - 6.5}" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<rect x="${RX - 6.5}" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<line x1="${LX + 6.5}" y1="45" x2="${RX - 6.5}" y2="45" stroke="${color}" stroke-width="2"/>`;
   } else {
-    g = `<circle cx="41" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
-      + `<circle cx="59" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
-      + `<line x1="49" y1="46" x2="51" y2="46" stroke="${color}" stroke-width="2"/>`;
+    g = `<circle cx="${LX}" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<circle cx="${RX}" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<line x1="${LX + 8}" y1="46" x2="${RX - 8}" y2="46" stroke="${color}" stroke-width="2"/>`;
   }
   return scaleFeatures(g);
 }
@@ -254,8 +255,8 @@ const NPC_BUILDERS = {
       headCircle(),
       hairShort(),
       `<path d="M50,14 Q55,3 60,9" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
-      face({ eye: 'huge', mouth: 'smile' }),
-      glasses('round'),
+      face({ eye: 'huge', mouth: 'smile', gap: 8, eyeScale: 1.05 }),
+      glasses('round', C.darkGray, 8),
     ].join('');
     return { name: '沈技安', body };
   },
@@ -270,7 +271,7 @@ const NPC_BUILDERS = {
       `<rect x="60" y="118" width="10" height="14" fill="${C.gray1}" stroke="${C.line}"/>`,
       headCircle(),
       hairBaldShiny(),
-      face({ eye: 'big', mouth: 'smile' }),
+      face({ eye: 'big', mouth: 'smile', gap: 10.5, eyeScale: 1.05 }),
       beard(),
     ].join('');
     return { name: '郝製造', body };
@@ -286,7 +287,7 @@ const NPC_BUILDERS = {
       `<path d="M47,80 L53,80 L51,112 L49,112 Z" fill="${C.black}"/>`,
       headCircle(),
       hairSlick(),
-      face({ eye: 'big', brow: 'thick', mouth: 'bigsmile' }),
+      face({ eye: 'big', brow: 'thick', mouth: 'bigsmile', gap: 8.5, eyeScale: 1.0 }),
     ].join('');
     return { name: '賈推銷', body };
   },
@@ -302,7 +303,7 @@ const NPC_BUILDERS = {
       hairLong(),
       headCircle(),
       hairLong(),
-      face({ eye: 'huge', mouth: 'smile' }),
+      face({ eye: 'huge', mouth: 'smile', gap: 8.5, eyeScale: 1.15 }),
       hairclip(),
     ].join('');
     return { name: '尤仁慈', body };
@@ -319,8 +320,8 @@ const NPC_BUILDERS = {
       `<rect x="8" y="118" width="18" height="13" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`,
       headCircle(),
       hairBald(C.gray2),
-      face({ eye: 'big', mouth: 'frown', fold: true }),
-      glasses('square'),
+      face({ eye: 'big', mouth: 'frown', fold: true, gap: 11, eyeScale: 0.85 }),
+      glasses('square', C.darkGray, 11),
       beard(C.gray2),
     ].join('');
     return { name: '錢守成', body };
@@ -338,7 +339,7 @@ const NPC_BUILDERS = {
       `<circle cx="80" cy="110" r="6" fill="${C.skin}"/>`,
       headCircle(),
       hairSlick(C.gray1),
-      face({ eye: 'big', brow: 'thick', mouth: 'neutral', fold: true, ink: C.gray2 }),
+      face({ eye: 'big', brow: 'thick', mouth: 'neutral', fold: true, ink: C.gray2, gap: 10.5, eyeScale: 0.9 }),
     ].join('');
     return { name: '董大川', body };
   },
@@ -357,7 +358,7 @@ const NPC_BUILDERS = {
       `<circle cx="18" cy="128" r="6" fill="${C.skin}"/>`,
       headCircle(),
       hairSlick(),
-      face({ eye: 'shrewd', mouth: 'smile' }),
+      face({ eye: 'shrewd', mouth: 'smile', gap: 8, eyeScale: 0.95 }),
     ].join('');
     return { name: '田利息', body };
   },
@@ -375,7 +376,7 @@ const NPC_BUILDERS = {
       `<line x1="50" y1="108" x2="50" y2="132" stroke="${C.line}"/>`,
       headCircle(),
       hairShort(),
-      face({ eye: 'round', mouth: 'smile' }),
+      face({ eye: 'round', mouth: 'smile', gap: 11.5, eyeScale: 1.15 }),
       beard(),
     ].join('');
     return { name: '石原料', body };
@@ -395,7 +396,7 @@ const NPC_BUILDERS = {
       hairWave(),
       headCircle(),
       hairWave(),
-      face({ eye: 'shrewd', mouth: 'neutral' }),
+      face({ eye: 'shrewd', mouth: 'neutral', gap: 9.5, eyeScale: 0.95 }),
     ].join('');
     return { name: '白買家', body };
   },
@@ -412,7 +413,7 @@ const NPC_BUILDERS = {
       `<rect x="46" y="107" width="8" height="6" fill="${C.gray1}"/>`,
       headCircle(),
       hairShort(),
-      face({ eye: 'big', brow: 'flat', mouth: 'neutral' }),
+      face({ eye: 'big', brow: 'flat', mouth: 'neutral', gap: 10, eyeScale: 0.95 }),
     ].join('');
     return { name: '官正義', body };
   },
@@ -430,7 +431,7 @@ const NPC_BUILDERS = {
       hairAfro(),
       headCircle(),
       `<path d="M22,34 Q26,14 50,12 Q74,14 78,34 Q68,26 50,26 Q32,26 22,34 Z" fill="${C.hair}"/>`,
-      face({ eye: 'huge', mouth: 'bigsmile' }),
+      face({ eye: 'huge', mouth: 'bigsmile', gap: 8, eyeScale: 1.2 }),
     ].join('');
     return { name: '麻雀姐', body };
   },
