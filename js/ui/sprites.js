@@ -82,32 +82,128 @@ function headCircle(skin = C.skin) {
   return `<circle cx="${HEAD.cx}" cy="${HEAD.cy}" r="${HEAD.r}" fill="${skin}" stroke="${C.line}" stroke-width="1"/>`;
 }
 
-// 五官：eye = 'normal' | 'narrow' | 'round'；mouth = 'smile' | 'neutral' | 'open'
+// 一隻大眼睛(白眼球+瞳孔+高光)。left 決定高光位置。
+function bigEye(cx, cy, rx, ry, ink) {
+  return `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${C.white}" stroke="${C.line}" stroke-width="0.6"/>`
+    + `<circle cx="${cx}" cy="${cy + 0.6}" r="${(rx * 0.62).toFixed(1)}" fill="${ink}"/>`
+    + `<circle cx="${(cx - rx * 0.3).toFixed(1)}" cy="${(cy - ry * 0.3).toFixed(1)}" r="1" fill="${C.white}"/>`;
+}
+
+// 五官：眼睛一律偏大(不再是小點)。
+// eye: 'big'(預設) | 'huge' | 'round' | 'sleepy'(半月上彎) | 'shrewd'(精明微瞇，仍有神)
+// brow: 'none' | 'thick'(濃眉) | 'flat'(一字眉) | 'worried'
+// mouth: 'smile' | 'bigsmile' | 'neutral' | 'frown'(嘴角下彎) | 'small'
+// fold: true 加法令紋
 function face(opts = {}) {
-  const { eye = 'normal', mouth = 'smile', ink = C.hair } = opts;
+  const { eye = 'big', brow = 'none', mouth = 'smile', fold = false, ink = C.hair } = opts;
+  const LX = 41, RX = 59, EY = 46;
   let eyes = '';
-  if (eye === 'narrow') {
-    eyes = `<rect x="39" y="44.5" width="7" height="2" rx="1" fill="${ink}"/><rect x="54" y="44.5" width="7" height="2" rx="1" fill="${ink}"/>`;
+  if (eye === 'huge') {
+    eyes = bigEye(LX, EY, 5, 6, ink) + bigEye(RX, EY, 5, 6, ink);
   } else if (eye === 'round') {
-    eyes = `<circle cx="42" cy="46" r="3.2" fill="${ink}"/><circle cx="58" cy="46" r="3.2" fill="${ink}"/>`;
+    eyes = bigEye(LX, EY, 4.4, 4.8, ink) + bigEye(RX, EY, 4.4, 4.8, ink);
+  } else if (eye === 'sleepy') {
+    eyes = `<path d="M37,47 Q41,42 45,47" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
+      + `<path d="M55,47 Q59,42 63,47" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
+  } else if (eye === 'shrewd') {
+    // 精明微瞇：扁一點的大眼(仍看得到瞳孔)
+    eyes = bigEye(LX, EY, 4.4, 3.2, ink) + bigEye(RX, EY, 4.4, 3.2, ink);
   } else {
-    eyes = `<circle cx="42" cy="46" r="2.4" fill="${ink}"/><circle cx="58" cy="46" r="2.4" fill="${ink}"/>`;
+    eyes = bigEye(LX, EY, 4.2, 5, ink) + bigEye(RX, EY, 4.2, 5, ink);
+  }
+  let brows = '';
+  if (brow === 'thick') {
+    brows = `<path d="M35,37 Q41,33 47,37" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+      + `<path d="M53,37 Q59,33 65,37" stroke="${ink}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`;
+  } else if (brow === 'flat') {
+    brows = `<line x1="36" y1="37.5" x2="46" y2="37.5" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`
+      + `<line x1="54" y1="37.5" x2="64" y2="37.5" stroke="${ink}" stroke-width="2" stroke-linecap="round"/>`;
+  } else if (brow === 'worried') {
+    brows = `<path d="M36,36 Q41,39 46,38" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`
+      + `<path d="M54,38 Q59,39 64,36" stroke="${ink}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
   }
   let mouthPath = '';
   if (mouth === 'smile') {
-    mouthPath = `<path d="M41,57 Q50,63 59,57" stroke="${C.darkGray}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
-  } else if (mouth === 'open') {
-    mouthPath = `<path d="M42,56 Q50,65 58,56 Q50,60 42,56 Z" fill="${C.darkGray}"/>`;
+    mouthPath = `<path d="M42,57 Q50,63 58,57" stroke="${C.darkGray}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  } else if (mouth === 'bigsmile') {
+    mouthPath = `<path d="M40,56 Q50,67 60,56 Q50,61 40,56 Z" fill="${C.darkGray}"/>`;
+  } else if (mouth === 'frown') {
+    mouthPath = `<path d="M42,61 Q50,55 58,61" stroke="${C.darkGray}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  } else if (mouth === 'small') {
+    mouthPath = `<line x1="46" y1="58" x2="54" y2="58" stroke="${C.darkGray}" stroke-width="2.2" stroke-linecap="round"/>`;
   } else {
-    mouthPath = `<line x1="43" y1="58" x2="57" y2="58" stroke="${C.darkGray}" stroke-width="2" stroke-linecap="round"/>`;
+    mouthPath = `<line x1="43" y1="58" x2="57" y2="58" stroke="${C.darkGray}" stroke-width="2.2" stroke-linecap="round"/>`;
   }
-  return eyes + mouthPath;
+  const folds = fold
+    ? `<path d="M38,50 Q35,56 39,60" stroke="${C.gray2}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
+      + `<path d="M62,50 Q65,56 61,60" stroke="${C.gray2}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
+    : '';
+  return eyes + brows + folds + mouthPath;
 }
 
-// 標準瀏海／短髮（正面，蓋住頭頂）
-function hairFront(color = C.hair) {
+// ===== 髮型庫（皆可傳色；花白傳 C.gray2、白髮傳 C.gray1）=====
+// 標準短髮／瀏海
+function hairShort(color = C.hair) {
   return `<path d="M20,42 Q23,14 50,14 Q77,14 80,42 Q70,22 50,22 Q30,22 20,42 Z" fill="${color}"/>`;
 }
+// 西裝頭（側分、俐落上梳）
+function hairSlick(color = C.hair) {
+  return `<path d="M20,44 Q22,13 50,13 Q78,13 80,44 Q73,26 55,24 Q60,30 58,36 Q52,26 34,28 Q26,32 20,44 Z" fill="${color}"/>`;
+}
+// 長髮披肩（兩側垂到肩）
+function hairLong(color = C.hair) {
+  return `<path d="M16,70 Q12,30 50,12 Q88,30 84,70 Q80,58 74,54 Q78,34 50,22 Q22,34 26,54 Q20,58 16,70 Z" fill="${color}"/>`;
+}
+// 大波浪捲髮（垂肩+波浪邊）
+function hairWave(color = C.hair) {
+  return `<path d="M16,66 Q14,28 50,12 Q86,28 84,66 Q88,72 82,74 Q84,66 79,62 Q83,70 76,70 Q80,62 74,58 Q80,36 50,22 Q20,36 26,58 Q20,62 24,70 Q17,70 21,62 Q16,66 18,74 Q12,72 16,66 Z" fill="${color}"/>`;
+}
+// 爆炸頭（大蓬鬆圓）
+function hairAfro(color = C.hair) {
+  return `<circle cx="50" cy="34" r="30" fill="${color}"/>`
+    + `<circle cx="26" cy="40" r="11" fill="${color}"/><circle cx="74" cy="40" r="11" fill="${color}"/>`
+    + `<circle cx="34" cy="20" r="12" fill="${color}"/><circle cx="66" cy="20" r="12" fill="${color}"/><circle cx="50" cy="14" r="13" fill="${color}"/>`;
+}
+// 地中海禿（頭頂光、兩側與後方留髮）
+function hairBald(color = C.gray2) {
+  return `<path d="M18,50 Q18,36 24,30 Q24,44 30,48 Q26,40 30,34 L30,50 Z" fill="${color}"/>`
+    + `<path d="M82,50 Q82,36 76,30 Q76,44 70,48 Q74,40 70,34 L70,50 Z" fill="${color}"/>`
+    + `<path d="M24,50 Q22,46 22,42 Q35,44 50,44 Q65,44 78,42 Q78,46 76,50 Q50,47 24,50 Z" fill="${color}" opacity="0.85"/>`;
+}
+// 全禿（僅極少側髮＋反光）
+function hairBaldShiny() {
+  return `<path d="M22,50 Q21,44 23,40 Q26,45 30,47 Z" fill="${C.gray2}"/>`
+    + `<path d="M78,50 Q79,44 77,40 Q74,45 70,47 Z" fill="${C.gray2}"/>`
+    + `<ellipse cx="44" cy="26" rx="7" ry="4" fill="${C.white}" opacity="0.5"/>`;
+}
+// 髮圈綁的馬尾（後方）
+function ponytail(color = C.hair) {
+  return `<path d="M74,26 Q90,34 86,60 Q80,70 78,58 Q84,44 72,36 Z" fill="${color}"/>`
+    + `<rect x="70" y="28" width="8" height="5" rx="2.5" fill="${C.secondary}"/>`; // 髮圈
+}
+// 髮飾（側邊小髮夾）
+function hairclip(color = C.gray1) {
+  return `<rect x="28" y="26" width="10" height="4" rx="2" fill="${color}" stroke="${C.line}" stroke-width="0.6"/>`;
+}
+// 眼鏡（shape: 'round' | 'square'）
+function glasses(shape = 'round', color = C.darkGray) {
+  if (shape === 'square') {
+    return `<rect x="34" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<rect x="53" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<line x1="47" y1="45" x2="53" y2="45" stroke="${color}" stroke-width="2"/>`;
+  }
+  return `<circle cx="41" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
+    + `<circle cx="59" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
+    + `<line x1="49" y1="46" x2="51" y2="46" stroke="${color}" stroke-width="2"/>`;
+}
+// 鬍子（八字鬍+下巴）
+function beard(color = C.hair) {
+  return `<path d="M42,56 Q50,60 58,56" stroke="${color}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
+    + `<path d="M44,64 Q50,68 56,64" stroke="${color}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+}
+
+// 向後相容別名
+function hairFront(color = C.hair) { return hairShort(color); }
 
 // 包裝：組出完整 <svg>
 function wrapNpc(label, inner, size) {
@@ -134,201 +230,194 @@ export function npcBust(id, size = 96) {
 // ------------------------------------------------------------------
 
 const NPC_BUILDERS = {
-  // 沈技安：研發經理 — 圓框眼鏡、白襯衫、呆毛、書卷氣
+  // 沈技安：研發經理 — 圓框眼鏡、短髮+呆毛、好奇大眼、白襯衫
   shen() {
     const body = [
       legs(C.secondary, C.darkGray),
       arms(C.white, C.skin),
       torso(C.white),
-      headCircle(),
-      face({ eye: 'normal', mouth: 'neutral' }),
-      hairFront(),
-      `<path d="M50,14 Q55,3 60,9" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`, // 呆毛
-      `<circle cx="42" cy="46" r="7" fill="none" stroke="${C.darkGray}" stroke-width="2"/>`,
-      `<circle cx="58" cy="46" r="7" fill="none" stroke="${C.darkGray}" stroke-width="2"/>`,
-      `<line x1="49" y1="46" x2="51" y2="46" stroke="${C.darkGray}" stroke-width="2"/>`,
-      `<rect x="34" y="90" width="6" height="10" fill="${C.gray1}"/>`, // 口袋筆
+      `<rect x="34" y="90" width="6" height="10" fill="${C.gray1}"/>`,
       `<line x1="37" y1="90" x2="37" y2="82" stroke="${C.darkGray}" stroke-width="1.5"/>`,
+      headCircle(),
+      hairShort(),
+      `<path d="M50,14 Q55,3 60,9" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+      face({ eye: 'huge', mouth: 'smile' }),
+      glasses('round'),
     ].join('');
     return { name: '沈技安', body };
   },
 
-  // 郝製造：廠長 — 灰色安全帽、工作服、工具帶
+  // 郝製造：廠長 — 禿頭反光、絡腮鬍、憨厚、工作服+工具帶
   hao() {
     const body = [
       legs(C.darkGray, C.black),
       arms(C.gray2, C.skin),
       torso(C.gray2),
-      `<rect x="28" y="118" width="44" height="8" fill="${C.darkGray}"/>`, // 工具帶
-      `<rect x="60" y="118" width="10" height="14" fill="${C.gray1}" stroke="${C.line}"/>`, // 工具袋
+      `<rect x="28" y="118" width="44" height="8" fill="${C.darkGray}"/>`,
+      `<rect x="60" y="118" width="10" height="14" fill="${C.gray1}" stroke="${C.line}"/>`,
       headCircle(),
-      face({ eye: 'normal', mouth: 'neutral' }),
-      `<path d="M17,44 Q50,3 83,44 Z" fill="${C.gray1}" stroke="${C.line}" stroke-width="1"/>`, // 安全帽圓頂
-      `<rect x="13" y="40" width="74" height="7" rx="3.5" fill="${C.gray1}" stroke="${C.line}" stroke-width="1"/>`, // 帽緣
+      hairBaldShiny(),
+      face({ eye: 'big', mouth: 'smile' }),
+      beard(),
     ].join('');
     return { name: '郝製造', body };
   },
 
-  // 賈推銷：業務總監 — 西裝領帶、俐落髮型、笑臉、招牌手勢
+  // 賈推銷：業務總監 — 西裝頭、濃眉、開口大笑、領帶、招牌手勢
   jia() {
     const body = [
       legs(C.darkGray, C.black),
       arms(C.secondary, C.skin, { raisedRight: true }),
       torso(C.secondary),
-      `<path d="M42,78 L50,90 L58,78 Z" fill="${C.white}"/>`, // 白襯衫領口
-      `<path d="M47,80 L53,80 L51,112 L49,112 Z" fill="${C.black}"/>`, // 領帶
+      `<path d="M42,78 L50,90 L58,78 Z" fill="${C.white}"/>`,
+      `<path d="M47,80 L53,80 L51,112 L49,112 Z" fill="${C.black}"/>`,
       headCircle(),
-      face({ eye: 'normal', mouth: 'open' }),
-      hairFront(),
-      `<path d="M20,40 Q40,18 50,20 Q40,26 22,42 Z" fill="${C.hair}"/>`, // 側分俐落感
+      hairSlick(),
+      face({ eye: 'big', brow: 'thick', mouth: 'bigsmile' }),
     ].join('');
     return { name: '賈推銷', body };
   },
 
-  // 尤仁慈：人資經理 — 包頭、開襟外套、親切表情
+  // 尤仁慈：人資經理 — 長髮披肩+髮飾、溫和大眼、開襟外套
   you() {
     const body = [
       legs(C.creamDark, C.darkGray),
-      `<path d="M30,80 L22,132 L34,132 L38,80 Z" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`, // 外套左片
-      `<path d="M70,80 L78,132 L66,132 L62,80 Z" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`, // 外套右片
+      `<path d="M30,80 L22,132 L34,132 L38,80 Z" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`,
+      `<path d="M70,80 L78,132 L66,132 L62,80 Z" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`,
       arms(C.cream, C.skin),
       torso(C.cream),
+      hairLong(),
       headCircle(),
-      face({ eye: 'normal', mouth: 'smile' }),
-      hairFront(),
-      `<circle cx="50" cy="17" r="7" fill="${C.hair}"/>`, // 包頭
+      hairLong(),
+      face({ eye: 'huge', mouth: 'smile' }),
+      hairclip(),
     ].join('');
     return { name: '尤仁慈', body };
   },
 
-  // 錢守成：財務長 — 年長、背心、方框眼鏡、夾筆、帳本
+  // 錢守成：財務長 — 地中海禿+花白、方框眼鏡、法令紋、嘴角下彎、背心+帳本
   qian() {
     const body = [
       legs(C.darkGray, C.black),
       arms(C.white, C.skin),
-      torso(C.darkGray), // 背心
+      torso(C.darkGray),
       `<path d="M42,78 L50,88 L58,78 Z" fill="${C.white}"/>`,
-      `<line x1="50" y1="88" x2="50" y2="130" stroke="${C.gray2}" stroke-width="1.5"/>`, // 背心中線／釦子
-      `<rect x="8" y="118" width="18" height="13" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`, // 帳本
+      `<line x1="50" y1="88" x2="50" y2="130" stroke="${C.gray2}" stroke-width="1.5"/>`,
+      `<rect x="8" y="118" width="18" height="13" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`,
       headCircle(),
-      face({ eye: 'normal', mouth: 'neutral' }),
-      `<path d="M20,42 Q23,14 50,14 Q77,14 80,42 Q70,22 50,22 Q30,22 20,42 Z" fill="${C.gray2}"/>`, // 灰髮
-      `<rect x="35" y="41" width="12" height="9" rx="1" fill="none" stroke="${C.darkGray}" stroke-width="2"/>`, // 方框眼鏡
-      `<rect x="53" y="41" width="12" height="9" rx="1" fill="none" stroke="${C.darkGray}" stroke-width="2"/>`,
-      `<line x1="47" y1="45" x2="53" y2="45" stroke="${C.darkGray}" stroke-width="2"/>`,
-      `<path d="M44,55 Q50,58 56,55" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`, // 鬍
+      hairBald(C.gray2),
+      face({ eye: 'big', mouth: 'frown', fold: true }),
+      glasses('square'),
+      beard(C.gray2),
     ].join('');
     return { name: '錢守成', body };
   },
 
-  // 董大川：董事長 — 年長、白髮、體面西裝、背手拄杖、氣派
+  // 董大川：董事長 — 花白西裝頭、濃眉、法令紋、威嚴、黑西裝+拐杖
   dong() {
     const body = [
       legs(C.black, C.black),
       arms(C.black, C.skin, { hideRight: true }),
       torso(C.black),
-      `<path d="M40,84 L44,84 L42,90 Z" fill="${C.white}"/>`, // 口袋巾
-      `<line x1="82" y1="96" x2="82" y2="180" stroke="${C.darkGray}" stroke-width="3" stroke-linecap="round"/>`, // 拐杖
+      `<path d="M40,84 L44,84 L42,90 Z" fill="${C.white}"/>`,
+      `<line x1="82" y1="96" x2="82" y2="180" stroke="${C.darkGray}" stroke-width="3" stroke-linecap="round"/>`,
       `<path d="M82,96 Q90,92 89,102" stroke="${C.darkGray}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
-      `<circle cx="80" cy="110" r="6" fill="${C.skin}"/>`, // 扶杖的手
+      `<circle cx="80" cy="110" r="6" fill="${C.skin}"/>`,
       headCircle(),
-      face({ eye: 'normal', mouth: 'smile' }),
-      `<path d="M20,42 Q23,14 50,14 Q77,14 80,42 Q70,22 50,22 Q30,22 20,42 Z" fill="${C.gray1}"/>`, // 白髮
-      `<path d="M37,37 Q41,35 45,37" stroke="${C.gray2}" stroke-width="2" fill="none" stroke-linecap="round"/>`, // 眉
-      `<path d="M55,37 Q59,35 63,37" stroke="${C.gray2}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
+      hairSlick(C.gray1),
+      face({ eye: 'big', brow: 'thick', mouth: 'neutral', fold: true, ink: C.gray2 }),
     ].join('');
     return { name: '董大川', body };
   },
 
-  // 田利息：銀行經理 — 西裝、領帶夾、公事包、精明營業笑容
+  // 田利息：銀行經理 — 西裝頭、精明微瞇眼、營業笑、領帶夾+公事包
   tian() {
     const body = [
       legs(C.darkGray, C.black),
       arms(C.secondary, C.skin, { hideLeft: true }),
       torso(C.secondary),
       `<path d="M42,78 L50,90 L58,78 Z" fill="${C.white}"/>`,
-      `<path d="M47,80 L53,80 L51,110 L49,110 Z" fill="${C.darkGray}"/>`, // 領帶
-      `<line x1="46" y1="95" x2="54" y2="95" stroke="${C.gray1}" stroke-width="2"/>`, // 領帶夾
-      `<rect x="8" y="120" width="20" height="16" rx="2" fill="${C.darkGray}" stroke="${C.line}" stroke-width="1"/>`, // 公事包
+      `<path d="M47,80 L53,80 L51,110 L49,110 Z" fill="${C.darkGray}"/>`,
+      `<line x1="46" y1="95" x2="54" y2="95" stroke="${C.gray1}" stroke-width="2"/>`,
+      `<rect x="8" y="120" width="20" height="16" rx="2" fill="${C.darkGray}" stroke="${C.line}" stroke-width="1"/>`,
       `<rect x="14" y="116" width="8" height="5" fill="${C.darkGray}"/>`,
-      `<circle cx="18" cy="128" r="6" fill="${C.skin}"/>`, // 提包的手
+      `<circle cx="18" cy="128" r="6" fill="${C.skin}"/>`,
       headCircle(),
-      face({ eye: 'normal', mouth: 'smile' }),
-      hairFront(),
+      hairSlick(),
+      face({ eye: 'shrewd', mouth: 'smile' }),
     ].join('');
     return { name: '田利息', body };
   },
 
-  // 石原料：供應商老闆 — 樸實、捲袖夾克、憨厚、搬箱手勢
+  // 石原料：供應商老闆 — 短髮、絡腮鬍、憨厚圓眼、捲袖+搬箱
   shi() {
     const body = [
       legs(C.secondary, C.darkGray),
-      `<rect x="16" y="86" width="14" height="20" rx="7" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>`, // 捲袖左臂（短）
-      `<rect x="70" y="86" width="14" height="20" rx="7" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>`, // 捲袖右臂（短）
+      `<rect x="16" y="86" width="14" height="20" rx="7" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>`,
+      `<rect x="70" y="86" width="14" height="20" rx="7" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>`,
       `<circle cx="23" cy="118" r="7" fill="${C.skin}"/>`,
       `<circle cx="77" cy="118" r="7" fill="${C.skin}"/>`,
       torso(C.gray2),
-      `<rect x="34" y="108" width="32" height="24" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1.5"/>`, // 搬的箱子
+      `<rect x="34" y="108" width="32" height="24" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1.5"/>`,
       `<line x1="50" y1="108" x2="50" y2="132" stroke="${C.line}"/>`,
       headCircle(),
-      face({ eye: 'normal', mouth: 'smile' }),
-      hairFront(),
-      `<path d="M44,55 Q50,58 56,55" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`, // 鬍
+      hairShort(),
+      face({ eye: 'round', mouth: 'smile' }),
+      beard(),
     ].join('');
     return { name: '石原料', body };
   },
 
-  // 白買家：大客戶採購長 — 幹練、平板/清單、精算表情，短髮俐落
+  // 白買家：大客戶採購長 — 大波浪捲髮、精算微瞇眼、平板清單
   bai() {
     const body = [
       legs(C.darkGray, C.black),
       arms(C.secondary, C.skin, { hideLeft: true }),
       torso(C.secondary),
-      `<rect x="6" y="94" width="20" height="26" rx="2" fill="${C.white}" stroke="${C.line}" stroke-width="1"/>`, // 平板
+      `<rect x="6" y="94" width="20" height="26" rx="2" fill="${C.white}" stroke="${C.line}" stroke-width="1"/>`,
       `<line x1="9" y1="100" x2="23" y2="100" stroke="${C.gray1}" stroke-width="1.5"/>`,
       `<line x1="9" y1="106" x2="23" y2="106" stroke="${C.gray1}" stroke-width="1.5"/>`,
       `<line x1="9" y1="112" x2="23" y2="112" stroke="${C.gray1}" stroke-width="1.5"/>`,
-      `<circle cx="16" cy="126" r="6" fill="${C.skin}"/>`, // 拿平板的手
+      `<circle cx="16" cy="126" r="6" fill="${C.skin}"/>`,
+      hairWave(),
       headCircle(),
-      face({ eye: 'narrow', mouth: 'neutral' }),
-      `<path d="M20,44 Q22,14 50,14 Q78,14 80,44 L80,60 Q74,52 74,44 Q70,20 50,20 Q30,20 26,44 Q26,52 20,60 Z" fill="${C.hair}"/>`, // 俐落短鮑伯
+      hairWave(),
+      face({ eye: 'shrewd', mouth: 'neutral' }),
     ].join('');
     return { name: '白買家', body };
   },
 
-  // 官正義：政府科長 — 公務員感、識別證掛牌、公事公辦
+  // 官正義：政府科長 — 一字眉、中規中矩短髮、公事公辦、識別證
   guan() {
     const body = [
       legs(C.darkGray, C.black),
       arms(C.secondary, C.skin),
       torso(C.secondary),
       `<path d="M42,78 L50,88 L58,78 Z" fill="${C.white}"/>`,
-      headCircle(),
-      face({ eye: 'normal', mouth: 'neutral' }),
-      hairFront(),
-      `<path d="M38,38 Q42,36.5 46,38" stroke="${C.hair}" stroke-width="1.5" fill="none" stroke-linecap="round"/>`, // 一字眉
-      `<path d="M54,38 Q58,36.5 62,38" stroke="${C.hair}" stroke-width="1.5" fill="none" stroke-linecap="round"/>`,
-      `<line x1="50" y1="86" x2="50" y2="104" stroke="${C.line}" stroke-width="1.5"/>`, // 識別證掛繩
-      `<rect x="44" y="104" width="12" height="16" rx="1" fill="${C.white}" stroke="${C.line}" stroke-width="1"/>`, // 識別證
+      `<line x1="50" y1="86" x2="50" y2="104" stroke="${C.line}" stroke-width="1.5"/>`,
+      `<rect x="44" y="104" width="12" height="16" rx="1" fill="${C.white}" stroke="${C.line}" stroke-width="1"/>`,
       `<rect x="46" y="107" width="8" height="6" fill="${C.gray1}"/>`,
+      headCircle(),
+      hairShort(),
+      face({ eye: 'big', brow: 'flat', mouth: 'neutral' }),
     ].join('');
     return { name: '官正義', body };
   },
 
-  // 麻雀姐：財經記者 — 馬尾、掛相機、機靈表情
+  // 麻雀姐：財經記者 — 爆炸頭、機靈大眼、開口笑、掛相機
   maque() {
     const body = [
       legs(C.secondary, C.darkGray),
       arms(C.creamDark, C.skin),
       torso(C.creamDark),
-      `<path d="M74,28 Q88,34 83,56 Q78,50 74,38 Z" fill="${C.hair}"/>`, // 馬尾（先畫在頭後方位置）
-      headCircle(),
-      face({ eye: 'round', mouth: 'open' }),
-      hairFront(),
-      `<line x1="40" y1="80" x2="34" y2="90" stroke="${C.line}" stroke-width="1.5"/>`, // 相機背帶
+      `<line x1="40" y1="80" x2="34" y2="90" stroke="${C.line}" stroke-width="1.5"/>`,
       `<line x1="60" y1="80" x2="66" y2="90" stroke="${C.line}" stroke-width="1.5"/>`,
-      `<rect x="40" y="90" width="20" height="14" rx="2" fill="${C.darkGray}" stroke="${C.line}" stroke-width="1"/>`, // 相機機身
-      `<circle cx="50" cy="97" r="6" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>`, // 鏡頭
+      `<rect x="40" y="90" width="20" height="14" rx="2" fill="${C.darkGray}" stroke="${C.line}" stroke-width="1"/>`,
+      `<circle cx="50" cy="97" r="6" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>`,
+      hairAfro(),
+      headCircle(),
+      `<path d="M22,34 Q26,14 50,12 Q74,14 78,34 Q68,26 50,26 Q32,26 22,34 Z" fill="${C.hair}"/>`,
+      face({ eye: 'huge', mouth: 'bigsmile' }),
     ].join('');
     return { name: '麻雀姐', body };
   },

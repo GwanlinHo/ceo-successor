@@ -12,51 +12,52 @@ const TIER_SCENE = {
 
 // 五個內部部門工作站(百分比座標)：後排三、前排二，前排較大營造景深
 const DESK_LAYOUT = [
-  { id: "shen", dept: "研發部", x: 22, row: "back" },
+  { id: "shen", dept: "研發部", x: 19, row: "back" },
   { id: "hao", dept: "生產部", x: 50, row: "back" },
-  { id: "jia", dept: "行銷業務部", x: 78, row: "back" },
-  { id: "you", dept: "人事部", x: 34, row: "front" },
-  { id: "qian", dept: "財務部", x: 66, row: "front" },
+  { id: "jia", dept: "行銷業務部", x: 81, row: "back" },
+  { id: "you", dept: "人事部", x: 33, row: "front" },
+  { id: "qian", dept: "財務部", x: 63, row: "front" },
 ];
 
-// 各工作站桌上擺設(輪流不同物件，增加辦公室細節)
-const DESK_ITEMS = {
-  shen: ["monitor", "folder"],
-  hao: ["monitor", "phone"],
-  jia: ["phone", "cup"],
-  you: ["monitor", "folder"],
-  qian: ["monitor", "phone", "folder"],
+// 各工作站桌上的主要設備(放大，看得清楚)
+const DESK_TOP = {
+  shen: "monitor", hao: "phone", jia: "monitor", you: "folder", qian: "monitor",
 };
+// 人物站在桌子哪一側(相鄰工作站不互相面對，避免人物擠在一起)
+const FIG_SIDE = { shen: "left", hao: "left", jia: "left", you: "left", qian: "right" };
 
-// 一個工作站：半身像坐在椅上、桌後 + 桌面擺設 + 銘牌
-function workstation(d) {
-  const size = d.row === "back" ? 72 : 92;
-  const itemSize = d.row === "back" ? 22 : 28;
-  const items = (DESK_ITEMS[d.id] || []).map((it) =>
-    `<span class="ws-item">${objectSprite(it, itemSize)}</span>`).join("");
+// 一個工作站：人物站在桌子「旁邊」，桌子有桌腳，桌上有放大的設備 + 銘牌
+function workstation(d, figSize, deskW, itemSize) {
+  const side = FIG_SIDE[d.id] || "left";
+  const fig = `<div class="ws-fig">${npcBust(d.id, figSize)}</div>`;
+  const desk = `
+    <div class="ws-desk" style="width:${deskW}px">
+      <div class="ws-deskitem">${objectSprite(DESK_TOP[d.id] || "monitor", itemSize)}</div>
+      <div class="ws-desktop"></div>
+      <div class="ws-leg ws-leg-l"></div><div class="ws-leg ws-leg-r"></div>
+      <span class="ws-plate">${d.dept}</span>
+    </div>`;
   return `
-    <div class="ws ws-${d.row}" style="left:${d.x}%">
-      <div class="ws-fig">${npcBust(d.id, size)}</div>
-      <div class="ws-deskitems">${items}</div>
-      <div class="ws-desk"><span class="ws-plate">${d.dept}</span></div>
+    <div class="ws ws-${d.row} ws-side-${side}" style="left:${d.x}%">
+      ${side === "left" ? fig + desk : desk + fig}
     </div>`;
 }
 
-// 主畫面辦公室場景：牆面+地板+工作站+角落擺設，清楚呈現辦公空間
+// 主畫面辦公室場景：牆面+地板+工作站(人在桌旁、桌有腳)+角落擺設，放大填滿空間
 export function renderOffice(s) {
   const scene = TIER_SCENE[s.tier] || TIER_SCENE[1];
-  const back = DESK_LAYOUT.filter((d) => d.row === "back").map(workstation).join("");
-  const front = DESK_LAYOUT.filter((d) => d.row === "front").map(workstation).join("");
+  const back = DESK_LAYOUT.filter((d) => d.row === "back").map((d) => workstation(d, 96, 118, 46)).join("");
+  const front = DESK_LAYOUT.filter((d) => d.row === "front").map((d) => workstation(d, 120, 150, 58)).join("");
   return `
     <div class="office" style="--wall:${scene.wall};--floor:${scene.floor}">
       <div class="office-scene">
         <div class="office-wall">
-          <div class="wall-clock" title="時鐘">${objectSprite("clock", 40)}</div>
+          <div class="wall-clock" title="時鐘">${objectSprite("clock", 54)}</div>
         </div>
         <div class="office-floor"></div>
-        <div class="office-prop prop-plant" title="盆栽">${objectSprite("plant", 52)}</div>
-        <div class="office-prop prop-screen" title="屏風">${objectSprite("screen", 72)}</div>
-        <div class="office-prop prop-corner" title="設備">${objectSprite(scene.cornerRight, 54)}</div>
+        <div class="office-prop prop-plant" title="盆栽">${objectSprite("plant", 84)}</div>
+        <div class="office-prop prop-screen" title="屏風">${objectSprite("screen", 108)}</div>
+        <div class="office-prop prop-corner" title="設備">${objectSprite(scene.cornerRight, 88)}</div>
         <div class="ws-row ws-row-back">${back}</div>
         <div class="ws-row ws-row-front">${front}</div>
       </div>

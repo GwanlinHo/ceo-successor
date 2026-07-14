@@ -211,46 +211,46 @@ html, body {
 .news-rumor .news-tag { background: #e6dcc4; border-color: var(--warn); color: var(--warn); }
 .news-text { font-size: 0.92rem; line-height: 1.5; }
 
-/* ===== M6/v5 辦公室場景(牆+地板+工作站) ===== */
+/* ===== M6/v7 辦公室場景(牆+地板+人站桌旁+桌腳，放大填滿) ===== */
 .office { margin-bottom: 1rem; }
-.office-scene { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 360px;
+.office-scene { position: relative; width: 100%; aspect-ratio: 3 / 2; max-height: 520px;
   border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-/* 背牆(上 52%)與地板(下 48%)分層，明確呈現空間 */
-.office-wall { position: absolute; left: 0; right: 0; top: 0; height: 52%; background: var(--wall);
+/* 背牆與地板分層 */
+.office-wall { position: absolute; left: 0; right: 0; top: 0; height: 50%; background: var(--wall);
   border-bottom: 2px solid rgba(43,43,41,0.10); }
-.office-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: var(--floor); }
-/* 地板透視斜線 */
+.office-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 50%; background: var(--floor); }
 .office-floor::before { content: ""; position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(90deg, transparent, transparent 68px, rgba(43,43,41,0.05) 68px, rgba(43,43,41,0.05) 69px);
+  background-image: repeating-linear-gradient(90deg, transparent, transparent 90px, rgba(43,43,41,0.05) 90px, rgba(43,43,41,0.05) 91px);
 }
 /* 工作站列 */
 .ws-row { position: absolute; left: 0; right: 0; height: 0; }
-.ws-row-back { top: 48%; z-index: 2; }
-.ws-row-front { top: 78%; z-index: 4; }
-.ws { position: absolute; transform: translateX(-50%); bottom: 0; display: flex; flex-direction: column; align-items: center; }
-.ws-fig { position: relative; z-index: 1; }
+.ws-row-back { top: 50%; z-index: 2; }
+.ws-row-front { top: 88%; z-index: 4; }
+/* 一個工作站：人物與桌子並排(底部對齊) */
+.ws { position: absolute; transform: translateX(-50%); bottom: 0; display: flex; align-items: flex-end; gap: 2px; }
+.ws-fig { position: relative; z-index: 2; }
 .ws-fig svg { display: block; }
-/* 書桌：擋在半身像下緣，像坐在桌後 */
-.ws-desk { position: relative; margin-top: -10px; width: 96px; height: 26px;
-  background: linear-gradient(#c9bda3, #b7aa8e); border: 1px solid var(--line); border-radius: 4px 4px 3px 3px;
-  box-shadow: 0 3px 6px rgba(43,43,41,0.18); display: flex; align-items: center; justify-content: center; }
-.ws-front .ws-desk { width: 118px; height: 30px; }
-.ws-plate { font-size: 0.66rem; color: #3a352c; background: rgba(253,252,249,0.85);
-  padding: 0 0.4em; border-radius: 2px; white-space: nowrap; }
-.ws-front .ws-plate { font-size: 0.72rem; }
-/* 桌上擺設(螢幕/電話/文件夾)：疊在桌面上緣 */
-.ws-deskitems { position: relative; z-index: 2; display: flex; align-items: flex-end; justify-content: center;
-  gap: 2px; margin-top: -8px; margin-bottom: -6px; }
-.ws-deskitems svg { display: block; }
-.office-prop { position: absolute; z-index: 3; bottom: 3%; }
-.prop-plant { left: 3%; }
-.prop-screen { left: 14%; bottom: 6%; z-index: 3; opacity: 0.92; }
-.prop-corner { right: 3%; z-index: 5; }
+/* 桌子：桌面 + 兩隻桌腳；設備立在桌面上 */
+.ws-desk { position: relative; display: flex; flex-direction: column; align-items: center; z-index: 1; }
+.ws-deskitem { position: relative; z-index: 2; margin-bottom: -4px; }
+.ws-deskitem svg { display: block; }
+.ws-desktop { width: 100%; height: 12px; background: linear-gradient(#cbbfa4, #b3a789);
+  border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 3px 5px rgba(43,43,41,0.16); }
+.ws-leg { position: absolute; bottom: -22px; width: 7px; height: 24px; background: #9c9078; border: 1px solid var(--line); border-top: none; }
+.ws-leg-l { left: 12%; }
+.ws-leg-r { right: 12%; }
+.ws-plate { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+  font-size: 0.72rem; color: #3a352c; background: rgba(253,252,249,0.9); padding: 0 0.45em;
+  border-radius: 2px; white-space: nowrap; z-index: 3; }
+.ws-front .ws-plate { font-size: 0.82rem; }
+.office-prop { position: absolute; z-index: 3; bottom: 2%; }
 .office-prop svg { display: block; }
-/* 牆上時鐘 */
-.wall-clock { position: absolute; top: 14%; left: 50%; transform: translateX(-50%); }
+.prop-plant { left: 1%; z-index: 5; }
+.prop-screen { left: 30%; bottom: 8%; z-index: 1; opacity: 0.95; }
+.prop-corner { right: 1%; z-index: 5; }
+.wall-clock { position: absolute; top: 12%; left: 50%; transform: translateX(-50%); }
 .wall-clock svg { display: block; }
-.office-caption { text-align: center; font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.4rem; }
+.office-caption { text-align: center; font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.4rem; }
 
 /* 事件對話框頭像 */
 .dialog-speaker { display: flex; gap: 0.9rem; align-items: flex-start; margin-bottom: 1.25rem; }
@@ -376,3 +376,15 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   .view-enter, .overlay, .panel { animation: none !important; }
 }
+
+/* ===== v7: 字體與頭像放大 ===== */
+.dialog-title { font-size: 1.55rem; }
+.dialog-text { font-size: 1.08rem; line-height: 1.75; }
+.dialog-npc { font-size: 1rem; }
+.option-label { font-size: 1.08rem; }
+.option-hint { font-size: 0.95rem; }
+.kpi-l { font-size: 0.82rem; }
+.kpi-v { font-size: 1.08rem; }
+.hud-company { font-size: 1.25rem; }
+.lineup-npc svg { width: auto; }
+.lineup-name { font-size: 0.8rem; }
