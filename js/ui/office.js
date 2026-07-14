@@ -1,7 +1,9 @@
-// 辦公室場景：依規模 tier 呈現三種辦公空間，五個內部部門 NPC 站位。
-// 依賴 sprites.js 的 npcSprite/objectSprite 契約。純視覺，不影響遊戲狀態。
+// 辦公室場景：整個場景畫成單一 SVG(viewBox 900x600)，所有元素隨容器等比縮放、
+// 縮放瀏覽器也絕不跑位。人物半身像坐在桌後，桌上不放東西。純視覺，不影響狀態。
 
 import { npcBust, objectSprite } from "./sprites.js";
+
+const VW = 900, VH = 600;
 
 // 三個 tier 的場景設定：規模愈大，牆/地色調不同、標題不同
 const TIER_SCENE = {
@@ -10,57 +12,70 @@ const TIER_SCENE = {
   3: { name: "企業總部大樓", wall: "#e8e0cf", floor: "#c8bda7", cornerRight: "printer" },
 };
 
-// 五個內部部門工作站(百分比座標)：後排三、前排二，前排較大營造景深
+// 五個內部部門：後排三、前排二(前排較大、營造景深)
 const DESK_LAYOUT = [
-  { id: "shen", dept: "研發部", x: 19, row: "back" },
-  { id: "hao", dept: "生產部", x: 50, row: "back" },
-  { id: "jia", dept: "行銷業務部", x: 81, row: "back" },
-  { id: "you", dept: "人事部", x: 33, row: "front" },
-  { id: "qian", dept: "財務部", x: 63, row: "front" },
+  { id: "shen", dept: "研發部", cx: 165, row: "back" },
+  { id: "hao", dept: "生產部", cx: 450, row: "back" },
+  { id: "jia", dept: "行銷業務部", cx: 735, row: "back" },
+  { id: "you", dept: "人事部", cx: 300, row: "front" },
+  { id: "qian", dept: "財務部", cx: 600, row: "front" },
 ];
 
-// 各工作站桌上的主要設備(放大，看得清楚)
-const DESK_TOP = {
-  shen: "monitor", hao: "phone", jia: "monitor", you: "folder", qian: "monitor",
-};
-// 人物站在桌子哪一側(相鄰工作站不互相面對，避免人物擠在一起)
-const FIG_SIDE = { shen: "left", hao: "left", jia: "left", you: "left", qian: "right" };
-
-// 一個工作站：人物站在桌子「旁邊」，桌子有桌腳，桌上有放大的設備 + 銘牌
-function workstation(d, figSize, deskW, itemSize) {
-  const side = FIG_SIDE[d.id] || "left";
-  const fig = `<div class="ws-fig">${npcBust(d.id, figSize)}</div>`;
-  const desk = `
-    <div class="ws-desk" style="width:${deskW}px">
-      <div class="ws-deskitem">${objectSprite(DESK_TOP[d.id] || "monitor", itemSize)}</div>
-      <div class="ws-desktop"></div>
-      <div class="ws-leg ws-leg-l"></div><div class="ws-leg ws-leg-r"></div>
-      <span class="ws-plate">${d.dept}</span>
-    </div>`;
-  return `
-    <div class="ws ws-${d.row} ws-side-${side}" style="left:${d.x}%">
-      ${side === "left" ? fig + desk : desk + fig}
-    </div>`;
+// 將 objectSprite / npcBust 產生的 <svg> 以巢狀 svg 放進場景座標(x,y,w,h)。
+// 子 svg 依自身 viewBox 自動縮放進指定框，故整體隨父 viewBox 等比縮放。
+function place(svg, x, y, w, h) {
+  return svg
+    .replace("<svg ", `<svg x="${x}" y="${y}" `)
+    .replace(/width="[^"]*"/, `width="${w}"`)
+    .replace(/height="[^"]*"/, `height="${h}"`);
 }
 
-// 主畫面辦公室場景：牆面+地板+工作站(人在桌旁、桌有腳)+角落擺設，放大填滿空間
+// 一個工作站：半身像坐在桌後(桌面擋住半身下緣) + 桌腳 + 桌面銘牌
+function workstation(d) {
+  const isBack = d.row === "back";
+  const floorY = isBack ? 392 : 574;      // 桌腳落地線
+  const deskW = isBack ? 200 : 250;       // 放大桌面
+  const figH = isBack ? 150 : 190;
+  const figW = figH * 0.94;               // 半身像 viewBox 比例
+  const deskTopH = 30, legH = isBack ? 34 : 42;
+  const deskTopY = floorY - legH - deskTopH;
+  const deskX = d.cx - deskW / 2;
+  // 半身像：底部剛好被桌面上緣遮住一點(像坐在桌後)
+  const figY = deskTopY + 10 - figH;
+  const figX = d.cx - figW / 2;
+  const legInset = deskW * 0.12;
+  const font = isBack ? 20 : 23;
+  const plateW = deskW * 0.86;
+  return `
+    <!-- ${d.dept} -->
+    ${place(npcBust(d.id, 100), figX, figY, figW, figH)}
+    <rect x="${deskX + legInset}" y="${deskTopY + deskTopH}" width="9" height="${legH}" fill="#9c9078" stroke="#cfc9bc"/>
+    <rect x="${deskX + deskW - legInset - 9}" y="${deskTopY + deskTopH}" width="9" height="${legH}" fill="#9c9078" stroke="#cfc9bc"/>
+    <rect x="${deskX}" y="${deskTopY}" width="${deskW}" height="${deskTopH}" rx="4" fill="#c1b598" stroke="#cfc9bc"/>
+    <rect x="${d.cx - plateW / 2}" y="${deskTopY + 4}" width="${plateW}" height="${deskTopH - 8}" rx="3" fill="#fdfcf9" opacity="0.9"/>
+    <text x="${d.cx}" y="${deskTopY + deskTopH / 2 + font * 0.35}" text-anchor="middle" font-size="${font}" fill="#3a352c" font-family="sans-serif" font-weight="600">${d.dept}</text>`;
+}
+
+// 主畫面辦公室場景：單一 SVG，牆+地板+工作站(人坐桌後)+角落擺設
 export function renderOffice(s) {
   const scene = TIER_SCENE[s.tier] || TIER_SCENE[1];
-  const back = DESK_LAYOUT.filter((d) => d.row === "back").map((d) => workstation(d, 96, 118, 46)).join("");
-  const front = DESK_LAYOUT.filter((d) => d.row === "front").map((d) => workstation(d, 120, 150, 58)).join("");
+  // 後排先畫(在後)，前排後畫(在前)，形成前後景深
+  const back = DESK_LAYOUT.filter((d) => d.row === "back").map(workstation).join("");
+  const front = DESK_LAYOUT.filter((d) => d.row === "front").map(workstation).join("");
   return `
-    <div class="office" style="--wall:${scene.wall};--floor:${scene.floor}">
-      <div class="office-scene">
-        <div class="office-wall">
-          <div class="wall-clock" title="時鐘">${objectSprite("clock", 54)}</div>
-        </div>
-        <div class="office-floor"></div>
-        <div class="office-prop prop-plant" title="盆栽">${objectSprite("plant", 84)}</div>
-        <div class="office-prop prop-screen" title="屏風">${objectSprite("screen", 108)}</div>
-        <div class="office-prop prop-corner" title="設備">${objectSprite(scene.cornerRight, 88)}</div>
-        <div class="ws-row ws-row-back">${back}</div>
-        <div class="ws-row ws-row-front">${front}</div>
-      </div>
+    <div class="office">
+      <svg class="office-svg" viewBox="0 0 ${VW} ${VH}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="辦公室場景">
+        <rect x="0" y="0" width="${VW}" height="300" fill="${scene.wall}"/>
+        <rect x="0" y="300" width="${VW}" height="300" fill="${scene.floor}"/>
+        <line x1="0" y1="300" x2="${VW}" y2="300" stroke="rgba(43,43,41,0.10)" stroke-width="2"/>
+        ${[180, 360, 540, 720].map((x) => `<line x1="${x}" y1="300" x2="${x}" y2="600" stroke="rgba(43,43,41,0.05)" stroke-width="1"/>`).join("")}
+        ${place(objectSprite("clock", 100), VW / 2 - 55, 34, 110, 110)}
+        ${back}
+        ${place(objectSprite("screen", 100), 250, 300, 170, 170)}
+        ${front}
+        ${place(objectSprite("plant", 100), 8, 400, 150, 150)}
+        ${place(objectSprite(scene.cornerRight, 100), VW - 150, 430, 140, 140)}
+      </svg>
       <div class="office-caption">${scene.name}</div>
     </div>`;
 }

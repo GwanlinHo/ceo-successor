@@ -554,13 +554,13 @@ const OBJECT_BUILDERS = {
   // 時鐘（掛牆圓鐘）
   clock() {
     return `
-<circle cx="50" cy="50" r="30" fill="${C.white}" stroke="${C.darkGray}" stroke-width="3"/>
-<circle cx="50" cy="50" r="30" fill="none" stroke="${C.line}" stroke-width="1"/>
-<line x1="50" y1="50" x2="50" y2="30" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
-<line x1="50" y1="50" x2="64" y2="56" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round"/>
-<circle cx="50" cy="24" r="1.6" fill="${C.gray2}"/><circle cx="76" cy="50" r="1.6" fill="${C.gray2}"/>
-<circle cx="50" cy="76" r="1.6" fill="${C.gray2}"/><circle cx="24" cy="50" r="1.6" fill="${C.gray2}"/>
-<circle cx="50" cy="50" r="2.4" fill="${C.ink}"/>`;
+<circle cx="50" cy="50" r="34" fill="${C.white}" stroke="${C.darkGray}" stroke-width="3.5"/>
+<circle cx="50" cy="50" r="34" fill="none" stroke="${C.line}" stroke-width="1"/>
+<line x1="50" y1="50" x2="50" y2="31" stroke="${C.black}" stroke-width="4.5" stroke-linecap="round"/>
+<line x1="50" y1="50" x2="73" y2="39" stroke="${C.black}" stroke-width="3" stroke-linecap="round"/>
+<circle cx="50" cy="22" r="2" fill="${C.gray2}"/><circle cx="78" cy="50" r="2" fill="${C.gray2}"/>
+<circle cx="50" cy="78" r="2" fill="${C.gray2}"/><circle cx="22" cy="50" r="2" fill="${C.gray2}"/>
+<circle cx="50" cy="50" r="2.8" fill="${C.black}"/>`;
   },
 
   // 文件夾（兩本立著的資料夾+標籤）

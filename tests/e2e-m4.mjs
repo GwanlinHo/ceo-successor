@@ -46,7 +46,7 @@ try {
   await page.waitForSelector('.dialog');
   ok(await page.$('.npc-avatar svg') !== null, "事件對話框顯示 NPC 頭像 SVG");
   ok(await page.$eval('.npc-avatar svg', (e) => /^0 \d+ 100 \d+$/.test(e.getAttribute("viewBox")) && e.getAttribute("viewBox") !== "0 0 100 200"), "頭像為半身裁切");
-  ok(await page.$('.dialog-bg .office-scene') !== null, "對話框背後有淡化辦公室場景");
+  ok(await page.$('.dialog-bg .office-svg') !== null, "對話框背後有淡化辦公室場景");
 
   // v4 財報教學：閱讀指引開關
   await page.click('[data-act="open-reports"]');
@@ -131,14 +131,11 @@ try {
     // 推進到本月事件清空
     let g3 = 0;
     while (g3++ < 30 && await page.$('.option')) { await page.click('.option'); await page.waitForNetworkIdle({ idleTime: 40 }).catch(() => {}); }
-    if (await page.$('.office-scene')) {
-      ok((await page.$$('.ws')).length === 5, "辦公室場景五個部門工作站");
-      ok(await page.$('.office-wall') !== null && await page.$('.office-floor') !== null, "辦公室有牆面與地板");
-      ok(await page.$('.ws-fig svg') !== null, "工作站含 NPC 半身像");
-      ok((await page.$$('.ws-deskitem svg')).length === 5, "每張桌上有放大的設備");
-      ok((await page.$$('.ws-leg')).length >= 10, "每張桌子有桌腳");
-      ok(await page.$('.wall-clock svg') !== null, "牆上有時鐘");
-      ok(await page.$('.prop-screen svg') !== null, "辦公室有屏風");
+    if (await page.$('.office-svg')) {
+      // 辦公室為單一 SVG：5 個部門半身像(巢狀 svg) + 部門名字 text + 場景元素
+      ok((await page.$$('.office-svg svg')).length >= 8, "辦公室含多個巢狀 SVG 素材(人物+擺設)");
+      const depts = await page.$$eval('.office-svg text', (ts) => ts.map((t) => t.textContent));
+      ok(["研發部", "生產部", "行銷業務部", "人事部", "財務部"].every((d) => depts.includes(d)), "五個部門名字都在");
     }
   }
 
