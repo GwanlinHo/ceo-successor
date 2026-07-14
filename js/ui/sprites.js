@@ -207,9 +207,9 @@ function glasses(shape = 'round', color = C.darkGray, gap = 9) {
       + `<rect x="${RX - 6.5}" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
       + `<line x1="${LX + 6.5}" y1="45" x2="${RX - 6.5}" y2="45" stroke="${color}" stroke-width="2"/>`;
   } else {
-    g = `<circle cx="${LX}" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
-      + `<circle cx="${RX}" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
-      + `<line x1="${LX + 8}" y1="46" x2="${RX - 8}" y2="46" stroke="${color}" stroke-width="2"/>`;
+    g = `<circle cx="${LX}" cy="46" r="7" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<circle cx="${RX}" cy="46" r="7" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<line x1="${LX + 7}" y1="46" x2="${RX - 7}" y2="46" stroke="${color}" stroke-width="2"/>`;
   }
   return scaleFeatures(g);
 }
@@ -258,8 +258,8 @@ const NPC_BUILDERS = {
       headCircle(),
       hairShort(),
       `<path d="M50,14 Q55,3 60,9" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
-      face({ eye: 'huge', mouth: 'smile', gap: 6.5, eyeScale: 1.05 }),
-      glasses('round', C.darkGray, 6.5),
+      face({ eye: 'huge', mouth: 'smile', gap: 8.5, eyeScale: 1.05 }),
+      glasses('round', C.darkGray, 8.5),
     ].join('');
     return { name: '沈技安', body };
   },
