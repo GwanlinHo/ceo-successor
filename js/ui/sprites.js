@@ -139,16 +139,19 @@ function face(opts = {}) {
     mouthPath = `<path d="M40,56 Q50,67 60,56 Q50,61 40,56 Z" fill="${C.darkGray}"/>`;
   } else if (mouth === 'frown') {
     mouthPath = `<path d="M42,61 Q50,55 58,61" stroke="${C.darkGray}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+  } else if (mouth === 'frownsmall') {
+    mouthPath = `<path d="M45.5,60 Q50,56.5 54.5,60" stroke="${C.darkGray}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
   } else if (mouth === 'small') {
     mouthPath = `<line x1="46" y1="58" x2="54" y2="58" stroke="${C.darkGray}" stroke-width="2.2" stroke-linecap="round"/>`;
   } else {
     mouthPath = `<line x1="43" y1="58" x2="57" y2="58" stroke="${C.darkGray}" stroke-width="2.2" stroke-linecap="round"/>`;
   }
+  // 法令紋：八字形——上端窄(近鼻翼 x47/53)、往斜下外八張開(到 x41/59)
   const folds = fold
-    ? `<path d="M38,50 Q35,56 39,60" stroke="${C.gray2}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
-      + `<path d="M62,50 Q65,56 61,60" stroke="${C.gray2}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
+    ? `<path d="M47,54 Q44,58 41,63" stroke="${C.gray2}" stroke-width="1.1" fill="none" stroke-linecap="round"/>`
+      + `<path d="M53,54 Q56,58 59,63" stroke="${C.gray2}" stroke-width="1.1" fill="none" stroke-linecap="round"/>`
     : '';
-  return scaleFeatures(eyes + brows + folds + mouthPath);
+  return scaleFeatures(eyes + brows + mouthPath) + folds;
 }
 
 // ===== 髮型庫（皆可傳色；花白傳 C.gray2、白髮傳 C.gray1）=====
@@ -186,10 +189,10 @@ function hairBaldShiny() {
     + `<path d="M78,50 Q79,44 77,40 Q74,45 70,47 Z" fill="${C.gray2}"/>`
     + `<ellipse cx="44" cy="26" rx="7" ry="4" fill="${C.white}" opacity="0.5"/>`;
 }
-// 髮圈綁的馬尾（後方）
+// 髮圈綁的馬尾（後方，明顯垂在右側）
 function ponytail(color = C.hair) {
-  return `<path d="M74,26 Q90,34 86,60 Q80,70 78,58 Q84,44 72,36 Z" fill="${color}"/>`
-    + `<rect x="70" y="28" width="8" height="5" rx="2.5" fill="${C.secondary}"/>`; // 髮圈
+  return `<path d="M72,24 Q95,30 93,58 Q92,78 82,74 Q88,58 82,44 Q78,34 68,32 Z" fill="${color}"/>`
+    + `<ellipse cx="73" cy="30" rx="5" ry="4" fill="${C.secondary}"/>`; // 髮圈
 }
 // 髮飾（側邊小髮夾）
 function hairclip(color = C.gray1) {
@@ -255,8 +258,8 @@ const NPC_BUILDERS = {
       headCircle(),
       hairShort(),
       `<path d="M50,14 Q55,3 60,9" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
-      face({ eye: 'huge', mouth: 'smile', gap: 8, eyeScale: 1.05 }),
-      glasses('round', C.darkGray, 8),
+      face({ eye: 'huge', mouth: 'smile', gap: 6.5, eyeScale: 1.05 }),
+      glasses('round', C.darkGray, 6.5),
     ].join('');
     return { name: '沈技安', body };
   },
@@ -271,7 +274,7 @@ const NPC_BUILDERS = {
       `<rect x="60" y="118" width="10" height="14" fill="${C.gray1}" stroke="${C.line}"/>`,
       headCircle(),
       hairBaldShiny(),
-      face({ eye: 'big', mouth: 'smile', gap: 10.5, eyeScale: 1.05 }),
+      face({ eye: 'big', mouth: 'smile', gap: 8, eyeScale: 1.05 }),
       beard(),
     ].join('');
     return { name: '郝製造', body };
@@ -287,7 +290,7 @@ const NPC_BUILDERS = {
       `<path d="M47,80 L53,80 L51,112 L49,112 Z" fill="${C.black}"/>`,
       headCircle(),
       hairSlick(),
-      face({ eye: 'big', brow: 'thick', mouth: 'bigsmile', gap: 8.5, eyeScale: 1.0 }),
+      face({ eye: 'big', brow: 'thick', mouth: 'bigsmile', gap: 7, eyeScale: 1.0 }),
     ].join('');
     return { name: '賈推銷', body };
   },
@@ -303,7 +306,7 @@ const NPC_BUILDERS = {
       hairLong(),
       headCircle(),
       hairLong(),
-      face({ eye: 'huge', mouth: 'smile', gap: 8.5, eyeScale: 1.15 }),
+      face({ eye: 'huge', mouth: 'smile', gap: 7, eyeScale: 1.15 }),
       hairclip(),
     ].join('');
     return { name: '尤仁慈', body };
@@ -320,8 +323,8 @@ const NPC_BUILDERS = {
       `<rect x="8" y="118" width="18" height="13" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`,
       headCircle(),
       hairBald(C.gray2),
-      face({ eye: 'big', mouth: 'frown', fold: true, gap: 11, eyeScale: 0.85 }),
-      glasses('square', C.darkGray, 11),
+      face({ eye: 'big', mouth: 'frown', fold: true, gap: 8.5, eyeScale: 0.9 }),
+      glasses('square', C.darkGray, 8.5),
       beard(C.gray2),
     ].join('');
     return { name: '錢守成', body };
@@ -339,7 +342,7 @@ const NPC_BUILDERS = {
       `<circle cx="80" cy="110" r="6" fill="${C.skin}"/>`,
       headCircle(),
       hairSlick(C.gray1),
-      face({ eye: 'big', brow: 'thick', mouth: 'neutral', fold: true, ink: C.gray2, gap: 10.5, eyeScale: 0.9 }),
+      face({ eye: 'big', brow: 'thick', mouth: 'frownsmall', fold: true, ink: C.gray2, gap: 8.5, eyeScale: 0.9 }),
     ].join('');
     return { name: '董大川', body };
   },
@@ -358,7 +361,7 @@ const NPC_BUILDERS = {
       `<circle cx="18" cy="128" r="6" fill="${C.skin}"/>`,
       headCircle(),
       hairSlick(),
-      face({ eye: 'shrewd', mouth: 'smile', gap: 8, eyeScale: 0.95 }),
+      face({ eye: 'shrewd', mouth: 'smile', gap: 6.5, eyeScale: 0.95 }),
     ].join('');
     return { name: '田利息', body };
   },
@@ -376,8 +379,9 @@ const NPC_BUILDERS = {
       `<line x1="50" y1="108" x2="50" y2="132" stroke="${C.line}"/>`,
       headCircle(),
       hairShort(),
-      face({ eye: 'round', mouth: 'smile', gap: 11.5, eyeScale: 1.15 }),
-      beard(),
+      face({ eye: 'round', mouth: 'small', gap: 8.5, eyeScale: 1.1 }),
+      // 下巴短鬍(位於嘴下方，不與嘴重疊，避免嘴巴看起來太厚)
+      `<path d="M45,64 Q50,69 55,64" stroke="${C.hair}" stroke-width="2" fill="none" stroke-linecap="round"/>`,
     ].join('');
     return { name: '石原料', body };
   },
@@ -396,7 +400,7 @@ const NPC_BUILDERS = {
       hairWave(),
       headCircle(),
       hairWave(),
-      face({ eye: 'shrewd', mouth: 'neutral', gap: 9.5, eyeScale: 0.95 }),
+      face({ eye: 'shrewd', mouth: 'neutral', gap: 7.5, eyeScale: 0.95 }),
     ].join('');
     return { name: '白買家', body };
   },
@@ -413,25 +417,24 @@ const NPC_BUILDERS = {
       `<rect x="46" y="107" width="8" height="6" fill="${C.gray1}"/>`,
       headCircle(),
       hairShort(),
-      face({ eye: 'big', brow: 'flat', mouth: 'neutral', gap: 10, eyeScale: 0.95 }),
+      face({ eye: 'big', brow: 'flat', mouth: 'neutral', gap: 8, eyeScale: 0.95 }),
+      glasses('round', C.darkGray, 8),
     ].join('');
     return { name: '官正義', body };
   },
 
-  // 麻雀姐：財經記者 — 爆炸頭、機靈大眼、開口笑、掛相機
+  // 麻雀姐：財經記者 — 綁馬尾、洋裝、機靈大眼、開口笑
   maque() {
     const body = [
-      legs(C.secondary, C.darkGray),
-      arms(C.creamDark, C.skin),
-      torso(C.creamDark),
-      `<line x1="40" y1="80" x2="34" y2="90" stroke="${C.line}" stroke-width="1.5"/>`,
-      `<line x1="60" y1="80" x2="66" y2="90" stroke="${C.line}" stroke-width="1.5"/>`,
-      `<rect x="40" y="90" width="20" height="14" rx="2" fill="${C.darkGray}" stroke="${C.line}" stroke-width="1"/>`,
-      `<circle cx="50" cy="97" r="6" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>`,
-      hairAfro(),
+      legs(C.creamDark, C.darkGray),
+      arms(C.cream, C.skin),
+      torso(C.cream),
+      // 洋裝 A 字裙擺(從腰部外擴，蓋住大腿)
+      `<path d="M28,120 L72,120 L82,152 L18,152 Z" fill="${C.cream}" stroke="${C.line}" stroke-width="1"/>`,
+      ponytail(),
       headCircle(),
-      `<path d="M22,34 Q26,14 50,12 Q74,14 78,34 Q68,26 50,26 Q32,26 22,34 Z" fill="${C.hair}"/>`,
-      face({ eye: 'huge', mouth: 'bigsmile', gap: 8, eyeScale: 1.2 }),
+      hairShort(),
+      face({ eye: 'huge', mouth: 'bigsmile', gap: 6.5, eyeScale: 1.15 }),
     ].join('');
     return { name: '麻雀姐', body };
   },
