@@ -135,6 +135,9 @@ try {
       ok((await page.$$('.ws')).length === 5, "辦公室場景五個部門工作站");
       ok(await page.$('.office-wall') !== null && await page.$('.office-floor') !== null, "辦公室有牆面與地板");
       ok(await page.$('.ws-fig svg') !== null, "工作站含 NPC 半身像");
+      ok((await page.$$('.ws-item svg')).length >= 5, "桌上有擺設(螢幕/電話/文件夾)");
+      ok(await page.$('.wall-clock svg') !== null, "牆上有時鐘");
+      ok(await page.$('.prop-screen svg') !== null, "辦公室有屏風");
     }
   }
 

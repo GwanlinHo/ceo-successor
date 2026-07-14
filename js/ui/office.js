@@ -19,12 +19,25 @@ const DESK_LAYOUT = [
   { id: "qian", dept: "財務部", x: 66, row: "front" },
 ];
 
-// 一個工作站：半身像坐在桌後 + 桌面銘牌
+// 各工作站桌上擺設(輪流不同物件，增加辦公室細節)
+const DESK_ITEMS = {
+  shen: ["monitor", "folder"],
+  hao: ["monitor", "phone"],
+  jia: ["phone", "cup"],
+  you: ["monitor", "folder"],
+  qian: ["monitor", "phone", "folder"],
+};
+
+// 一個工作站：半身像坐在椅上、桌後 + 桌面擺設 + 銘牌
 function workstation(d) {
   const size = d.row === "back" ? 72 : 92;
+  const itemSize = d.row === "back" ? 22 : 28;
+  const items = (DESK_ITEMS[d.id] || []).map((it) =>
+    `<span class="ws-item">${objectSprite(it, itemSize)}</span>`).join("");
   return `
     <div class="ws ws-${d.row}" style="left:${d.x}%">
       <div class="ws-fig">${npcBust(d.id, size)}</div>
+      <div class="ws-deskitems">${items}</div>
       <div class="ws-desk"><span class="ws-plate">${d.dept}</span></div>
     </div>`;
 }
@@ -37,9 +50,12 @@ export function renderOffice(s) {
   return `
     <div class="office" style="--wall:${scene.wall};--floor:${scene.floor}">
       <div class="office-scene">
-        <div class="office-wall"></div>
+        <div class="office-wall">
+          <div class="wall-clock" title="時鐘">${objectSprite("clock", 40)}</div>
+        </div>
         <div class="office-floor"></div>
         <div class="office-prop prop-plant" title="盆栽">${objectSprite("plant", 52)}</div>
+        <div class="office-prop prop-screen" title="屏風">${objectSprite("screen", 72)}</div>
         <div class="office-prop prop-corner" title="設備">${objectSprite(scene.cornerRight, 54)}</div>
         <div class="ws-row ws-row-back">${back}</div>
         <div class="ws-row ws-row-front">${front}</div>

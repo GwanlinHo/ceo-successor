@@ -238,10 +238,18 @@ html, body {
 .ws-plate { font-size: 0.66rem; color: #3a352c; background: rgba(253,252,249,0.85);
   padding: 0 0.4em; border-radius: 2px; white-space: nowrap; }
 .ws-front .ws-plate { font-size: 0.72rem; }
+/* 桌上擺設(螢幕/電話/文件夾)：疊在桌面上緣 */
+.ws-deskitems { position: relative; z-index: 2; display: flex; align-items: flex-end; justify-content: center;
+  gap: 2px; margin-top: -8px; margin-bottom: -6px; }
+.ws-deskitems svg { display: block; }
 .office-prop { position: absolute; z-index: 3; bottom: 3%; }
 .prop-plant { left: 3%; }
+.prop-screen { left: 14%; bottom: 6%; z-index: 3; opacity: 0.92; }
 .prop-corner { right: 3%; z-index: 5; }
 .office-prop svg { display: block; }
+/* 牆上時鐘 */
+.wall-clock { position: absolute; top: 14%; left: 50%; transform: translateX(-50%); }
+.wall-clock svg { display: block; }
 .office-caption { text-align: center; font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.4rem; }
 
 /* 事件對話框頭像 */

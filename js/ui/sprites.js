@@ -422,6 +422,61 @@ const OBJECT_BUILDERS = {
 <path d="M70,42 Q86,44 84,58 Q82,68 68,66" fill="none" stroke="${C.line}" stroke-width="4"/>
 <ellipse cx="50" cy="34" rx="20" ry="5" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>`;
   },
+
+  // 辦公椅（側視：椅背+座面+氣壓桿+五爪腳輪）
+  chair() {
+    return `
+<rect x="34" y="20" width="10" height="40" rx="4" fill="${C.darkGray}" stroke="${C.line}" stroke-width="1"/>
+<rect x="34" y="52" width="34" height="10" rx="4" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>
+<rect x="48" y="62" width="6" height="18" fill="${C.gray1}"/>
+<path d="M30,84 L72,84 L66,80 L36,80 Z" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>
+<circle cx="32" cy="85" r="3" fill="${C.darkGray}"/>
+<circle cx="70" cy="85" r="3" fill="${C.darkGray}"/>`;
+  },
+
+  // 桌上電話（機身+聽筒+按鍵+線）
+  phone() {
+    return `
+<rect x="24" y="52" width="52" height="26" rx="4" fill="${C.darkGray}" stroke="${C.line}" stroke-width="1"/>
+<rect x="46" y="58" width="24" height="14" rx="2" fill="${C.gray1}"/>
+<circle cx="32" cy="60" r="1.6" fill="${C.gray1}"/><circle cx="38" cy="60" r="1.6" fill="${C.gray1}"/>
+<circle cx="32" cy="66" r="1.6" fill="${C.gray1}"/><circle cx="38" cy="66" r="1.6" fill="${C.gray1}"/>
+<path d="M22,48 Q22,42 30,42 L70,42 Q78,42 78,48 L72,48 Q72,46 68,46 L32,46 Q28,46 28,48 Z" fill="${C.secondary}" stroke="${C.line}" stroke-width="1"/>
+<path d="M78,54 Q88,58 84,72" fill="none" stroke="${C.line}" stroke-width="2"/>`;
+  },
+
+  // 時鐘（掛牆圓鐘）
+  clock() {
+    return `
+<circle cx="50" cy="50" r="30" fill="${C.white}" stroke="${C.darkGray}" stroke-width="3"/>
+<circle cx="50" cy="50" r="30" fill="none" stroke="${C.line}" stroke-width="1"/>
+<line x1="50" y1="50" x2="50" y2="30" stroke="${C.ink}" stroke-width="3" stroke-linecap="round"/>
+<line x1="50" y1="50" x2="64" y2="56" stroke="${C.ink}" stroke-width="2.5" stroke-linecap="round"/>
+<circle cx="50" cy="24" r="1.6" fill="${C.gray2}"/><circle cx="76" cy="50" r="1.6" fill="${C.gray2}"/>
+<circle cx="50" cy="76" r="1.6" fill="${C.gray2}"/><circle cx="24" cy="50" r="1.6" fill="${C.gray2}"/>
+<circle cx="50" cy="50" r="2.4" fill="${C.ink}"/>`;
+  },
+
+  // 文件夾（兩本立著的資料夾+標籤）
+  folder() {
+    return `
+<rect x="30" y="30" width="16" height="52" rx="1" fill="${C.secondary}" stroke="${C.line}" stroke-width="1"/>
+<rect x="47" y="26" width="16" height="56" rx="1" fill="${C.gray2}" stroke="${C.line}" stroke-width="1"/>
+<rect x="63" y="32" width="14" height="50" rx="1" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>
+<rect x="33" y="38" width="10" height="6" fill="${C.cream}"/>
+<rect x="50" y="34" width="10" height="6" fill="${C.white}"/>
+<rect x="65" y="40" width="9" height="6" fill="${C.white}"/>`;
+  },
+
+  // 屏風／隔板（三折辦公隔屏，側斜擺放）
+  screen() {
+    return `
+<path d="M12,30 L40,24 L40,86 L12,92 Z" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>
+<path d="M40,24 L68,30 L68,86 L40,86 Z" fill="${C.cream}" stroke="${C.line}" stroke-width="1"/>
+<path d="M68,30 L88,26 L88,84 L68,86 Z" fill="${C.creamDark}" stroke="${C.line}" stroke-width="1"/>
+<line x1="40" y1="24" x2="40" y2="86" stroke="${C.line}" stroke-width="1"/>
+<line x1="68" y1="30" x2="68" y2="86" stroke="${C.line}" stroke-width="1"/>`;
+  },
 };
 
 export function objectSprite(name, size = 80) {
