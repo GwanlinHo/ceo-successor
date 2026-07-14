@@ -89,6 +89,16 @@ function bigEye(cx, cy, rx, ry, ink) {
     + `<circle cx="${(cx - rx * 0.3).toFixed(1)}" cy="${(cy - ry * 0.3).toFixed(1)}" r="1" fill="${C.white}"/>`;
 }
 
+// 五官放大倍率：圍繞臉部中心等比放大五官與眼鏡/鬍子(字面 5 倍會超出頭部，
+// 此值為在頭內能容納的大幅放大；要更大改這個數字即可)。
+const FEATURE_SCALE = 1.7;
+const FACE_CX = 50, FACE_CY = 47;
+function scaleFeatures(inner, k = FEATURE_SCALE) {
+  if (k === 1) return inner;
+  const tx = (FACE_CX * (1 - k)).toFixed(2), ty = (FACE_CY * (1 - k)).toFixed(2);
+  return `<g transform="matrix(${k},0,0,${k},${tx},${ty})">${inner}</g>`;
+}
+
 // 五官：眼睛一律偏大(不再是小點)。
 // eye: 'big'(預設) | 'huge' | 'round' | 'sleepy'(半月上彎) | 'shrewd'(精明微瞇，仍有神)
 // brow: 'none' | 'thick'(濃眉) | 'flat'(一字眉) | 'worried'
@@ -138,7 +148,7 @@ function face(opts = {}) {
     ? `<path d="M38,50 Q35,56 39,60" stroke="${C.gray2}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
       + `<path d="M62,50 Q65,56 61,60" stroke="${C.gray2}" stroke-width="1.2" fill="none" stroke-linecap="round"/>`
     : '';
-  return eyes + brows + folds + mouthPath;
+  return scaleFeatures(eyes + brows + folds + mouthPath);
 }
 
 // ===== 髮型庫（皆可傳色；花白傳 C.gray2、白髮傳 C.gray1）=====
@@ -185,21 +195,24 @@ function ponytail(color = C.hair) {
 function hairclip(color = C.gray1) {
   return `<rect x="28" y="26" width="10" height="4" rx="2" fill="${color}" stroke="${C.line}" stroke-width="0.6"/>`;
 }
-// 眼鏡（shape: 'round' | 'square'）
+// 眼鏡（shape: 'round' | 'square'）— 與放大後的眼睛對齊
 function glasses(shape = 'round', color = C.darkGray) {
+  let g;
   if (shape === 'square') {
-    return `<rect x="34" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
+    g = `<rect x="34" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
       + `<rect x="53" y="40" width="13" height="11" rx="1.5" fill="none" stroke="${color}" stroke-width="2"/>`
       + `<line x1="47" y1="45" x2="53" y2="45" stroke="${color}" stroke-width="2"/>`;
+  } else {
+    g = `<circle cx="41" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<circle cx="59" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
+      + `<line x1="49" y1="46" x2="51" y2="46" stroke="${color}" stroke-width="2"/>`;
   }
-  return `<circle cx="41" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
-    + `<circle cx="59" cy="46" r="8" fill="none" stroke="${color}" stroke-width="2"/>`
-    + `<line x1="49" y1="46" x2="51" y2="46" stroke="${color}" stroke-width="2"/>`;
+  return scaleFeatures(g);
 }
-// 鬍子（八字鬍+下巴）
+// 鬍子（八字鬍+下巴）— 與放大後的嘴巴對齊
 function beard(color = C.hair) {
-  return `<path d="M42,56 Q50,60 58,56" stroke="${color}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
-    + `<path d="M44,64 Q50,68 56,64" stroke="${color}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+  return scaleFeatures(`<path d="M42,56 Q50,60 58,56" stroke="${color}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
+    + `<path d="M44,64 Q50,68 56,64" stroke="${color}" stroke-width="2" fill="none" stroke-linecap="round"/>`);
 }
 
 // 向後相容別名
