@@ -42,7 +42,15 @@ function render() {
   else if (view.screen === "ending") html = renderEnding(state, DATA);
   else html = renderGame();
   app().innerHTML = html;
+  // 畫面轉場淡入：僅在「畫面/月份/階段」改變時觸發(決策內小重繪不閃爍)
+  const sig = `${view.screen}|${state?.meta.phase ?? ""}|${state?.meta.month ?? ""}`;
+  if (sig !== lastViewSig) {
+    lastViewSig = sig;
+    const root = app().firstElementChild;
+    if (root) { root.classList.remove("view-enter"); void root.offsetWidth; root.classList.add("view-enter"); }
+  }
 }
+let lastViewSig = null;
 
 // 遊戲主畫面：HUD +（事件對話框 或 月結算摘要）+ 操作列
 function renderGame() {

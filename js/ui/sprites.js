@@ -53,25 +53,25 @@ function legs(pants = C.secondary, shoe = C.darkGray) {
 <ellipse cx="59" cy="182" rx="9" ry="7" fill="${shoe}"/>`;
 }
 
-// 軀幹（可自訂寬度以呈現略胖/略挺的差異）
+// 軀幹：加寬到接近頭寬(22~78)，頂部圓角形成肩膀，避免肩膀下陷。
 function torso(shirt = C.cream) {
-  return `<rect x="30" y="78" width="40" height="58" rx="16" fill="${shirt}" stroke="${C.line}" stroke-width="1"/>`;
+  return `<rect x="22" y="76" width="56" height="60" rx="18" fill="${shirt}" stroke="${C.line}" stroke-width="1"/>`;
 }
 
-// 雙臂：raisedRight=true 時右手舉起（打招呼/比手勢用）
-// hideRight / hideLeft 可隱藏該側手臂（用於背手、抱物品等姿勢由呼叫端自行畫手）
+// 雙臂：手臂內側嵌進軀幹兩側(繪製順序在軀幹之前，接合處被軀幹蓋住 → 手臂自然從身體兩側伸出)。
+// raisedRight=true 右手舉起；hideRight / hideLeft 隱藏該側(背手、抱物等由呼叫端自畫)。
 function arms(sleeve = C.cream, skin = C.skin, opts = {}) {
   const { raisedRight = false, hideLeft = false, hideRight = false } = opts;
   let left = '';
   let right = '';
   if (!hideLeft) {
-    left = `<rect x="16" y="86" width="14" height="38" rx="7" fill="${sleeve}" stroke="${C.line}" stroke-width="1"/><circle cx="23" cy="128" r="7" fill="${skin}"/>`;
+    left = `<rect x="13" y="84" width="15" height="40" rx="7.5" fill="${sleeve}" stroke="${C.line}" stroke-width="1"/><circle cx="20.5" cy="126" r="7" fill="${skin}"/>`;
   }
   if (!hideRight) {
     if (raisedRight) {
-      right = `<g transform="rotate(-35 74 118)"><rect x="67" y="86" width="14" height="38" rx="7" fill="${sleeve}" stroke="${C.line}" stroke-width="1"/><circle cx="74" cy="82" r="7" fill="${skin}"/></g>`;
+      right = `<g transform="rotate(-32 76 116)"><rect x="72" y="84" width="15" height="40" rx="7.5" fill="${sleeve}" stroke="${C.line}" stroke-width="1"/><circle cx="79.5" cy="80" r="7" fill="${skin}"/></g>`;
     } else {
-      right = `<rect x="70" y="86" width="14" height="38" rx="7" fill="${sleeve}" stroke="${C.line}" stroke-width="1"/><circle cx="77" cy="128" r="7" fill="${skin}"/>`;
+      right = `<rect x="72" y="84" width="15" height="40" rx="7.5" fill="${sleeve}" stroke="${C.line}" stroke-width="1"/><circle cx="79.5" cy="126" r="7" fill="${skin}"/>`;
     }
   }
   return left + right;
@@ -116,13 +116,14 @@ function wrapNpc(label, inner, size) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" width="${w}" height="${h}" role="img" aria-label="${label}">${inner}</svg>`;
 }
 
-// 半身像：裁切至頭部+肩胸(y 0~130)，角色特徵(髮型/眼鏡/配件)更醒目。
+// 半身像：裁切至頭部+肩胸(y 6~112)，角色特徵(髮型/眼鏡/配件)更醒目、上下更精簡。
 // 利用 SVG 預設 overflow:hidden，改 viewBox 即完成裁切。
 export function npcBust(id, size = 96) {
   const full = npcSprite(id, size);
-  const w = ((size * 100) / 130).toFixed(1);
+  const VB_Y = 6, VB_H = 106; // 從 y=6 起、高 106(到胸口)
+  const w = ((size * 100) / VB_H).toFixed(1);
   return full
-    .replace('viewBox="0 0 100 200"', 'viewBox="0 0 100 130"')
+    .replace('viewBox="0 0 100 200"', `viewBox="0 ${VB_Y} 100 ${VB_H}"`)
     .replace(/width="[^"]*"/, `width="${w}"`)
     .replace(/height="[^"]*"/, `height="${size.toFixed(1)}"`);
 }

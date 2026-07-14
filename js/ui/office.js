@@ -1,42 +1,48 @@
 // 辦公室場景：依規模 tier 呈現三種辦公空間，五個內部部門 NPC 站位。
 // 依賴 sprites.js 的 npcSprite/objectSprite 契約。純視覺，不影響遊戲狀態。
 
-import { npcSprite, npcBust, objectSprite } from "./sprites.js";
+import { npcBust, objectSprite } from "./sprites.js";
 
-// 三個 tier 的場景設定：規模愈大，家具愈多、標題不同
+// 三個 tier 的場景設定：規模愈大，牆/地色調不同、標題不同
 const TIER_SCENE = {
-  1: { name: "一層辦公室", objects: ["desk", "monitor", "plant", "cup"], floor: "#eae5da" },
-  2: { name: "整棟小樓", objects: ["desk", "monitor", "cabinet", "printer", "plant", "cup"], floor: "#e4ded2" },
-  3: { name: "企業總部大樓", objects: ["desk", "monitor", "cabinet", "printer", "plant", "cup", "cabinet"], floor: "#ded7c8" },
+  1: { name: "一層辦公室", wall: "#efe9dd", floor: "#d8cfbd", cornerRight: "cabinet" },
+  2: { name: "整棟小樓", wall: "#ece5d6", floor: "#d0c6b2", cornerRight: "printer" },
+  3: { name: "企業總部大樓", wall: "#e8e0cf", floor: "#c8bda7", cornerRight: "printer" },
 };
 
-// 五個內部部門 NPC 與其站位(百分比座標；上排三、下排二，離邊界留白避免標籤溢出)
+// 五個內部部門工作站(百分比座標)：後排三、前排二，前排較大營造景深
 const DESK_LAYOUT = [
-  { id: "shen", dept: "研發部", x: 20, y: 32 },
-  { id: "hao", dept: "生產部", x: 50, y: 28 },
-  { id: "jia", dept: "行銷業務部", x: 80, y: 32 },
-  { id: "you", dept: "人事部", x: 35, y: 70 },
-  { id: "qian", dept: "財務部", x: 65, y: 70 },
+  { id: "shen", dept: "研發部", x: 22, row: "back" },
+  { id: "hao", dept: "生產部", x: 50, row: "back" },
+  { id: "jia", dept: "行銷業務部", x: 78, row: "back" },
+  { id: "you", dept: "人事部", x: 34, row: "front" },
+  { id: "qian", dept: "財務部", x: 66, row: "front" },
 ];
 
-// 主畫面辦公室俯視場景
+// 一個工作站：半身像坐在桌後 + 桌面銘牌
+function workstation(d) {
+  const size = d.row === "back" ? 72 : 92;
+  return `
+    <div class="ws ws-${d.row}" style="left:${d.x}%">
+      <div class="ws-fig">${npcBust(d.id, size)}</div>
+      <div class="ws-desk"><span class="ws-plate">${d.dept}</span></div>
+    </div>`;
+}
+
+// 主畫面辦公室場景：牆面+地板+工作站+角落擺設，清楚呈現辦公空間
 export function renderOffice(s) {
   const scene = TIER_SCENE[s.tier] || TIER_SCENE[1];
-  const figures = DESK_LAYOUT.map((d) => `
-    <div class="office-fig" style="left:${d.x}%;top:${d.y}%" title="${d.dept}">
-      <div class="office-sprite">${npcSprite(d.id, 76)}</div>
-      <div class="office-desk">${objectSprite("desk", 44)}</div>
-      <span class="office-tag">${d.dept}</span>
-    </div>`).join("");
-  // 角落擺設
-  const props = `
-    <div class="office-prop" style="left:4%;bottom:6%">${objectSprite("plant", 46)}</div>
-    <div class="office-prop" style="right:4%;bottom:6%">${objectSprite(scene.objects.includes("printer") ? "printer" : "cabinet", 48)}</div>`;
+  const back = DESK_LAYOUT.filter((d) => d.row === "back").map(workstation).join("");
+  const front = DESK_LAYOUT.filter((d) => d.row === "front").map(workstation).join("");
   return `
-    <div class="office" style="--floor:${scene.floor}">
+    <div class="office" style="--wall:${scene.wall};--floor:${scene.floor}">
       <div class="office-scene">
-        ${figures}
-        ${props}
+        <div class="office-wall"></div>
+        <div class="office-floor"></div>
+        <div class="office-prop prop-plant" title="盆栽">${objectSprite("plant", 52)}</div>
+        <div class="office-prop prop-corner" title="設備">${objectSprite(scene.cornerRight, 54)}</div>
+        <div class="ws-row ws-row-back">${back}</div>
+        <div class="ws-row ws-row-front">${front}</div>
       </div>
       <div class="office-caption">${scene.name}</div>
     </div>`;

@@ -211,20 +211,37 @@ html, body {
 .news-rumor .news-tag { background: #e6dcc4; border-color: var(--warn); color: var(--warn); }
 .news-text { font-size: 0.92rem; line-height: 1.5; }
 
-/* ===== M6 美術與場景 ===== */
-/* 辦公室俯視場景 */
+/* ===== M6/v5 辦公室場景(牆+地板+工作站) ===== */
 .office { margin-bottom: 1rem; }
-.office-scene { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 340px;
-  background: var(--floor, #eae5da); border: 1px solid var(--line); border-radius: var(--radius);
-  overflow: hidden; box-shadow: inset 0 1px 6px rgba(43,43,41,0.08); }
-.office-fig { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column;
-  align-items: center; }
-.office-sprite { position: relative; z-index: 2; }
-.office-sprite svg { display: block; }
-.office-desk { margin-top: -14px; opacity: 0.9; }
-.office-tag { font-size: 0.66rem; color: var(--ink-soft); background: rgba(253,252,249,0.82);
-  padding: 0 0.35em; border-radius: 3px; margin-top: 2px; white-space: nowrap; }
-.office-prop { position: absolute; opacity: 0.85; }
+.office-scene { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 360px;
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+/* 背牆(上 52%)與地板(下 48%)分層，明確呈現空間 */
+.office-wall { position: absolute; left: 0; right: 0; top: 0; height: 52%; background: var(--wall);
+  border-bottom: 2px solid rgba(43,43,41,0.10); }
+.office-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 48%; background: var(--floor); }
+/* 地板透視斜線 */
+.office-floor::before { content: ""; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(90deg, transparent, transparent 68px, rgba(43,43,41,0.05) 68px, rgba(43,43,41,0.05) 69px);
+}
+/* 工作站列 */
+.ws-row { position: absolute; left: 0; right: 0; height: 0; }
+.ws-row-back { top: 48%; z-index: 2; }
+.ws-row-front { top: 78%; z-index: 4; }
+.ws { position: absolute; transform: translateX(-50%); bottom: 0; display: flex; flex-direction: column; align-items: center; }
+.ws-fig { position: relative; z-index: 1; }
+.ws-fig svg { display: block; }
+/* 書桌：擋在半身像下緣，像坐在桌後 */
+.ws-desk { position: relative; margin-top: -10px; width: 96px; height: 26px;
+  background: linear-gradient(#c9bda3, #b7aa8e); border: 1px solid var(--line); border-radius: 4px 4px 3px 3px;
+  box-shadow: 0 3px 6px rgba(43,43,41,0.18); display: flex; align-items: center; justify-content: center; }
+.ws-front .ws-desk { width: 118px; height: 30px; }
+.ws-plate { font-size: 0.66rem; color: #3a352c; background: rgba(253,252,249,0.85);
+  padding: 0 0.4em; border-radius: 2px; white-space: nowrap; }
+.ws-front .ws-plate { font-size: 0.72rem; }
+.office-prop { position: absolute; z-index: 3; bottom: 3%; }
+.prop-plant { left: 3%; }
+.prop-corner { right: 3%; z-index: 5; }
+.office-prop svg { display: block; }
 .office-caption { text-align: center; font-size: 0.8rem; color: var(--ink-soft); margin-top: 0.4rem; }
 
 /* 事件對話框頭像 */
@@ -305,8 +322,8 @@ html, body {
 .dialog-stage { position: relative; }
 .dialog-bg { position: absolute; inset: 0; overflow: hidden; opacity: 0.35; filter: saturate(0.8);
   pointer-events: none; }
-.dialog-bg .office-caption, .dialog-bg .office-tag { display: none; }
-.dialog-bg .office-scene { height: 100%; max-height: none; aspect-ratio: auto; border: none; box-shadow: none; }
+.dialog-bg .office-caption, .dialog-bg .ws-plate { display: none; }
+.dialog-bg .office-scene { height: 100%; max-height: none; aspect-ratio: auto; border: none; }
 .dialog-fg { position: relative; z-index: 1; padding: 1.2rem 0.5rem; }
 .dialog-fg .dialog { box-shadow: 0 6px 22px rgba(43, 43, 41, 0.22); }
 
@@ -326,3 +343,28 @@ html, body {
 .flow-pre { font-family: inherit; background: var(--white); border: 1px solid var(--line);
   border-radius: var(--radius); padding: 0.6rem 0.8rem; font-size: 0.82rem; line-height: 1.6;
   overflow-x: auto; white-space: pre; }
+
+/* ===== v5: 畫面轉場/結算指標/半身像框 ===== */
+/* 畫面轉場淡入(畫面/月份/階段改變時) */
+.view-enter { animation: view-enter 0.32s ease; }
+@keyframes view-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* overlay 淡入 */
+.overlay { animation: overlay-in 0.22s ease; }
+@keyframes overlay-in { from { opacity: 0; } to { opacity: 1; } }
+.panel { animation: panel-in 0.26s cubic-bezier(0.34, 1.3, 0.64, 1); }
+@keyframes panel-in { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+
+/* 結算畫面士氣/市占/股東信心 chip */
+.settle-kpi2 { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
+.kpi-chip { display: inline-flex; align-items: baseline; gap: 0.35em; padding: 0.25em 0.7em;
+  background: var(--paper-2); border: 1px solid var(--line); border-radius: 999px; font-size: 0.85rem; }
+.chip-l { color: var(--ink-soft); font-size: 0.78rem; }
+.chip-v { font-weight: 700; }
+.kpi-chip .kpi-d { display: inline; font-size: 0.75rem; margin: 0; }
+
+/* 半身頭像框：圓角+底線收邊 */
+.npc-avatar { border-radius: 10px; overflow: hidden; background: var(--paper-2); border: 1px solid var(--line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .view-enter, .overlay, .panel { animation: none !important; }
+}

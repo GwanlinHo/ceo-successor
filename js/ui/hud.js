@@ -90,8 +90,22 @@ export function renderSettlement(s) {
         ${rows.map(([l, v, cl]) => `<tr><td>${l}</td><td class="num ${cl}">${v}</td></tr>`).join("")}
       </table>
       <div class="settle-kpi">現金 ${money(s.kpi.cash)}　淨值 ${money(s.kpi.equity)}　員工 ${Math.round(s.kpi.headcount)} 人</div>
+      <div class="settle-kpi2">
+        ${kpiChip("士氣", Math.round(s.kpi.morale), diff100(s, prev, "morale"))}
+        ${kpiChip("市占", s.kpi.share.toFixed(1) + "%", diff100(s, prev, "share", 1))}
+        ${kpiChip("股東信心", Math.round(s.kpi.shareholder), diff100(s, prev, "shareholder"))}
+      </div>
       ${r.notes.length ? `<ul class="notes">${r.notes.map((n) => `<li>${esc(n)}</li>`).join("")}</ul>` : ""}
     </div>`;
+}
+
+// 結算畫面用：0~100 型指標與上月快照的差
+function diff100(s, prev, key, digits = 0) {
+  if (!prev || prev[key] === undefined) return null;
+  return s.kpi[key] - prev[key];
+}
+function kpiChip(label, value, d) {
+  return `<span class="kpi-chip"><span class="chip-l">${label}</span><span class="chip-v">${value}</span>${deltaBadge(d, 1)}</span>`;
 }
 
 export function esc(str) {

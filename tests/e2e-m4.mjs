@@ -45,7 +45,7 @@ try {
   // M6/v4 美術：事件對話框含 NPC 半身像 + 淡化辦公室背景
   await page.waitForSelector('.dialog');
   ok(await page.$('.npc-avatar svg') !== null, "事件對話框顯示 NPC 頭像 SVG");
-  ok(await page.$eval('.npc-avatar svg', (e) => e.getAttribute("viewBox")) === "0 0 100 130", "頭像為半身裁切");
+  ok(await page.$eval('.npc-avatar svg', (e) => /^0 \d+ 100 \d+$/.test(e.getAttribute("viewBox")) && e.getAttribute("viewBox") !== "0 0 100 200"), "頭像為半身裁切");
   ok(await page.$('.dialog-bg .office-scene') !== null, "對話框背後有淡化辦公室場景");
 
   // v4 財報教學：閱讀指引開關
@@ -123,6 +123,8 @@ try {
   if (months >= 2 && !(await page.$('.ending'))) {
     ok(await page.$('.kpi-d') !== null, "HUD 顯示與上月比較的漲跌指示");
   }
+  // 畫面轉場動畫類別存在
+  ok(await page.$('.view-enter') !== null, "畫面轉場淡入類別已套用");
 
   // M6：某個月處理完事件後主畫面應出現辦公室場景(含至少一個部門 NPC)
   {
@@ -130,8 +132,9 @@ try {
     let g3 = 0;
     while (g3++ < 30 && await page.$('.option')) { await page.click('.option'); await page.waitForNetworkIdle({ idleTime: 40 }).catch(() => {}); }
     if (await page.$('.office-scene')) {
-      ok((await page.$$('.office-fig')).length === 5, "辦公室場景五個部門站位");
-      ok(await page.$('.office-scene svg') !== null, "辦公室場景含 SVG 素材");
+      ok((await page.$$('.ws')).length === 5, "辦公室場景五個部門工作站");
+      ok(await page.$('.office-wall') !== null && await page.$('.office-floor') !== null, "辦公室有牆面與地板");
+      ok(await page.$('.ws-fig svg') !== null, "工作站含 NPC 半身像");
     }
   }
 
