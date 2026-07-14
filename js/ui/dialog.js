@@ -54,7 +54,7 @@ export function renderDialog(s, data) {
       </div>
       <h2 class="dialog-title">${esc(ev.title)}</h2>
       <div class="dialog-speaker">
-        ${npc ? npcAvatar(npc.id, 88) : ""}
+        ${npc ? npcAvatar(npc.id, 124) : ""}
         <div class="dialog-speech">
           ${npc ? `<div class="dialog-npc">${esc(npc.name)}・${esc(npc.role)}</div>` : ""}
           <p class="dialog-text">${esc(ev.text)}</p>

@@ -26,6 +26,8 @@ try {
   // 開始畫面
   await page.waitForSelector('[data-act="new"]');
   ok(await page.$('.game-title') !== null, "開始畫面標題出現");
+  ok((await page.$$('.lineup-npc svg')).length === 11, "首頁顯示 11 位 NPC 全員陣容");
+  ok(await page.$eval('.version-tag', (e) => e.textContent).then((t) => /版本 v\d+/.test(t)), "首頁顯示遊戲版本號");
 
   // 進入設定
   await page.click('[data-act="new"]');
@@ -40,9 +42,27 @@ try {
   ok((await page.$eval('.hud-company', (e) => e.textContent)) === "端測精工", "HUD 顯示自訂公司名");
   ok((await page.$eval('.hud-tier', (e) => e.textContent)).includes("小型"), "初始為小型企業");
 
-  // M6 美術：事件對話框含 NPC 頭像 SVG
+  // M6/v4 美術：事件對話框含 NPC 半身像 + 淡化辦公室背景
   await page.waitForSelector('.dialog');
   ok(await page.$('.npc-avatar svg') !== null, "事件對話框顯示 NPC 頭像 SVG");
+  ok(await page.$eval('.npc-avatar svg', (e) => e.getAttribute("viewBox")) === "0 0 100 130", "頭像為半身裁切");
+  ok(await page.$('.dialog-bg .office-scene') !== null, "對話框背後有淡化辦公室場景");
+
+  // v4 財報教學：閱讀指引開關
+  await page.click('[data-act="open-reports"]');
+  await page.waitForSelector('[data-overlay="reports"]');
+  ok(await page.$('.guide') === null, "指引預設關閉");
+  await page.click('[data-act="toggle-guide"]');
+  await page.waitForSelector('.guide');
+  ok(await page.$eval('.guide', (e) => e.textContent.includes("有沒有賺錢")), "損益表指引內容正確");
+  await page.click('[data-rtab="cashflow"]');
+  await page.waitForSelector('.guide');
+  ok(await page.$eval('.guide', (e) => e.textContent.includes("黑字倒閉")), "切分頁指引跟著換(現金流)");
+  ok(await page.$('.flow-pre') !== null, "指引含三表關係圖");
+  await page.click('[data-act="toggle-guide"]');
+  await page.waitForFunction(() => !document.querySelector('.guide'));
+  await page.click('[data-act="close-overlay"]');
+  await page.waitForFunction(() => !document.querySelector('[data-overlay="reports"]'));
 
   // 決策參考導引：點相關報表捷徑應直接開到該分頁
   {

@@ -1,7 +1,7 @@
 // 辦公室場景：依規模 tier 呈現三種辦公空間，五個內部部門 NPC 站位。
 // 依賴 sprites.js 的 npcSprite/objectSprite 契約。純視覺，不影響遊戲狀態。
 
-import { npcSprite, objectSprite } from "./sprites.js";
+import { npcSprite, npcBust, objectSprite } from "./sprites.js";
 
 // 三個 tier 的場景設定：規模愈大，家具愈多、標題不同
 const TIER_SCENE = {
@@ -42,7 +42,12 @@ export function renderOffice(s) {
     </div>`;
 }
 
-// 事件對話框用的 NPC 頭像(單人半身，用同一 sprite 上半)
-export function npcAvatar(id, size = 96) {
-  return `<div class="npc-avatar">${npcSprite(id, size)}</div>`;
+// 事件對話框用的 NPC 半身像(頭部+肩胸，特徵醒目)
+export function npcAvatar(id, size = 120) {
+  return `<div class="npc-avatar">${npcBust(id, size)}</div>`;
+}
+
+// 對話框背後的淡化辦公室背景(營造「在辦公室對話」氛圍)
+export function officeBackdrop(s) {
+  return `<div class="dialog-bg" aria-hidden="true">${renderOffice(s)}</div>`;
 }

@@ -8,11 +8,12 @@ import { renderDialog, renderDecisionResult } from "./ui/dialog.js";
 import { renderStart, renderHowTo, renderSetup, renderConfirmNew, renderEnding, HOW_PAGE_COUNT } from "./ui/screens.js";
 import { renderReports } from "./ui/reports.js";
 import { renderNews } from "./ui/news.js";
-import { renderOffice } from "./ui/office.js";
+import { renderOffice, officeBackdrop } from "./ui/office.js";
+import { GAME_VERSION } from "./version.js";
 
 let DATA = null;
 let state = null;                 // 遊戲 state
-const view = { screen: "start", howPage: 0, diff: "normal", overlay: null, reportTab: "pnl" }; // UI 視圖
+const view = { screen: "start", howPage: 0, diff: "normal", overlay: null, reportTab: "pnl", reportGuide: false }; // UI 視圖
 const app = () => document.getElementById("app");
 
 async function boot() {
@@ -34,7 +35,7 @@ async function boot() {
 
 function render() {
   let html;
-  if (view.screen === "start") html = renderStart(hasSave());
+  if (view.screen === "start") html = renderStart(hasSave(), DATA, GAME_VERSION);
   else if (view.screen === "howto") html = renderHowTo(view.howPage);
   else if (view.screen === "confirmNew") html = renderConfirmNew();
   else if (view.screen === "setup") html = renderSetup();
@@ -48,9 +49,11 @@ function renderGame() {
   const inSettle = state.meta.phase === "settled";
   let body;
   if (inSettle) {
-    body = renderSettlement(state);
+    // 月結算畫面帶辦公室場景(每月必看，人物固定曝光)
+    body = renderOffice(state) + renderSettlement(state);
   } else if (state.events.current) {
-    body = renderDecisionResult(state) + renderDialog(state, DATA);
+    // 事件對話框疊在淡化的辦公室背景上
+    body = `<div class="dialog-stage">${officeBackdrop(state)}<div class="dialog-fg">${renderDecisionResult(state) + renderDialog(state, DATA)}</div></div>`;
   } else {
     body = renderOffice(state) + `<div class="card month-clear"><p>本月事件都處理完了。準備好就結算本月。</p></div>`;
   }
@@ -61,7 +64,7 @@ function renderGame() {
         : `<button class="btn btn-primary" data-act="end-month">結束本月・進行結算</button>`);
   const newsCount = (state.news || []).length;
   let overlay = "";
-  if (view.overlay === "reports") overlay = renderReports(state, DATA, view.reportTab);
+  if (view.overlay === "reports") overlay = renderReports(state, DATA, view.reportTab, view.reportGuide);
   else if (view.overlay === "news") overlay = renderNews(state);
   return `
     ${renderHud(state, DATA)}
@@ -112,6 +115,7 @@ function onAction(act) {
     case "open-reports": view.overlay = "reports"; return render();
     case "open-news": view.overlay = "news"; return render();
     case "close-overlay": view.overlay = null; return render();
+    case "toggle-guide": view.reportGuide = !view.reportGuide; return render();
   }
 }
 

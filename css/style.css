@@ -290,3 +290,39 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   .dialog, .npc-avatar, .dialog-options .option, .decision-result, .scale-banner, .update-bar { animation: none !important; opacity: 1 !important; }
 }
+
+/* ===== v4: 半身像/陣容/對話背景/財報指引/版本 ===== */
+/* 首頁全員陣容 */
+.lineup { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem 0.9rem; max-width: 560px; }
+.lineup-npc { display: flex; flex-direction: column; align-items: center; gap: 0.15rem; }
+.lineup-npc svg { background: var(--white); border: 1px solid var(--line); border-radius: 50%;
+  padding: 3px; box-shadow: var(--shadow); }
+.lineup-name { font-size: 0.72rem; color: var(--ink-soft); }
+/* 版本標示 */
+.version-tag { color: var(--gray-3); font-size: 0.8rem; margin-top: 0.5rem; }
+
+/* 事件對話框疊在淡化辦公室上 */
+.dialog-stage { position: relative; }
+.dialog-bg { position: absolute; inset: 0; overflow: hidden; opacity: 0.35; filter: saturate(0.8);
+  pointer-events: none; }
+.dialog-bg .office-caption, .dialog-bg .office-tag { display: none; }
+.dialog-bg .office-scene { height: 100%; max-height: none; aspect-ratio: auto; border: none; box-shadow: none; }
+.dialog-fg { position: relative; z-index: 1; padding: 1.2rem 0.5rem; }
+.dialog-fg .dialog { box-shadow: 0 6px 22px rgba(43, 43, 41, 0.22); }
+
+/* 半身頭像框 */
+.npc-avatar { border-radius: 10px; }
+
+/* 財報閱讀指引 */
+.panel-head-actions { display: flex; gap: 0.5rem; align-items: center; }
+.on-guide { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.guide { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 0.9rem 1rem; margin-bottom: 1.2rem; font-size: 0.9rem; line-height: 1.7; }
+.guide p { margin-bottom: 0.5rem; }
+.guide ul { margin: 0.3rem 0 0.6rem 1.2rem; }
+.guide li { margin-bottom: 0.25rem; }
+.guide-flow { margin-top: 0.6rem; }
+.flow-title { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.3rem; }
+.flow-pre { font-family: inherit; background: var(--white); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 0.6rem 0.8rem; font-size: 0.82rem; line-height: 1.6;
+  overflow-x: auto; white-space: pre; }

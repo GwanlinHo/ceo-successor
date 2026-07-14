@@ -3,7 +3,7 @@
 // ★ 進版必做：每次要發佈新版(改任何 js/css/data/html)，把下面 CACHE 版本號 +1。
 //   這是「唯一」要改的地方；改了瀏覽器才會偵測到新 SW、抓新檔、觸發更新提示。
 //   詳見 docs/RELEASE.md。
-const CACHE = "ceo-successor-v3";
+const CACHE = "ceo-successor-v4";
 
 const ASSETS = [
   "./",
@@ -12,6 +12,7 @@ const ASSETS = [
   "./manifest.webmanifest",
   "./assets/icon.svg",
   "./js/main.js",
+  "./js/version.js",
   "./js/data-loader.js",
   "./js/save.js",
   "./js/engine/rng.js",

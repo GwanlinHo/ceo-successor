@@ -2,27 +2,37 @@
 
 import { esc } from "./hud.js";
 import { DIFF_LABELS, TIER_NAMES, money, score100 } from "./labels.js";
+import { npcBust } from "./sprites.js";
 
-export function renderStart(hasSaveFlag) {
+export function renderStart(hasSaveFlag, data, version) {
+  // 全員陣容:內部5部門+外部6單位(開場即認識角色)
+  const lineup = (data?.npcs?.npcs || []).map((n) => `
+    <div class="lineup-npc" title="${esc(n.role)}">
+      ${npcBust(n.id, 64)}
+      <span class="lineup-name">${esc(n.name)}</span>
+    </div>`).join("");
   return `
     <div class="screen center">
       <div class="title-block">
         <h1 class="game-title">企業接班人養成術</h1>
         <p class="game-sub">從小型企業總經理，走向成功上市的接班之路</p>
       </div>
+      ${lineup ? `<div class="lineup">${lineup}</div>` : ""}
       <div class="menu">
         ${hasSaveFlag ? `<button class="btn btn-primary" data-act="continue">繼續遊戲</button>` : ""}
         <button class="btn ${hasSaveFlag ? "" : "btn-primary"}" data-act="new">新遊戲</button>
         <button class="btn" data-act="how">遊戲說明</button>
         <button class="btn" data-act="import">匯入存檔</button>
       </div>
+      ${version ? `<div class="version-tag">版本 ${esc(version)}</div>` : ""}
     </div>`;
 }
 
 const HOW_PAGES = [
   { h: "你的目標", p: "你是一位小型企業的總經理。用五年（60 個遊戲月）的時間，處理內外部事件、做出決策，讓公司從小型成長為中型，最後成功上市為大型企業。" },
   { h: "怎麼玩", p: "每個月會有數件來自各部門與外部單位的事件等你決策。做完當月所有決策後，按「結束本月」進行結算，數據隨之變化，再進入下一個月。決策的效果往往在一兩個月後才顯現。" },
-  { h: "要盯什麼", p: "上方常駐顯示現金、營收、淨利、士氣、市占、股東信心。現金見底又借不到錢會倒閉；股東信心歸零會被撤換。報表中心（後續版本）能看到完整的內外部數據與趨勢。" },
+  { h: "要盯什麼", p: "上方常駐顯示現金、營收、淨利、士氣、市占、股東信心，數字旁的↑↓是與上月的比較。現金見底又借不到錢會倒閉；股東信心歸零會被撤換。報表中心能看到完整數據與趨勢圖，事件裡的「決策參考」會直接帶你到相關報表。" },
+  { h: "學會看財報", p: "這款遊戲想教你的事：損益表看「這個月賺不賺」、資產負債看「累積了多少身家」、現金流看「會不會突然死掉」——三張表環環相扣，淨利會累積成淨值、也牽動現金。打開報表中心，按右上角「閱讀指引」，每張表都有白話解說與判讀要點。玩到上市那天，你也學會看財報了。" },
   { h: "怎麼升級", p: "當營收、淨值、員工數、連續獲利月數等關鍵數據同時達標並維持一段時間，公司規模就會升級。規模愈大，市場愈大、但管理成本與競爭壓力也愈高——賺得快，燒得也快。" },
   { h: "難度", p: "簡單／普通／困難影響事件數量、危機頻率、經濟環境與計分。困難難度事件多、環境嚴苛，但通關評分更高。選項在普通以上難度不顯示精確數字，你得從報表回饋中學會因果——這正是「養成術」的核心。" },
 ];

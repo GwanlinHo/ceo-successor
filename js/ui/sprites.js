@@ -116,6 +116,17 @@ function wrapNpc(label, inner, size) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200" width="${w}" height="${h}" role="img" aria-label="${label}">${inner}</svg>`;
 }
 
+// 半身像：裁切至頭部+肩胸(y 0~130)，角色特徵(髮型/眼鏡/配件)更醒目。
+// 利用 SVG 預設 overflow:hidden，改 viewBox 即完成裁切。
+export function npcBust(id, size = 96) {
+  const full = npcSprite(id, size);
+  const w = ((size * 100) / 130).toFixed(1);
+  return full
+    .replace('viewBox="0 0 100 200"', 'viewBox="0 0 100 130"')
+    .replace(/width="[^"]*"/, `width="${w}"`)
+    .replace(/height="[^"]*"/, `height="${size.toFixed(1)}"`);
+}
+
 // ------------------------------------------------------------------
 // 11 位 NPC 個別繪製函式
 // 每個函式回傳 { name, svg } ；svg 為 <svg> 內部的 inner content（不含 <svg> 標籤本身）
